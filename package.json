@@ -1,0 +1,19 @@
+{
+  "name": "mock-examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "laura.luo",
+  "license": "ISC",
+  "devDependencies": {
+    "mockjs": "^1.0.1-beta3"
+  },
+  "dependencies": {
+    "express": "^4.14.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}
