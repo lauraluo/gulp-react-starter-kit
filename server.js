@@ -29,7 +29,7 @@ var users = [
 ];
 
 app.get('/', function(req, res){
-  res.render('index', { data: null });
+  res.render('users', { data: null });
 });
 
 app.use(function(err, req, res, next) {
@@ -39,5 +39,5 @@ app.use(function(err, req, res, next) {
 /* istanbul ignore next */
 if (!module.parent) {
   app.listen(3002);
-  console.log('Express started on port 3000');
+  console.log('Express started on port 3002');
 }

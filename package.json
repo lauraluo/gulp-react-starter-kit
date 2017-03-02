@@ -4,16 +4,36 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "start": "nodemon server.js | gulp dev"
   },
   "author": "laura.luo",
   "license": "ISC",
   "devDependencies": {
-    "mockjs": "^1.0.1-beta3"
+    "aliasify": "^2.1.0",
+    "babelify": "^7.3.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-connect": "^5.0.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-notify": "^3.0.0",
+    "gulp-open": "^2.0.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-shell": "^0.6.1",
+    "gulp-watch": "^4.3.11",
+    "mockjs": "^1.0.1-beta3",
+    "reactify": "^1.1.1"
   },
   "dependencies": {
     "express": "^4.14.1",
+    "jade": "^1.11.0",
+    "jquery": "^3.1.1",
+    "nodemon": "^1.11.0",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "reflux": "^6.4.1"
   }
 }
