@@ -36,19 +36,20 @@ gulp.task('js:common', function() {
         .pipe(browserify({
             insertGlobals: true,
             transform: ['babelify', 'aliasify'],
-            debug: false
+            debug: true
         }))
         .pipe(gulp.dest('./' + distPath + 'js/'))
         .pipe(livereload());
 });
 
 gulp.task('js:main', function() {
-    gulp.src(['content/main.js', 'content/js/**/*.*'])
+    gulp.src(['content/main.js', 'content/js/**/*.*', 'content/components/**/*.jsx'])
         .pipe(plumber())
         .pipe(browserify({
             insertGlobals: false,
-            transform: ['babelify', 'aliasify', 'reactify'],
-            debug: false
+            transform: ['reactify'],
+      		extensions: ['.jsx'],
+            debug: true
         }))
         .pipe(gulp.dest('./' + distPath + 'js/'))
         .pipe(livereload());
@@ -60,7 +61,9 @@ gulp.task('js:bundle', ['js:common', 'js:main'], function() {});
 
 gulp.task('watch', function() {
     livereload.listen();
-    gulp.watch(['content/main.js', 'content/js/**/*.*'], ['js:main']);
+    gulp.watch(['content/main.js', 'content/js/**/*.*', 'content/components/**/*.jsx'], ['js:main'], function() {
+        notify('Reloading main.js, please wait...')
+    });
     gulp.watch(['content/scss/**/*.scss', '!src/scss/**/_*.scss'], ['css:sass']);
 });
 
