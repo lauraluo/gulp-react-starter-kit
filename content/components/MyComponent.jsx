@@ -17,7 +17,7 @@ var MyComponent = React.createClass({
 			  </li>)	
 			});
 		}
-
+		
 		return <ul>{listItems}</ul>
 	}
 });

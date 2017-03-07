@@ -14,6 +14,7 @@ var nodemon = require('gulp-nodemon');
 var notify = require('gulp-notify');
 var livereload = require('gulp-livereload');
 
+console.log('NODE_ENV' + process.env.NODE_ENV);
 
 gulp.task('css:sass', function() {
     gulp.src(['content/scss/**/*.scss', '!src/scss/**/_*.scss'])

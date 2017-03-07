@@ -28,14 +28,14 @@ var MockComponent = React.createClass({
     },
 	render: function(){
 		//more than one child
-		// var childrenWithProps =  React.Children.map(this.props.children, function(child){
-		// 	React.cloneElement(child, {
-		// 		data: this.initData
-		// 	});
-		// });
+		var childrenWithProps =  React.Children.map(this.props.children, function(child){
+			React.cloneElement(child, {
+				data: this.initData
+			});
+		});
 
 		
-		return <div>{ React.cloneElement(this.props.children, { data: this.state.initData }) }</div>
+		return <div>{ childrenWithProps }</div>
 	}
 });
 
