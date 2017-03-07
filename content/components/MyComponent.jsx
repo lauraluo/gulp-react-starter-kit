@@ -1,7 +1,7 @@
  
 var MyComponent = React.createClass({
 	defaultProps: function(){
-		data: {
+		initData: {
 			list:[]
 		}
 	},
@@ -9,8 +9,8 @@ var MyComponent = React.createClass({
 		var _this = this;
 		var listItems = []
 
-		if(_this.props.data && _this.props.data.list) {
-			listItems = _this.props.data.list.map(function(item,i){
+		if(_this.props.initData && _this.props.initData.list) {
+			listItems = _this.props.initData.list.map(function(item,i){
 			  return (<li key={i}>
 			  	<span>{item.id}</span>
 			  	<span>{item.email}</span>

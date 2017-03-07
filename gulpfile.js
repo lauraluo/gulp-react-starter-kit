@@ -73,6 +73,7 @@ gulp.task('dev', ['build', 'watch'], function() {
     nodemon({
         "script": 'server.js',
         "ext": 'js',
+        "nodeArgs": ['--debug'],
         "ignore": [
             "public/**/*.*",
             "content/**/*.*",
