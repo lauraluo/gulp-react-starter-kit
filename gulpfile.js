@@ -99,5 +99,3 @@ gulp.task('dev', ['build', 'watch'], function () {
 
     });
 });
-
-console.log(process.env);
