@@ -16,9 +16,20 @@ var livereload = require('gulp-livereload');
 
 console.log('NODE_ENV' + process.env.NODE_ENV);
 
-gulp.task('css:sass', function() {
+var onError = function (err) {
+    notify({
+        title: 'Gulp Task Error',
+        message: 'Check the console.'
+    }).write(err);
+
+    console.log(err.toString());
+
+    this.emit('end');
+}
+
+gulp.task('css:sass', function () {
     gulp.src(['content/scss/**/*.scss', '!src/scss/**/_*.scss'])
-        .pipe(plumber())
+        .pipe(plumber({ errorHandle: onError }))
         .pipe(sass({
             errLogToConsole: true,
             includePaths: ['content/scss/**/**']
@@ -31,7 +42,7 @@ gulp.task('css:sass', function() {
         .pipe(livereload());
 });
 
-gulp.task('js:common', function() {
+gulp.task('js:common', function () {
     gulp.src('content/common.js')
         .pipe(plumber())
         .pipe(browserify({
@@ -43,13 +54,13 @@ gulp.task('js:common', function() {
         .pipe(livereload());
 });
 
-gulp.task('js:main', function() {
+gulp.task('js:main', function () {
     gulp.src(['content/main.js', 'content/js/**/*.*', 'content/components/**/*.jsx'])
         .pipe(plumber())
         .pipe(browserify({
             insertGlobals: false,
             transform: ['reactify'],
-      		extensions: ['.jsx'],
+            extensions: ['.jsx'],
             debug: true
         }))
         .pipe(gulp.dest('./' + distPath + 'js/'))
@@ -57,19 +68,19 @@ gulp.task('js:main', function() {
 });
 
 
-gulp.task('js:bundle', ['js:common', 'js:main'], function() {});
+gulp.task('js:bundle', ['js:common', 'js:main'], function () {});
 
 
-gulp.task('watch', function() {
+gulp.task('watch', function () {
     livereload.listen();
-    gulp.watch(['content/main.js', 'content/js/**/*.*', 'content/components/**/*.jsx'], ['js:main'], function() {
+    gulp.watch(['content/main.js', 'content/js/**/*.*', 'content/components/**/*.jsx'], ['js:main'], function () {
         notify('Reloading main.js, please wait...')
     });
     gulp.watch(['content/scss/**/*.scss', '!src/scss/**/_*.scss'], ['css:sass']);
 });
 
-gulp.task('build', ['js:bundle', 'css:sass'], function() {});
-gulp.task('dev', ['build', 'watch'], function() {
+gulp.task('build', ['js:bundle', 'css:sass'], function () {});
+gulp.task('dev', ['build', 'watch'], function () {
     nodemon({
         "script": 'server.js',
         "ext": 'js',
@@ -81,10 +92,12 @@ gulp.task('dev', ['build', 'watch'], function() {
             "gulpfile.js",
             "node_modules/**/node_modules"
         ]
-    }).on('restart', function() {
+    }).on('restart', function () {
         gulp.src('server.js')
             .pipe(livereload())
             .pipe(notify('Reloading server, please wait...'));
 
     });
 });
+
+console.log(process.env);

@@ -1,9 +1,7 @@
  
 var MyComponent = React.createClass({
-	defaultProps: function(){
-		initData: {
-			list:[]
-		}
+	propTypes: {
+		initData: React.PropTypes.array
 	},
 	render: function(){
 		var _this = this;

@@ -24,8 +24,6 @@ var users = [
 ];
 
 app.get('/', function (req, res) {
-  var a = "1";
-  var b = "2";
   res.render('users', {
     data: null
   });
