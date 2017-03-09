@@ -8,6 +8,7 @@ var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     open = require('gulp-open');
 
+var sourcePath = "src/";
 var distPath = "public/";
 
 var nodemon = require('gulp-nodemon');
@@ -28,11 +29,13 @@ var onError = function (err) {
 }
 
 gulp.task('css:sass', function () {
-    gulp.src(['content/scss/**/*.scss', '!src/scss/**/_*.scss'])
-        .pipe(plumber({ errorHandle: onError }))
+    gulp.src(['src/scss/**/*.scss', '!src/scss/**/_*.scss'])
+        .pipe(plumber({
+            errorHandle: onError
+        }))
         .pipe(sass({
             errLogToConsole: true,
-            includePaths: ['content/scss/**/**']
+            includePaths: ['src/scss/**/**']
         }))
         .pipe(autoprefixer({
             browsers: ["last 4 versions", "Firefox >= 27", "Blackberry >= 7", "IE 8", "IE 9"],
@@ -43,7 +46,7 @@ gulp.task('css:sass', function () {
 });
 
 gulp.task('js:common', function () {
-    gulp.src('content/common.js')
+    gulp.src('src/common.js')
         .pipe(plumber())
         .pipe(browserify({
             insertGlobals: true,
@@ -54,8 +57,21 @@ gulp.task('js:common', function () {
         .pipe(livereload());
 });
 
-gulp.task('js:main', function () {
-    gulp.src(['content/main.js', 'content/js/**/*.*', 'content/components/**/*.jsx'])
+// gulp.task('js:main', function () {
+//     gulp.src(['src/main.js'])
+//         .pipe(plumber())
+//         .pipe(browserify({
+//             insertGlobals: false,
+//             transform: ['reactify'],
+//             extensions: ['.jsx'],
+//             debug: true
+//         }))
+//         .pipe(gulp.dest('./' + distPath + 'js/'))
+//         .pipe(livereload());
+// });
+
+gulp.task('js:components', function () {
+    gulp.src(['src/components/**/index.js'])
         .pipe(plumber())
         .pipe(browserify({
             insertGlobals: false,
@@ -67,16 +83,14 @@ gulp.task('js:main', function () {
         .pipe(livereload());
 });
 
-
-gulp.task('js:bundle', ['js:common', 'js:main'], function () {});
-
+gulp.task('js:bundle', ['js:common', 'js:components'], function () {});
 
 gulp.task('watch', function () {
     livereload.listen();
-    gulp.watch(['content/main.js', 'content/js/**/*.*', 'content/components/**/*.jsx'], ['js:main'], function () {
+    gulp.watch(['src/main.js', 'src/js/**/*.*', 'src/components/**/*.jsx'], ['js:main'], function () {
         notify('Reloading main.js, please wait...')
     });
-    gulp.watch(['content/scss/**/*.scss', '!src/scss/**/_*.scss'], ['css:sass']);
+    gulp.watch(['src/scss/**/*.scss', '!src/scss/**/_*.scss'], ['css:sass']);
 });
 
 gulp.task('build', ['js:bundle', 'css:sass'], function () {});
@@ -87,7 +101,8 @@ gulp.task('dev', ['build', 'watch'], function () {
         "nodeArgs": ['--debug'],
         "ignore": [
             "public/**/*.*",
-            "content/**/*.*",
+            "test/**/*.*",
+            "src/**/*.*",
             ".git",
             "gulpfile.js",
             "node_modules/**/node_modules"
@@ -99,3 +114,46 @@ gulp.task('dev', ['build', 'watch'], function () {
 
     });
 });
+
+// var browserSync = require('browser-sync');
+// var selenium = require('selenium-standalone');
+// var mocha = require('gulp-mocha');
+
+// gulp.task('serve:test', function (done) {
+//     browserSync({
+//         logLevel: 'silent',
+//         notify: false,
+//         open: false,
+//         port: 9000,
+//         server: {
+//             baseDir: ['test']
+//         },
+//         ui: false
+//     }, done);
+// });
+
+// gulp.task('selenium', function (done) {
+//     selenium.install({
+//         logger: function (message) {}
+//     }, function (err) {
+//         if (err) return done(err);
+
+//         selenium.start(function (err, child) {
+//             if (err) return done(err);
+//             selenium.child = child;
+//             done();
+//         });
+//     });
+// });
+
+// gulp.task('integration', ['serve:test', 'selenium'], function () {
+//     return gulp.src('test/*.js', {
+//             read: false
+//         })
+//         .pipe(mocha());
+// });
+
+// gulp.task('test', ['integration'], function () {
+//     selenium.child.kill();
+//     browserSync.exit();
+// });
