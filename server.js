@@ -24,7 +24,13 @@ var users = [
 ];
 
 app.get('/', function (req, res) {
-  res.render('users', {
+  res.render('index', {
+    data: null
+  });
+});
+
+app.get('/login', function (req, res) {
+  res.render('login', {
     data: null
   });
 });

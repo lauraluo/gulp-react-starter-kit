@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     clean = require('gulp-clean'),
     watch = require('gulp-watch'),
     plumber = require('gulp-plumber'),
+    rename = require('gulp-rename'),
     open = require('gulp-open');
 
 var sourcePath = "src/";
@@ -71,13 +72,19 @@ gulp.task('js:common', function () {
 // });
 
 gulp.task('js:components', function () {
-    gulp.src(['src/components/**/index.js'])
+    gulp.src(['src/components/*/index.js'])
         .pipe(plumber())
         .pipe(browserify({
             insertGlobals: false,
             transform: ['reactify'],
             extensions: ['.jsx'],
             debug: true
+        }))
+        .pipe(rename(function (path) {
+            var folderName = path.dirname;
+            path.basename = folderName;
+            path.dirname = "";
+            path.extname = ".js";
         }))
         .pipe(gulp.dest('./' + distPath + 'js/'))
         .pipe(livereload());
@@ -87,7 +94,7 @@ gulp.task('js:bundle', ['js:common', 'js:components'], function () {});
 
 gulp.task('watch', function () {
     livereload.listen();
-    gulp.watch(['src/main.js', 'src/js/**/*.*', 'src/components/**/*.jsx'], ['js:main'], function () {
+    gulp.watch(['src/components/*/index.js', 'src/components/**/*.jsx'], ['js:components'], function () {
         notify('Reloading main.js, please wait...')
     });
     gulp.watch(['src/scss/**/*.scss', '!src/scss/**/_*.scss'], ['css:sass']);
@@ -97,7 +104,6 @@ gulp.task('build', ['js:bundle', 'css:sass'], function () {});
 gulp.task('dev', ['build', 'watch'], function () {
     nodemon({
         "script": 'server.js',
-        "ext": 'js',
         "nodeArgs": ['--debug'],
         "ignore": [
             "public/**/*.*",
