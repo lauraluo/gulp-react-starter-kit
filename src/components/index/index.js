@@ -1,9 +1,9 @@
-var Login = require('./LoginComponent');
+var Index = require('./RootComponent');
 var Mock = require('./MockComponent');
 
 ReactDOM.render(
 	<Mock>
-		<Login/>
+		<Index/>
 	</Mock>,
-	document.getElementById('main')
-);
+	document.getElementById('index')
+)

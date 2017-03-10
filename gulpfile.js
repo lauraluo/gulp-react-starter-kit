@@ -78,7 +78,7 @@ gulp.task('js:components', function () {
             insertGlobals: false,
             transform: ['reactify'],
             extensions: ['.jsx'],
-            debug: true
+            debug: false
         }))
         .pipe(rename(function (path) {
             var folderName = path.dirname;
@@ -86,18 +86,46 @@ gulp.task('js:components', function () {
             path.dirname = "";
             path.extname = ".js";
         }))
-        .pipe(gulp.dest('./' + distPath + 'js/'))
-        .pipe(livereload());
+        .pipe(gulp.dest('./' + distPath + 'js/'));
+        // .pipe(livereload());
 });
+
+//https://fettblog.eu/gulp-browserify-multiple-bundles/
+
+// gulp.task('js:components', function(done) {
+//     glob('./src/components/*/index.js', function(err, files) {
+//         if(err) done(err);
+
+//         var tasks = files.map(function(entry) {
+//             return browserify({ entries: [entry] })
+//                 .bundle()
+//                 .pipe(source(entry))
+//                 .pipe(rename({
+//                     extname: '.bundle.js'
+//                 }))
+//                 .pipe(gulp.dest('./' + distPath + 'js/'));
+//             });
+//         es.merge(tasks).on('end', done);
+//     })
+// });
+
 
 gulp.task('js:bundle', ['js:common', 'js:components'], function () {});
 
 gulp.task('watch', function () {
     livereload.listen();
-    gulp.watch(['src/components/*/index.js', 'src/components/**/*.jsx'], ['js:components'], function () {
+    
+
+    gulp.watch(['src/components/**/*.*'], ['js:components'], function () {
         notify('Reloading main.js, please wait...')
     });
     gulp.watch(['src/scss/**/*.scss', '!src/scss/**/_*.scss'], ['css:sass']);
+
+    gulp.watch(['views/**/*.jade'],function () {
+        gulp.src('views/**/*.jade')
+            .pipe(livereload())
+            .pipe(notify('Reloading views, please wait...'));
+    });
 });
 
 gulp.task('build', ['js:bundle', 'css:sass'], function () {});
