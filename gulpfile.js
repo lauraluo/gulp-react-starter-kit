@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
-    browserify = require('gulp-browserify'),
+    gulpBrowserify = require('gulp-browserify'),
     sass = require('gulp-sass'),
     // connect = require('gulp-connect'),
     clean = require('gulp-clean'),
@@ -8,6 +8,14 @@ var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     rename = require('gulp-rename'),
     open = require('gulp-open');
+
+var browserify = require('browserify');
+var gutil = require('gulp-util');
+var tap = require('gulp-tap');
+var buffer = require('gulp-buffer');
+var sourcemaps = require('gulp-sourcemaps');
+var watchify = require('watchify');
+
 
 var sourcePath = "src/";
 var distPath = "public/";
@@ -49,7 +57,7 @@ gulp.task('css:sass', function () {
 gulp.task('js:common', function () {
     gulp.src('src/common.js')
         .pipe(plumber())
-        .pipe(browserify({
+        .pipe(gulpBrowserify({
             insertGlobals: true,
             transform: ['babelify', 'aliasify'],
             debug: true
@@ -58,27 +66,31 @@ gulp.task('js:common', function () {
         .pipe(livereload());
 });
 
-// gulp.task('js:main', function () {
-//     gulp.src(['src/main.js'])
-//         .pipe(plumber())
-//         .pipe(browserify({
-//             insertGlobals: false,
-//             transform: ['reactify'],
-//             extensions: ['.jsx'],
-//             debug: true
-//         }))
-//         .pipe(gulp.dest('./' + distPath + 'js/'))
-//         .pipe(livereload());
-// });
 
-gulp.task('js:components', function () {
-    gulp.src(['src/components/*/index.js'])
-        .pipe(plumber())
-        .pipe(browserify({
-            insertGlobals: false,
-            transform: ['reactify'],
-            extensions: ['.jsx'],
-            debug: false
+var browserifyConfig = {
+    debug: true,
+    cache: {},
+    packageCache: {},
+    transform: ['reactify'],
+    extensions: ['.jsx'],
+    plugin: [watchify]
+};
+
+
+var bundle = function () {
+    // no need of reading file because browserify does.
+    return gulp.src('src/components/*/index.js', {
+            read: false
+        })
+        // transform file objects using gulp-tap plugin
+        .pipe(tap(function (file) {
+            gutil.log('bundling ' + file.path);
+            // replace file contents with browserify's bundle stream
+            var b = browserify(file.path, browserifyConfig);
+            file.contents = b.bundle();
+            b.on('update', function (ids) {
+                console.log(ids);
+            });
         }))
         .pipe(rename(function (path) {
             var folderName = path.dirname;
@@ -86,42 +98,87 @@ gulp.task('js:components', function () {
             path.dirname = "";
             path.extname = ".js";
         }))
-        .pipe(gulp.dest('./' + distPath + 'js/'));
-        // .pipe(livereload());
+        .pipe(gulp.dest('public/js'))
+        .pipe(livereload());
+};
+
+var  gulpLoadPlugins = require('gulp-load-plugins');
+var  babelify = require('babelify');
+var  source = require('vinyl-source-stream');
+var  buffer = require('vinyl-buffer');
+var  assign = require('lodash').assign;
+
+let isWatchify = true;
+const $ = gulpLoadPlugins();
+
+const bundles = [
+  {
+    entries: ['./src/components/login/index.js'],
+    output: 'login.js',
+    extensions: ['.jsx'],
+    destination: './public/js'
+  }, {
+    entries: ['./src/components/index/index.js'],
+    output: 'index.js',
+    extensions: ['.jsx'],
+    destination: './public/js'
+  }
+];
+
+var createBundle = options => {
+    const opts = assign({}, watchify.args, {
+        entries: options.entries,
+        extensions: options.extensions,
+        transform: ['reactify','babelify'],        
+        debug: true
+    });
+
+    let b = browserify(opts);
+    b.transform(babelify.configure({
+        compact: false
+    }));
+
+    const rebundle = () =>
+        b.bundle()
+        // log errors if they happen
+        .on('error', $.util.log.bind($.util, 'Browserify Error'))
+        .pipe(source(options.output))
+        .pipe(buffer())
+        .pipe($.sourcemaps.init({
+            loadMaps: true
+        }))
+        .pipe($.uglify())
+        .pipe($.sourcemaps.write('../maps'))
+        .pipe(gulp.dest(options.destination));
+
+    if (isWatchify) {
+        b = watchify(b);
+        b.on('update', rebundle);
+        b.on('log', $.util.log);
+    }
+
+    return rebundle();
+};
+
+
+gulp.task('js:components', function () {
+    bundles.forEach(bundle =>
+        createBundle({
+            entries: bundle.entries,
+            output: bundle.output,
+            extensions: bundle.extensions,
+            destination: bundle.destination
+        }))
 });
-
-//https://fettblog.eu/gulp-browserify-multiple-bundles/
-
-// gulp.task('js:components', function(done) {
-//     glob('./src/components/*/index.js', function(err, files) {
-//         if(err) done(err);
-
-//         var tasks = files.map(function(entry) {
-//             return browserify({ entries: [entry] })
-//                 .bundle()
-//                 .pipe(source(entry))
-//                 .pipe(rename({
-//                     extname: '.bundle.js'
-//                 }))
-//                 .pipe(gulp.dest('./' + distPath + 'js/'));
-//             });
-//         es.merge(tasks).on('end', done);
-//     })
-// });
 
 
 gulp.task('js:bundle', ['js:common', 'js:components'], function () {});
 
 gulp.task('watch', function () {
     livereload.listen();
-    
-
-    gulp.watch(['src/components/**/*.*'], ['js:components'], function () {
-        notify('Reloading main.js, please wait...')
-    });
     gulp.watch(['src/scss/**/*.scss', '!src/scss/**/_*.scss'], ['css:sass']);
 
-    gulp.watch(['views/**/*.jade'],function () {
+    gulp.watch(['views/**/*.jade'], function () {
         gulp.src('views/**/*.jade')
             .pipe(livereload())
             .pipe(notify('Reloading views, please wait...'));
