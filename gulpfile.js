@@ -89,19 +89,6 @@ var path = require('path');
 
 let isWatchify = true;
 const $ = gulpLoadPlugins();
-
-// const bundles = [{
-//     entries: ['./src/components/login/index.js'],
-//     output: 'login.js',
-//     extensions: ['.jsx'],
-//     destination: './public/js'
-// }, {
-//     entries: ['./src/components/index/index.js'],
-//     output: 'index.js',
-//     extensions: ['.jsx'],
-//     destination: './public/js'
-// }];
-
 var createBundle = options => {
     const opts = assign({}, watchify.args, {
         entries: options.entries,
@@ -141,12 +128,9 @@ var createBundle = options => {
     return rebundle();
 };
 
-
 gulp.task('js:components', function () {
-    
     glob('./src/components/*/index.js', function (err, files) {
         if (err) done(err);
-
         files.forEach(function (entry) {
             var pathSplit = entry.split('/');
             var outputName = pathSplit.slice( pathSplit.length -2 ,pathSplit.length - 1 );
@@ -160,14 +144,6 @@ gulp.task('js:components', function () {
             
         });
     });
-
-    // bundles.forEach(bundle =>
-    //     createBundle({
-    //         entries: bundle.entries,
-    //         output: bundle.output,
-    //         extensions: bundle.extensions,
-    //         destination: bundle.destination
-    //     }))
 });
 
 gulp.task('js:bundle', ['js:common', 'js:components'], function () {});
