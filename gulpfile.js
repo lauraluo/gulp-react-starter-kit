@@ -77,59 +77,36 @@ var browserifyConfig = {
 };
 
 
-var bundle = function () {
-    // no need of reading file because browserify does.
-    return gulp.src('src/components/*/index.js', {
-            read: false
-        })
-        // transform file objects using gulp-tap plugin
-        .pipe(tap(function (file) {
-            gutil.log('bundling ' + file.path);
-            // replace file contents with browserify's bundle stream
-            var b = browserify(file.path, browserifyConfig);
-            file.contents = b.bundle();
-            b.on('update', function (ids) {
-                console.log(ids);
-            });
-        }))
-        .pipe(rename(function (path) {
-            var folderName = path.dirname;
-            path.basename = folderName;
-            path.dirname = "";
-            path.extname = ".js";
-        }))
-        .pipe(gulp.dest('public/js'))
-        .pipe(livereload());
-};
-
-var  gulpLoadPlugins = require('gulp-load-plugins');
-var  babelify = require('babelify');
-var  source = require('vinyl-source-stream');
-var  buffer = require('vinyl-buffer');
-var  assign = require('lodash').assign;
+//https://gist.github.com/ramasilveyra/b4309edf809e55121385
+var gulpLoadPlugins = require('gulp-load-plugins');
+var babelify = require('babelify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var assign = require('lodash').assign;
+var glob = require('glob');
+var es = require('event-stream');
+var path = require('path');
 
 let isWatchify = true;
 const $ = gulpLoadPlugins();
 
-const bundles = [
-  {
-    entries: ['./src/components/login/index.js'],
-    output: 'login.js',
-    extensions: ['.jsx'],
-    destination: './public/js'
-  }, {
-    entries: ['./src/components/index/index.js'],
-    output: 'index.js',
-    extensions: ['.jsx'],
-    destination: './public/js'
-  }
-];
+// const bundles = [{
+//     entries: ['./src/components/login/index.js'],
+//     output: 'login.js',
+//     extensions: ['.jsx'],
+//     destination: './public/js'
+// }, {
+//     entries: ['./src/components/index/index.js'],
+//     output: 'index.js',
+//     extensions: ['.jsx'],
+//     destination: './public/js'
+// }];
 
 var createBundle = options => {
     const opts = assign({}, watchify.args, {
         entries: options.entries,
         extensions: options.extensions,
-        transform: ['reactify','babelify'],        
+        transform: ['reactify', 'babelify'],
         debug: true
     });
 
@@ -144,12 +121,16 @@ var createBundle = options => {
         .on('error', $.util.log.bind($.util, 'Browserify Error'))
         .pipe(source(options.output))
         .pipe(buffer())
+        .pipe(rename(function (path) {
+            path.extname = ".bundle.js";
+        }))
         .pipe($.sourcemaps.init({
             loadMaps: true
         }))
-        .pipe($.uglify())
+        // .pipe($.uglify())
         .pipe($.sourcemaps.write('../maps'))
-        .pipe(gulp.dest(options.destination));
+        .pipe(gulp.dest(options.destination))
+        .pipe(livereload());
 
     if (isWatchify) {
         b = watchify(b);
@@ -162,15 +143,32 @@ var createBundle = options => {
 
 
 gulp.task('js:components', function () {
-    bundles.forEach(bundle =>
-        createBundle({
-            entries: bundle.entries,
-            output: bundle.output,
-            extensions: bundle.extensions,
-            destination: bundle.destination
-        }))
-});
+    
+    glob('./src/components/*/index.js', function (err, files) {
+        if (err) done(err);
 
+        files.forEach(function (entry) {
+            var pathSplit = entry.split('/');
+            var outputName = pathSplit.slice( pathSplit.length -2 ,pathSplit.length - 1 );
+            console.log(outputName);
+            createBundle({
+                entries: [entry],
+                output: outputName[0],
+                extensions: ['.jsx'],
+                destination: './public/js'
+            });
+            
+        });
+    });
+
+    // bundles.forEach(bundle =>
+    //     createBundle({
+    //         entries: bundle.entries,
+    //         output: bundle.output,
+    //         extensions: bundle.extensions,
+    //         destination: bundle.destination
+    //     }))
+});
 
 gulp.task('js:bundle', ['js:common', 'js:components'], function () {});
 

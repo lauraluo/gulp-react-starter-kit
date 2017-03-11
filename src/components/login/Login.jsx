@@ -30,7 +30,8 @@ var MyComponent = React.createClass({
 		}
 	},
 	render: function () {
-		return <div>login MyComponent 325599999999995</div>
+		console.log("aaa");
+		return <div>login MyComponent 333</div>
 	}
 });
 
