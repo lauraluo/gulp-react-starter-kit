@@ -1,13 +1,17 @@
 
 extends ../layout
 
-block headScripts
-
-block styles
+//- block headScripts
+	//在head引用腳本
+//- block styles
+	//在head引用樣式
 
 block content
-	h1  前測試案例試範
+	h1  前端BDD測試案例：以登入畫面為例子
 	div.login#login
+		div.row
+			div.col-md-6.col-offset-md-3
 
 block scripts
+	//在body結尾引用腳本
 	script(src="js/login.bundle.js")

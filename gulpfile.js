@@ -99,7 +99,8 @@ var createBundle = options => {
 
     let b = browserify(opts);
     b.transform(babelify.configure({
-        compact: false
+        compact: false,
+        presets: ["es2015"]
     }));
 
     const rebundle = () =>
@@ -134,7 +135,6 @@ gulp.task('js:components', function () {
         files.forEach(function (entry) {
             var pathSplit = entry.split('/');
             var outputName = pathSplit.slice( pathSplit.length -2 ,pathSplit.length - 1 );
-            console.log(outputName);
             createBundle({
                 entries: [entry],
                 output: outputName[0],
@@ -155,12 +155,13 @@ gulp.task('watch', function () {
     gulp.watch(['views/**/*.jade'], function () {
         gulp.src('views/**/*.jade')
             .pipe(livereload())
-            .pipe(notify('Reloading views, please wait...'));
+            .pipe(notify('Reloading views'));
     });
 });
 
 gulp.task('build', ['js:bundle', 'css:sass'], function () {});
 gulp.task('dev', ['build', 'watch'], function () {
+    
     nodemon({
         "script": 'server.js',
         "nodeArgs": ['--debug'],

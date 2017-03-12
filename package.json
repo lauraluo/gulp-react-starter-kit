@@ -10,6 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "aliasify": "^2.1.0",
+    "babel-cli": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
     "babelify": "^7.3.0",
     "browser-sync": "^2.18.8",
     "browserify": "^14.1.0",
@@ -39,6 +41,7 @@
     "gulp-watch": "^4.3.11",
     "lodash": "^4.17.4",
     "mockjs": "^1.0.1-beta3",
+    "react-addons-update": "^15.4.2",
     "reactify": "^1.1.1",
     "selenium-standalone": "^6.0.1",
     "sinon": "^1.17.5",
@@ -58,6 +61,7 @@
     "jquery": "^3.1.1",
     "nodemon": "^1.11.0",
     "react": "^15.4.2",
+    "react-addons-linked-state-mixin": "^15.4.2",
     "react-dom": "^15.4.2",
     "reflux": "^6.4.1"
   }

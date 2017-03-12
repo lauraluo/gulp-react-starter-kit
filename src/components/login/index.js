@@ -1,5 +1,6 @@
-var Login = require('./Login');
+var Login = require('./RootComponent');
 var Mock = require('./MockComponent');
+
 
 ReactDOM.render(
 	<Mock>
