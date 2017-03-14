@@ -1,6 +1,13 @@
-window.React = require("react");
-window.ReactDOM = require("react-dom");
-window.Reflux = require("reflux");
-window.$ = require("jquery");
-window.Mock = require("mockjs");
-window._ = require('lodash');
+import React from "react"
+import ReactDOM from "react-dom"
+import Reflux from "reflux"
+import $ from "jquery"
+import Mock from "mockjs"
+import _ from "lodash"
+
+window.React = React;
+window.ReactDOM = ReactDOM;
+window.Reflux = Reflux;
+window.$ = $;
+window.Mock = Mock;
+window._ = _;

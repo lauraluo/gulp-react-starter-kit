@@ -54,17 +54,17 @@ gulp.task('css:sass', function () {
         .pipe(livereload());
 });
 
-gulp.task('js:common', function () {
-    gulp.src('src/common.js')
-        .pipe(plumber())
-        .pipe(gulpBrowserify({
-            insertGlobals: true,
-            transform: ['babelify', 'aliasify'],
-            debug: true
-        }))
-        .pipe(gulp.dest('./' + distPath + 'js/'))
-        .pipe(livereload());
-});
+// gulp.task('js:common', function () {
+//     gulp.src('src/common.js')
+//         .pipe(plumber())
+//         .pipe(gulpBrowserify({
+//             insertGlobals: true,
+//             transform: ['babelify', 'aliasify'],
+//             debug: true
+//         }))
+//         .pipe(gulp.dest('./' + distPath + 'js/'))
+//         .pipe(livereload());
+// });
 
 
 var browserifyConfig = {
@@ -86,6 +86,7 @@ var assign = require('lodash').assign;
 var glob = require('glob');
 var es = require('event-stream');
 var path = require('path');
+var reactify = require('reactify');
 
 let isWatchify = true;
 const $ = gulpLoadPlugins();
@@ -93,18 +94,15 @@ var createBundle = options => {
     const opts = assign({}, watchify.args, {
         entries: options.entries,
         extensions: options.extensions,
-        transform: ['reactify', 'babelify'],
         debug: true
     });
 
     let b = browserify(opts);
-    b.transform(babelify.configure({
-        compact: false,
-        presets: ["es2015"]
-    }));
 
     const rebundle = () =>
-        b.bundle()
+        b
+        .transform("babelify", {presets: ["es2015", "react"]})
+        .bundle()
         // log errors if they happen
         .on('error', $.util.log.bind($.util, 'Browserify Error'))
         .pipe(source(options.output))
@@ -116,7 +114,7 @@ var createBundle = options => {
             loadMaps: true
         }))
         // .pipe($.uglify())
-        .pipe($.sourcemaps.write('../maps'))
+        .pipe($.sourcemaps.write('../js/maps'))
         .pipe(gulp.dest(options.destination))
         .pipe(livereload());
 
@@ -129,24 +127,29 @@ var createBundle = options => {
     return rebundle();
 };
 
-gulp.task('js:components', function () {
-    glob('./src/components/*/index.js', function (err, files) {
+gulp.task('js:bundle', function () {
+    glob('./src/*.js', function (err, files) {
+
         if (err) done(err);
+        // console.log(files);
+
         files.forEach(function (entry) {
             var pathSplit = entry.split('/');
-            var outputName = pathSplit.slice( pathSplit.length -2 ,pathSplit.length - 1 );
+            var outputName = path.basename(entry)
+
+            // var outputName = pathSplit.slice( pathSplit.length -2 ,pathSplit.length - 1 );
             createBundle({
                 entries: [entry],
-                output: outputName[0],
+                output: outputName,
                 extensions: ['.jsx'],
                 destination: './public/js'
             });
-            
+
         });
     });
 });
 
-gulp.task('js:bundle', ['js:common', 'js:components'], function () {});
+// gulp.task('js:bundle', ['js:bundle', 'js:components'], function () {});
 
 gulp.task('watch', function () {
     livereload.listen();
@@ -161,7 +164,7 @@ gulp.task('watch', function () {
 
 gulp.task('build', ['js:bundle', 'css:sass'], function () {});
 gulp.task('dev', ['build', 'watch'], function () {
-    
+
     nodemon({
         "script": 'server.js',
         "nodeArgs": ['--debug'],

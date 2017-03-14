@@ -35,6 +35,12 @@ app.get('/login', function (req, res) {
   });
 });
 
+app.get('/todo', function (req, res) {
+  res.render('todo', {
+    data: null
+  });
+});
+
 app.use(function (err, req, res, next) {
   res.send(err.stack);
 });

@@ -1,5 +1,6 @@
 
- 
+ import React from 'react'
+
 var MockComponent = React.createClass({
 	getInitialState: function(){
     	return {
@@ -41,7 +42,7 @@ var MockComponent = React.createClass({
 	}
 });
 
-module.exports = MockComponent;
+export default MockComponent;
 
 
 

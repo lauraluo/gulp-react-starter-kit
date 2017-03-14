@@ -1,4 +1,5 @@
- 
+ import React from 'react'
+
 var MyComponent = React.createClass({
 	propTypes: {
 		initData: React.PropTypes.array
@@ -20,4 +21,4 @@ var MyComponent = React.createClass({
 	}
 });
 
-module.exports = MyComponent;
+export default MyComponent;

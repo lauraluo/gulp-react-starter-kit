@@ -490,7 +490,14 @@ module.exports = update;
 },{"./reactProdInvariant":5,"_process":3,"fbjs/lib/invariant":1,"object-assign":2}],7:[function(require,module,exports){
 'use strict';
 
-var MockComponent = React.createClass({ displayName: "MockComponent",
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+
+var MockComponent = React.createClass({
+	displayName: 'MockComponent',
+
 	getInitialState: function getInitialState() {
 		return {
 			initData: {}
@@ -526,41 +533,79 @@ var MockComponent = React.createClass({ displayName: "MockComponent",
 			});
 		});
 
-		return React.createElement("div", null, childrenWithProps);
+		return React.createElement(
+			'div',
+			null,
+			childrenWithProps
+		);
 	}
 });
 
-module.exports = MockComponent;
+exports.default = MockComponent;
 
 },{}],8:[function(require,module,exports){
-"use strict";
+'use strict';
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
-var update = require('react-addons-update');
+var _reactAddonsUpdate = require('react-addons-update');
 
-var MyComponent = React.createClass({ displayName: "MyComponent",
+var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MyComponent = React.createClass({
+	displayName: 'MyComponent',
+
 	propTypes: {
 		// initData: React.PropTypes.array
 	},
 	getInitialState: function getInitialState() {
 		return {
-			validation: _defineProperty({
+			validation: {
 				result: true,
 				errorMsg: null,
-				account: {
+				childs: [{
+					key: "account",
+					rules: ['/^([\w-_]+(?:\.[\w-_]+)*)@((?:[a-z0-9]+(?:-[a-zA-Z0-9]+)*)+\.[a-z]{2,6})$/i'],
 					result: true,
 					errorMsg: null
-				}
-			}, "account", {
-				result: true,
-				errorMsg: null
-			}),
+				}, {
+					key: "password",
+					rules: ['\S{6,}'],
+					result: true,
+					errorMsg: null
+				}]
+
+			},
 			form: {
 				account: "",
 				password: ""
 			}
 		};
+	},
+	_validation: function _validation() {
+		// var _this = this;
+		// var mapResult = false;
+		// var validationChild = _this.state.validation.child;
+		// var fomrData = _this.form;
+
+		// var testRule = function(rules,item){
+		// 	var results = rules.map(function(ruleString,index){
+		// 		var re = new RegExp(ruleString);
+		// 		return re.test(item);
+		// 	});
+
+		// 	return results.indexOf(false) == -1;
+		// };
+
+		// validationChild.forEach((item,key) => {
+		// 	var result = testRule(item.rule,formData[key]);
+
+
+		// });
 	},
 	_handleChange: function _handleChange(e) {
 		var nodes = e.target.dataset.rel.split('.');
@@ -582,7 +627,7 @@ var MyComponent = React.createClass({ displayName: "MyComponent",
 		phaserObject = JSON.parse(phaserJsonString);
 
 		this.setState({
-			form: update(_this.state.form, {
+			form: (0, _reactAddonsUpdate2.default)(_this.state.form, {
 				$merge: phaserObject.form
 			})
 		});
@@ -591,28 +636,85 @@ var MyComponent = React.createClass({ displayName: "MyComponent",
 	render: function render() {
 		var _this = this;
 
-		return React.createElement("form", null, React.createElement("div", { className: "form-group  has-error" }, React.createElement("label", { htmlFor: "exampleInputEmail1" }, "Email address"), React.createElement("input", {
-			className: "form-control",
-			name: "account",
-			"data-rel": "form.account",
-			value: this.state.form.account,
-			onChange: this._handleChange,
-			type: "email",
-			id: "exampleInputEmail1",
-			placeholder: "Email" }), React.createElement("div", { className: "help-block" }, "請輸入正確的帳號")), React.createElement("div", { className: "form-group" }, React.createElement("label", { htmlFor: "exampleInputPassword1" }, "Password"), React.createElement("input", { type: "password", className: "form-control", id: "exampleInputPassword1", placeholder: "Password" }), React.createElement("div", { className: "help-block" }, "請輸入正確的密碼")), React.createElement("button", { type: "submit", className: "btn btn-default" }, "Submit"));
+		return React.createElement(
+			'form',
+			null,
+			React.createElement(
+				'div',
+				{ className: 'form-group  has-error' },
+				React.createElement(
+					'label',
+					{ htmlFor: 'exampleInputEmail1' },
+					'Account'
+				),
+				React.createElement('input', {
+					className: 'form-control',
+					name: 'account',
+					'data-rel': 'form.account',
+					value: this.state.form.account,
+					onChange: this._handleChange,
+					type: 'email',
+					id: 'exampleInputEmail1',
+					placeholder: 'Email' }),
+				React.createElement(
+					'div',
+					{ className: 'help-block' },
+					'\u8ACB\u8F38\u5165\u6B63\u78BA\u7684\u5E33\u865F\u683C\u5F0F\uFF1Aname@abc.com'
+				)
+			),
+			React.createElement(
+				'div',
+				{ className: 'form-group' },
+				React.createElement(
+					'label',
+					{ htmlFor: 'exampleInputPassword1' },
+					'Password'
+				),
+				React.createElement('input', {
+					className: 'form-control',
+					name: 'password',
+					'data-rel': 'form.password',
+					value: this.state.form.password,
+					onChange: this._handleChange,
+					type: 'password',
+					id: 'exampleInputPassword1',
+					placeholder: 'Password' }),
+				React.createElement(
+					'div',
+					{ className: 'help-block' },
+					'\u8ACB\u8F38\u5165\u6B63\u78BA\u7684\u5BC6\u78BC\u683C\u5F0F\uFF1A\u9577\u5EA6\u81F3\u5C11\u5927\u65BC\u516D'
+				)
+			),
+			React.createElement(
+				'button',
+				{ type: 'submit', className: 'btn btn-default' },
+				'Submit'
+			)
+		);
 	}
 });
 
-module.exports = MyComponent;
+exports.default = MyComponent;
 
 },{"react-addons-update":4}],9:[function(require,module,exports){
 'use strict';
 
-var Login = require('./RootComponent');
-var Mock = require('./MockComponent');
+var _RootComponent = require('./components/login/RootComponent');
 
-ReactDOM.render(React.createElement(Mock, null, React.createElement(Login, null)), document.getElementById('login'));
+var _RootComponent2 = _interopRequireDefault(_RootComponent);
 
-},{"./MockComponent":7,"./RootComponent":8}]},{},[9])
+var _MockComponent = require('./components/login/MockComponent');
 
-//# sourceMappingURL=../maps/login.bundle.js.map
+var _MockComponent2 = _interopRequireDefault(_MockComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+ReactDOM.render(React.createElement(
+	_MockComponent2.default,
+	null,
+	React.createElement(_RootComponent2.default, null)
+), document.getElementById('login'));
+
+},{"./components/login/MockComponent":7,"./components/login/RootComponent":8}]},{},[9])
+
+//# sourceMappingURL=../js/maps/login.bundle.js.map

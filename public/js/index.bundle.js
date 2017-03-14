@@ -1,7 +1,14 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var MockComponent = React.createClass({ displayName: "MockComponent",
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+
+var MockComponent = React.createClass({
+	displayName: 'MockComponent',
+
 	getInitialState: function getInitialState() {
 		return {
 			initData: {}
@@ -37,16 +44,26 @@ var MockComponent = React.createClass({ displayName: "MockComponent",
 			});
 		});
 
-		return React.createElement("div", null, childrenWithProps);
+		return React.createElement(
+			'div',
+			null,
+			childrenWithProps
+		);
 	}
 });
 
-module.exports = MockComponent;
+exports.default = MockComponent;
 
 },{}],2:[function(require,module,exports){
 "use strict";
 
-var MyComponent = React.createClass({ displayName: "MyComponent",
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var MyComponent = React.createClass({
+	displayName: "MyComponent",
+
 	propTypes: {
 		initData: React.PropTypes.array
 	},
@@ -56,24 +73,53 @@ var MyComponent = React.createClass({ displayName: "MyComponent",
 
 		if (_this.props.initData && _this.props.initData.list) {
 			listItems = _this.props.initData.list.map(function (item, i) {
-				return React.createElement("li", { key: i }, React.createElement("span", null, item.id), React.createElement("span", null, item.email));
+				return React.createElement(
+					"li",
+					{ key: i },
+					React.createElement(
+						"span",
+						null,
+						item.id
+					),
+					React.createElement(
+						"span",
+						null,
+						item.email
+					)
+				);
 			});
 		}
 
-		return React.createElement("ul", null, listItems, " lalaluo1");
+		return React.createElement(
+			"ul",
+			null,
+			listItems,
+			" lalaluo1"
+		);
 	}
 });
 
-module.exports = MyComponent;
+exports.default = MyComponent;
 
 },{}],3:[function(require,module,exports){
 'use strict';
 
-var Index = require('./RootComponent');
-var Mock = require('./MockComponent');
+var _RootComponent = require('./components/index/RootComponent');
 
-ReactDOM.render(React.createElement(Mock, null, React.createElement(Index, null)), document.getElementById('index'));
+var _RootComponent2 = _interopRequireDefault(_RootComponent);
 
-},{"./MockComponent":1,"./RootComponent":2}]},{},[3])
+var _MockComponent = require('./components/index/MockComponent');
 
-//# sourceMappingURL=../maps/index.bundle.js.map
+var _MockComponent2 = _interopRequireDefault(_MockComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+ReactDOM.render(React.createElement(
+	_MockComponent2.default,
+	null,
+	React.createElement(_RootComponent2.default, null)
+), document.getElementById('index'));
+
+},{"./components/index/MockComponent":1,"./components/index/RootComponent":2}]},{},[3])
+
+//# sourceMappingURL=../js/maps/index.bundle.js.map
