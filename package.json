@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js | gulp dev",
-    "test": "mocha --compilers js:babel-register 'src/**/*.spec.js*'"
+    "test": "mocha --compilers js:babel-register test/helpers/common.js 'src/**/todoapp.spec.jsx'"
   },
   "author": "laura.luo",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "browserify": "^14.1.0",
     "chai": "^3.5.0",
     "chai-enzyme": "^0.6.1",
+    "chai-jsx": "^1.0.1",
     "enzyme": "^2.7.1",
     "event-stream": "^3.3.4",
     "glob": "^7.1.1",

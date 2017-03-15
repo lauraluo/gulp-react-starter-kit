@@ -11,3 +11,6 @@ window.Reflux = Reflux;
 window.$ = $;
 window.Mock = Mock;
 window._ = _;
+
+
+window.test = "lalal";
