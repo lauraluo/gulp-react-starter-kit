@@ -58564,6 +58564,7 @@ module.exports = function(listenables){
 };
 
 },{"reflux-core/lib/ListenerMethods":184}],202:[function(require,module,exports){
+(function (global){
 "use strict";
 
 var _react = require("react");
@@ -58590,14 +58591,18 @@ var _lodash = require("lodash");
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
-window.React = _react2.default;
-window.ReactDOM = _reactDom2.default;
-window.Reflux = _reflux2.default;
-window.$ = _jquery2.default;
-window.Mock = _mockjs2.default;
-window._ = _lodash2.default;
+global.React = _react2.default;
+global.ReactDOM = _reactDom2.default;
+global.Reflux = _reflux2.default;
+global.$ = _jquery2.default;
+global.Mock = _mockjs2.default;
+global._ = _lodash2.default;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"jquery":25,"lodash":26,"mockjs":27,"react":181,"react-dom":30,"reflux":199}]},{},[202])
 

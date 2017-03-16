@@ -1,53 +1,49 @@
-import {
-    expect
-} from 'chai'
-import {
-    shallow,
-    mount
-} from 'enzyme'
 import jsdom from 'jsdom'
 import path from 'path'
 import fs from 'fs'
 
-var commonScript = fs.readFileSync("./public/js/common.bundle.js", "utf-8");
-var virtualConsole = jsdom.createVirtualConsole();
+import chai from 'chai'
+import chaiEnzyme from 'chai-enzyme'
+chai.use(chaiEnzyme())
+import sinonChai from 'sinon-chai'
+chai.use(sinonChai)
 
-// jsdom.env({
-//     html: '<!doctype html><html><body><span class="test">this is test body</span></body></html>',
-//     scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
-//     virtualConsole: virtualConsole,
-//     done: function (err, window) {
-//         // console.log("body的內容:", window.$(".test").length);
-//         if(err) {
-//             console.log(err);
-//         }
-//         console.log("lalalalalala");
-//         console.log(window.test);
-//         console.log(typeof window.$);
-//     }
-// });
+//configure
+var virtualConsole = jsdom.createVirtualConsole()
+var commonjs = fs.readFileSync("./src/common.js", "utf-8").toString();
+var exposedProperties = ['window', 'navigator', 'document']
 
-global.document = jsdom.jsdom({
-    html: '<!doctype html><html><body><span class="test">this is test body</span></body></html>',
+jsdom.env({
+    html: '<!doctype html><head><script>' + commonjs + '</script></head><html><body><span class="test">this is test body</span></body></html>',
     virtualConsole: virtualConsole,
-    done: function (err, window) {
-
+    features: {
+        FetchExternalResources: ["link", "script"]
+    },
+    created: function (error, window) {
+        console.log('document created');
+        console.log("log typeof jquery: " + typeof window.$);
+    },
+    onload: function (window) {
+        console.log('document onload');
+        console.log("log typeof jquery: " + typeof window.$);
+    },
+    done: function (error, window) {
+        console.log('document done');
+        console.log("log typeof jquery: " + typeof window.$);
+        console.log("log test: " + window.test);
     }
 });
-global.window = document.defaultView;
 
-global.window.onModulesLoaded = function () {
-    console.log("ready to roll!");
-    // console.log("body的內容:", window.$(".test").length);
-    if (err) {
-        console.log(err);
+//init
+global.document = jsdom.jsdom();
+global.window = document.defaultView
+Object.keys(document.defaultView).forEach((property) => {
+    if (typeof global[property] === 'undefined') {
+        exposedProperties.push(property)
+        global[property] = document.defaultView[property]
     }
-    console.log("lalalalalala");
-    console.log(window.test);
-    console.log(typeof window.$);
-};
+})
 
-window.addEventListener("error", function (event) {
-  console.error("script error!!", event.error);
-});
-global.navigator = global.window.navigator;
+global.navigator = {
+    userAgent: 'node.js'
+}

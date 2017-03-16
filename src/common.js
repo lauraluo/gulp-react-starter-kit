@@ -5,12 +5,9 @@ import $ from "jquery"
 import Mock from "mockjs"
 import _ from "lodash"
 
-window.React = React;
-window.ReactDOM = ReactDOM;
-window.Reflux = Reflux;
-window.$ = $;
-window.Mock = Mock;
-window._ = _;
-
-
-window.test = "lalal";
+global.React = React;
+global.ReactDOM = ReactDOM;
+global.Reflux = Reflux;
+global.$ = $;
+global.Mock = Mock;
+global._ = _;

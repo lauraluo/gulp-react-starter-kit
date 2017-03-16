@@ -91,17 +91,36 @@ var reactify = require('reactify');
 let isWatchify = true;
 const $ = gulpLoadPlugins();
 var createBundle = options => {
-    const opts = assign({}, watchify.args, {
-        entries: options.entries,
-        extensions: options.extensions,
-        debug: true
-    });
 
-    let b = browserify(opts);
+    if (options.output != "common.js") {
+        const opts = assign({}, watchify.args, {
+            entries: options.entries,
+            extensions: options.extensions,
+            bundleExternal: true,
+            debug: true
+        });
 
+        let b = browserify(opts);
+
+        b.external('react');
+    } else {
+        const opts = assign({}, watchify.args, {
+            entries: options.entries,
+            extensions: options.extensions,
+            bundleExternal: true,
+            debug: true
+        });
+
+        let b = browserify(opts);
+        b.external('react');
+        
+
+    }
     const rebundle = () =>
         b
-        .transform("babelify", {presets: ["es2015", "react"]})
+        .transform("babelify", {
+            presets: ["es2015", "react"]
+        })
         .bundle()
         // log errors if they happen
         .on('error', $.util.log.bind($.util, 'Browserify Error'))
@@ -131,7 +150,7 @@ gulp.task('js:bundle', function () {
     glob('./src/*.js', function (err, files) {
 
         if (err) done(err);
-        // console.log(files);
+        console.log(files);
 
         files.forEach(function (entry) {
             var pathSplit = entry.split('/');
