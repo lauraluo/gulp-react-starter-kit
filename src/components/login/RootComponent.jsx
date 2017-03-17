@@ -1,5 +1,7 @@
-import update from 'react-addons-update';
+import update from 'react-addons-update'
 import React from 'react'
+import _ from 'lodash'
+
 
 var MyComponent = React.createClass({
 	propTypes: {

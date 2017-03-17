@@ -488,20 +488,30 @@ module.exports = update;
 }).call(this,require('_process'))
 
 },{"./reactProdInvariant":5,"_process":3,"fbjs/lib/invariant":1,"object-assign":2}],7:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _mockjs = require("mockjs");
+
+var _mockjs2 = _interopRequireDefault(_mockjs);
+
+var _jquery = require("jquery");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) {
+	return obj && obj.__esModule ? obj : { default: obj };
+}
 
 var MockComponent = _react2.default.createClass({
-	displayName: 'MockComponent',
+	displayName: "MockComponent",
 
 	getInitialState: function getInitialState() {
 		return {
@@ -510,18 +520,18 @@ var MockComponent = _react2.default.createClass({
 	},
 	componentWillMount: function componentWillMount() {
 		var _this = this;
-		Mock.setup({
+		_mockjs2.default.setup({
 			timeout: '200-600'
 		});
 
-		Mock.mock(/\.json/, {
+		_mockjs2.default.mock(/\.json/, {
 			'list|1-10': [{
 				'id|+1': 1,
 				'email': '@EMAIL'
 			}]
 		});
 
-		$.ajax({
+		_jquery2.default.ajax({
 			url: 'hello.json',
 			dataType: 'json'
 		}).done(function (data, status, jqXHR) {
@@ -538,17 +548,13 @@ var MockComponent = _react2.default.createClass({
 			});
 		});
 
-		return _react2.default.createElement(
-			'div',
-			null,
-			childrenWithProps
-		);
+		return _react2.default.createElement("div", null, childrenWithProps);
 	}
 });
 
 exports.default = MockComponent;
 
-},{"react":"react"}],8:[function(require,module,exports){
+},{"jquery":"jquery","mockjs":"mockjs","react":"react"}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -563,7 +569,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) {
+	return obj && obj.__esModule ? obj : { default: obj };
+}
 
 var MyComponent = _react2.default.createClass({
 	displayName: 'MyComponent',
@@ -623,7 +635,7 @@ var MyComponent = _react2.default.createClass({
 		var _this = this;
 
 		nodes.forEach(function (item, index) {
-			var compiled = _.template(phaserJsonString);
+			var compiled = _lodash2.default.template(phaserJsonString);
 			if (index == nodes.length - 1) {
 				var subPhaserString = '"' + item + '"' + ':' + '"' + e.target.value + '"';
 				phaserJsonString = compiled({ 'sub': subPhaserString });
@@ -645,67 +657,29 @@ var MyComponent = _react2.default.createClass({
 	render: function render() {
 		var _this = this;
 
-		return _react2.default.createElement(
-			'form',
-			null,
-			_react2.default.createElement(
-				'div',
-				{ className: 'form-group  has-error' },
-				_react2.default.createElement(
-					'label',
-					{ htmlFor: 'exampleInputEmail1' },
-					'Account'
-				),
-				_react2.default.createElement('input', {
-					className: 'form-control',
-					name: 'account',
-					'data-rel': 'form.account',
-					value: this.state.form.account,
-					onChange: this._handleChange,
-					type: 'email',
-					id: 'exampleInputEmail1',
-					placeholder: 'Email' }),
-				_react2.default.createElement(
-					'div',
-					{ className: 'help-block' },
-					'\u8ACB\u8F38\u5165\u6B63\u78BA\u7684\u5E33\u865F\u683C\u5F0F\uFF1Aname@abc.com'
-				)
-			),
-			_react2.default.createElement(
-				'div',
-				{ className: 'form-group' },
-				_react2.default.createElement(
-					'label',
-					{ htmlFor: 'exampleInputPassword1' },
-					'Password'
-				),
-				_react2.default.createElement('input', {
-					className: 'form-control',
-					name: 'password',
-					'data-rel': 'form.password',
-					value: this.state.form.password,
-					onChange: this._handleChange,
-					type: 'password',
-					id: 'exampleInputPassword1',
-					placeholder: 'Password' }),
-				_react2.default.createElement(
-					'div',
-					{ className: 'help-block' },
-					'\u8ACB\u8F38\u5165\u6B63\u78BA\u7684\u5BC6\u78BC\u683C\u5F0F\uFF1A\u9577\u5EA6\u81F3\u5C11\u5927\u65BC\u516D'
-				)
-			),
-			_react2.default.createElement(
-				'button',
-				{ type: 'submit', className: 'btn btn-default' },
-				'Submit'
-			)
-		);
+		return _react2.default.createElement('form', null, _react2.default.createElement('div', { className: 'form-group  has-error' }, _react2.default.createElement('label', { htmlFor: 'exampleInputEmail1' }, 'Account'), _react2.default.createElement('input', {
+			className: 'form-control',
+			name: 'account',
+			'data-rel': 'form.account',
+			value: this.state.form.account,
+			onChange: this._handleChange,
+			type: 'email',
+			id: 'exampleInputEmail1',
+			placeholder: 'Email' }), _react2.default.createElement('div', { className: 'help-block' }, '\u8ACB\u8F38\u5165\u6B63\u78BA\u7684\u5E33\u865F\u683C\u5F0F\uFF1Aname@abc.com')), _react2.default.createElement('div', { className: 'form-group' }, _react2.default.createElement('label', { htmlFor: 'exampleInputPassword1' }, 'Password'), _react2.default.createElement('input', {
+			className: 'form-control',
+			name: 'password',
+			'data-rel': 'form.password',
+			value: this.state.form.password,
+			onChange: this._handleChange,
+			type: 'password',
+			id: 'exampleInputPassword1',
+			placeholder: 'Password' }), _react2.default.createElement('div', { className: 'help-block' }, '\u8ACB\u8F38\u5165\u6B63\u78BA\u7684\u5BC6\u78BC\u683C\u5F0F\uFF1A\u9577\u5EA6\u81F3\u5C11\u5927\u65BC\u516D')), _react2.default.createElement('button', { type: 'submit', className: 'btn btn-default' }, 'Submit'));
 	}
 });
 
 exports.default = MyComponent;
 
-},{"react":"react","react-addons-update":4}],9:[function(require,module,exports){
+},{"lodash":"lodash","react":"react","react-addons-update":4}],9:[function(require,module,exports){
 'use strict';
 
 var _RootComponent = require('./components/login/RootComponent');
@@ -716,14 +690,22 @@ var _MockComponent = require('./components/login/MockComponent');
 
 var _MockComponent2 = _interopRequireDefault(_MockComponent);
 
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-ReactDOM.render(React.createElement(
+_reactDom2.default.render(_react2.default.createElement(
 	_MockComponent2.default,
 	null,
-	React.createElement(_RootComponent2.default, null)
+	_react2.default.createElement(_RootComponent2.default, null)
 ), document.getElementById('login'));
 
-},{"./components/login/MockComponent":7,"./components/login/RootComponent":8}]},{},[9])
+},{"./components/login/MockComponent":7,"./components/login/RootComponent":8,"react":"react","react-dom":"react-dom"}]},{},[9])
 
 //# sourceMappingURL=../js/maps/login.bundle.js.map

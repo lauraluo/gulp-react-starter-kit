@@ -91,31 +91,38 @@ var reactify = require('reactify');
 let isWatchify = true;
 const $ = gulpLoadPlugins();
 var createBundle = options => {
-
+    
     if (options.output != "common.js") {
         const opts = assign({}, watchify.args, {
             entries: options.entries,
             extensions: options.extensions,
-            bundleExternal: true,
             debug: true
         });
 
-        let b = browserify(opts);
-
+        var b = browserify(opts);
         b.external('react');
+        b.external('react-dom');
+        b.external('reflux');
+        b.external('jquery');
+        b.external('mockjs');
+        b.external('lodash');
     } else {
         const opts = assign({}, watchify.args, {
             entries: options.entries,
             extensions: options.extensions,
-            bundleExternal: true,
             debug: true
         });
 
-        let b = browserify(opts);
-        b.external('react');
-        
-
+        var b = browserify(opts);
+        b.require('react');
+        b.require('react-dom');
+        b.require('reflux');
+        b.require('jquery');
+        b.require('mockjs');
+        b.require('lodash');
     }
+
+    
     const rebundle = () =>
         b
         .transform("babelify", {

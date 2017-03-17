@@ -123,14 +123,18 @@ var _MockComponent = require('./components/index/MockComponent');
 
 var _MockComponent2 = _interopRequireDefault(_MockComponent);
 
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-ReactDOM.render(React.createElement(
+_reactDom2.default.render(_reactDom2.default.createElement(
 	_MockComponent2.default,
 	null,
-	React.createElement(_RootComponent2.default, null)
+	_reactDom2.default.createElement(_RootComponent2.default, null)
 ), document.getElementById('index'));
 
-},{"./components/index/MockComponent":1,"./components/index/RootComponent":2}]},{},[3])
+},{"./components/index/MockComponent":1,"./components/index/RootComponent":2,"react-dom":"react-dom"}]},{},[3])
 
 //# sourceMappingURL=../js/maps/index.bundle.js.map
