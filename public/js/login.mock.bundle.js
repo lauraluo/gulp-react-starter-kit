@@ -546,8 +546,12 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom2.default.render(_react2.default.createElement(_RootComponent2.default, null), document.getElementById('login'));
+_reactDom2.default.render(_react2.default.createElement(
+	_MockComponent2.default,
+	null,
+	_react2.default.createElement(_RootComponent2.default, null)
+), document.getElementById('login'));
 
 },{"./components/login/MockComponent":6,"./components/login/RootComponent":7,"react":"react","react-dom":"react-dom"}]},{},[8]);
 
-//# sourceMappingURL=../js/maps/login.bundle.js.map
+//# sourceMappingURL=../js/maps/login.mock.bundle.js.map

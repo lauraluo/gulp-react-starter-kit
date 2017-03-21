@@ -14,7 +14,12 @@ var tap = require('gulp-tap');
 var buffer = require('gulp-buffer');
 var sourcemaps = require('gulp-sourcemaps');
 var watchify = require('watchify');
-
+var runSequence = require('run-sequence');
+var gulpif      = require('gulp-if');
+var parseArgs   = require('minimist');
+var extend      = require('extend');
+var header = require('gulp-header');
+var dateFormat = require('dateformat');
 
 var sourcePath = "src/";
 var distPath = "public/";
@@ -23,7 +28,10 @@ var nodemon = require('gulp-nodemon');
 var notify = require('gulp-notify');
 var livereload = require('gulp-livereload');
 
-console.log('NODE_ENV' + process.env.NODE_ENV);
+var config = extend({
+    env: process.env.NODE_ENV
+}, parseArgs(process.argv.slice(2)));
+
 
 var onError = function (err) {
     notify({
@@ -36,23 +44,6 @@ var onError = function (err) {
     this.emit('end');
 }
 
-gulp.task('css:sass', function () {
-    gulp.src(['src/scss/**/*.scss', '!src/scss/**/_*.scss'])
-        .pipe(plumber({
-            errorHandle: onError
-        }))
-        .pipe(sass({
-            errLogToConsole: true,
-            includePaths: ['src/scss/**/**']
-        }))
-        .pipe(autoprefixer({
-            browsers: ["last 4 versions", "Firefox >= 27", "Blackberry >= 7", "IE 8", "IE 9"],
-            cascade: false
-        }))
-        .pipe(gulp.dest(distPath + 'css/'))
-        .pipe(livereload());
-});
-
 var browserifyConfig = {
     debug: true,
     cache: {},
@@ -63,6 +54,8 @@ var browserifyConfig = {
 };
 
 //https://gist.github.com/ramasilveyra/b4309edf809e55121385
+//https://medium.com/@elisechant/how-to-train-your-gulpfile-to-know-about-environment-configurations-1367a2f8b0da#.bxrhjeav6
+
 var gulpLoadPlugins = require('gulp-load-plugins');
 var babelify = require('babelify');
 var source = require('vinyl-source-stream');
@@ -73,14 +66,19 @@ var es = require('event-stream');
 var path = require('path');
 var reactify = require('reactify');
 
-let isWatchify = true;
 const $ = gulpLoadPlugins();
+
+
 var createBundle = (options, attachedWithBundle) => {
+    let env = process.env.NODE_ENV;
+    let isWatchify = process.env.IS_WATCHIFY;
+
+    console.log('NODE_ENV : ' + process.env.NODE_ENV);
 
     const opts = assign({}, watchify.args, {
         entries: options.entries,
         extensions: options.extensions,
-        debug: true
+        debug: config.env === 'production' ? true : false
     });
 
     var b = browserify(opts);
@@ -96,22 +94,20 @@ var createBundle = (options, attachedWithBundle) => {
             presets: ["es2015", "react"]
         })
         .bundle()
-        // log errors if they happen
         .on('error', $.util.log.bind($.util, 'Browserify Error'))
         .pipe(source(options.output))
         .pipe(buffer())
         .pipe(rename(function (path) {
-            path.extname = ".bundle.js";
+            path.extname = ".bundle.js"
         }))
-        .pipe($.sourcemaps.init({
-            loadMaps: true
-        }))
-        // .pipe($.uglify())
-        .pipe($.sourcemaps.write('../js/maps'))
+        .pipe($.sourcemaps.init({loadMaps: config.env !== 'production'? true : false}))
+        .pipe(gulpif(config.env !== 'production',$.sourcemaps.write('../js/maps')))
+        .pipe(header('/* publish time ${Date} */', { Date : dateFormat( new Date(), "dddd, mmmm dS, yyyy, h:MM:ss TT")}))
+        .pipe(gulpif(config.env === 'production', $.uglify()))        
         .pipe(gulp.dest(options.destination))
         .pipe(livereload());
 
-    if (isWatchify) {
+    if (config.env === 'development') {
         b = watchify(b);
         b.on('update', rebundle);
         b.on('log', $.util.log);
@@ -119,6 +115,7 @@ var createBundle = (options, attachedWithBundle) => {
 
     return rebundle();
 };
+
 
 gulp.task('js:components', function () {
     glob('./src/*.js', function (err, files) {
@@ -166,8 +163,26 @@ gulp.task('js:common', function () {
 
 gulp.task('js:bundle', ['js:common', 'js:components'], function () {});
 
+gulp.task('css:sass', function () {
+    gulp.src(['src/scss/**/*.scss', '!src/scss/**/_*.scss'])
+        .pipe(plumber({
+            errorHandle: onError
+        }))
+        .pipe(sass({
+            errLogToConsole: true,
+            includePaths: ['src/scss/**/**']
+        }))
+        .pipe(autoprefixer({
+            browsers: ["last 4 versions", "Firefox >= 27", "Blackberry >= 7", "IE 8", "IE 9"],
+            cascade: false
+        }))
+        .pipe(gulp.dest(distPath + 'css/'))
+        .pipe(livereload());
+});
+
 gulp.task('watch', function () {
     livereload.listen();
+
     gulp.watch(['src/scss/**/*.scss', '!src/scss/**/_*.scss'], ['css:sass']);
 
     gulp.watch(['views/**/*.jade'], function () {
@@ -177,9 +192,15 @@ gulp.task('watch', function () {
     });
 });
 
-gulp.task('build', ['js:bundle', 'css:sass'], function () {});
-gulp.task('dev', ['build', 'watch'], function () {
+gulp.task('set-dev-node-env', function () {
+    return process.env.NODE_ENV = config.env = 'development';
+});
 
+gulp.task('set-prod-node-env', function () {
+    return process.env.NODE_ENV = config.env = 'production';
+});
+
+gulp.task('build', ['js:bundle', 'css:sass', 'watch'], function () {
     nodemon({
         "script": 'server.js',
         "nodeArgs": ['--debug'],
@@ -195,6 +216,17 @@ gulp.task('dev', ['build', 'watch'], function () {
         gulp.src('server.js')
             .pipe(livereload())
             .pipe(notify('Reloading server, please wait...'));
-
     });
 });
+
+gulp.task('develop', ['set-dev-node-env'], function() {
+   return runSequence(
+      'build'
+   );
+}); 
+
+gulp.task('deploy', ['set-prod-node-env'], function() {
+   return runSequence(
+      'build'
+   );
+}); 

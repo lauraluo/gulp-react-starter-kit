@@ -1,6 +1,6 @@
 
  import React from 'react'
- import React from 'mockjs'
+ import Mock from 'mockjs'
 
 var MockComponent = React.createClass({
 	getInitialState: function(){
