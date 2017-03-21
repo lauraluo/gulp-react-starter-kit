@@ -506,9 +506,7 @@ var _jquery = require("jquery");
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-function _interopRequireDefault(obj) {
-	return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MockComponent = _react2.default.createClass({
 	displayName: "MockComponent",
@@ -548,7 +546,11 @@ var MockComponent = _react2.default.createClass({
 			});
 		});
 
-		return _react2.default.createElement("div", null, childrenWithProps);
+		return _react2.default.createElement(
+			"div",
+			null,
+			childrenWithProps
+		);
 	}
 });
 
@@ -573,9 +575,7 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-function _interopRequireDefault(obj) {
-	return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MyComponent = _react2.default.createClass({
 	displayName: 'MyComponent',
@@ -657,23 +657,61 @@ var MyComponent = _react2.default.createClass({
 	render: function render() {
 		var _this = this;
 
-		return _react2.default.createElement('form', null, _react2.default.createElement('div', { className: 'form-group  has-error' }, _react2.default.createElement('label', { htmlFor: 'exampleInputEmail1' }, 'Account'), _react2.default.createElement('input', {
-			className: 'form-control',
-			name: 'account',
-			'data-rel': 'form.account',
-			value: this.state.form.account,
-			onChange: this._handleChange,
-			type: 'email',
-			id: 'exampleInputEmail1',
-			placeholder: 'Email' }), _react2.default.createElement('div', { className: 'help-block' }, '\u8ACB\u8F38\u5165\u6B63\u78BA\u7684\u5E33\u865F\u683C\u5F0F\uFF1Aname@abc.com')), _react2.default.createElement('div', { className: 'form-group' }, _react2.default.createElement('label', { htmlFor: 'exampleInputPassword1' }, 'Password'), _react2.default.createElement('input', {
-			className: 'form-control',
-			name: 'password',
-			'data-rel': 'form.password',
-			value: this.state.form.password,
-			onChange: this._handleChange,
-			type: 'password',
-			id: 'exampleInputPassword1',
-			placeholder: 'Password' }), _react2.default.createElement('div', { className: 'help-block' }, '\u8ACB\u8F38\u5165\u6B63\u78BA\u7684\u5BC6\u78BC\u683C\u5F0F\uFF1A\u9577\u5EA6\u81F3\u5C11\u5927\u65BC\u516D')), _react2.default.createElement('button', { type: 'submit', className: 'btn btn-default' }, 'Submit'));
+		return _react2.default.createElement(
+			'form',
+			null,
+			_react2.default.createElement(
+				'div',
+				{ className: 'form-group  has-error' },
+				_react2.default.createElement(
+					'label',
+					{ htmlFor: 'exampleInputEmail1' },
+					'Account'
+				),
+				_react2.default.createElement('input', {
+					className: 'form-control',
+					name: 'account',
+					'data-rel': 'form.account',
+					value: this.state.form.account,
+					onChange: this._handleChange,
+					type: 'email',
+					id: 'exampleInputEmail1',
+					placeholder: 'Email' }),
+				_react2.default.createElement(
+					'div',
+					{ className: 'help-block' },
+					'\u8ACB\u8F38\u5165\u6B63\u78BA\u7684\u5E33\u865F\u683C\u5F0F\uFF1Aname@abc.com'
+				)
+			),
+			_react2.default.createElement(
+				'div',
+				{ className: 'form-group' },
+				_react2.default.createElement(
+					'label',
+					{ htmlFor: 'exampleInputPassword1' },
+					'Password'
+				),
+				_react2.default.createElement('input', {
+					className: 'form-control',
+					name: 'password',
+					'data-rel': 'form.password',
+					value: this.state.form.password,
+					onChange: this._handleChange,
+					type: 'password',
+					id: 'exampleInputPassword1',
+					placeholder: 'Password' }),
+				_react2.default.createElement(
+					'div',
+					{ className: 'help-block' },
+					'\u8ACB\u8F38\u5165\u6B63\u78BA\u7684\u5BC6\u78BC\u683C\u5F0F\uFF1A\u9577\u5EA6\u81F3\u5C11\u5927\u65BC\u516D'
+				)
+			),
+			_react2.default.createElement(
+				'button',
+				{ type: 'submit', className: 'btn btn-default' },
+				'Submit'
+			)
+		);
 	}
 });
 

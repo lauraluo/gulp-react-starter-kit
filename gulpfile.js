@@ -2,7 +2,6 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     gulpBrowserify = require('gulp-browserify'),
     sass = require('gulp-sass'),
-    // connect = require('gulp-connect'),
     clean = require('gulp-clean'),
     watch = require('gulp-watch'),
     plumber = require('gulp-plumber'),
@@ -54,19 +53,6 @@ gulp.task('css:sass', function () {
         .pipe(livereload());
 });
 
-// gulp.task('js:common', function () {
-//     gulp.src('src/common.js')
-//         .pipe(plumber())
-//         .pipe(gulpBrowserify({
-//             insertGlobals: true,
-//             transform: ['babelify', 'aliasify'],
-//             debug: true
-//         }))
-//         .pipe(gulp.dest('./' + distPath + 'js/'))
-//         .pipe(livereload());
-// });
-
-
 var browserifyConfig = {
     debug: true,
     cache: {},
@@ -75,7 +61,6 @@ var browserifyConfig = {
     extensions: ['.jsx'],
     plugin: [watchify]
 };
-
 
 //https://gist.github.com/ramasilveyra/b4309edf809e55121385
 var gulpLoadPlugins = require('gulp-load-plugins');
@@ -90,39 +75,21 @@ var reactify = require('reactify');
 
 let isWatchify = true;
 const $ = gulpLoadPlugins();
-var createBundle = options => {
-    
-    if (options.output != "common.js") {
-        const opts = assign({}, watchify.args, {
-            entries: options.entries,
-            extensions: options.extensions,
-            debug: true
-        });
+var createBundle = (options, attachedWithBundle) => {
 
-        var b = browserify(opts);
-        b.external('react');
-        b.external('react-dom');
-        b.external('reflux');
-        b.external('jquery');
-        b.external('mockjs');
-        b.external('lodash');
-    } else {
-        const opts = assign({}, watchify.args, {
-            entries: options.entries,
-            extensions: options.extensions,
-            debug: true
-        });
+    const opts = assign({}, watchify.args, {
+        entries: options.entries,
+        extensions: options.extensions,
+        debug: true
+    });
 
-        var b = browserify(opts);
-        b.require('react');
-        b.require('react-dom');
-        b.require('reflux');
-        b.require('jquery');
-        b.require('mockjs');
-        b.require('lodash');
+    var b = browserify(opts);
+
+    if (typeof attachedWithBundle == 'function') {
+        attachedWithBundle(b);
     }
 
-    
+
     const rebundle = () =>
         b
         .transform("babelify", {
@@ -153,7 +120,7 @@ var createBundle = options => {
     return rebundle();
 };
 
-gulp.task('js:bundle', function () {
+gulp.task('js:components', function () {
     glob('./src/*.js', function (err, files) {
 
         if (err) done(err);
@@ -163,19 +130,41 @@ gulp.task('js:bundle', function () {
             var pathSplit = entry.split('/');
             var outputName = path.basename(entry)
 
-            // var outputName = pathSplit.slice( pathSplit.length -2 ,pathSplit.length - 1 );
             createBundle({
-                entries: [entry],
-                output: outputName,
-                extensions: ['.jsx'],
-                destination: './public/js'
-            });
-
+                    entries: [entry],
+                    output: outputName,
+                    extensions: ['.jsx'],
+                    destination: './public/js'
+                },
+                function (b) {
+                    b.external('react');
+                    b.external('react-dom');
+                    b.external('reflux');
+                    b.external('jquery');
+                    b.external('mockjs');
+                    b.external('lodash');
+                });
         });
     });
 });
 
-// gulp.task('js:bundle', ['js:bundle', 'js:components'], function () {});
+gulp.task('js:common', function () {
+    createBundle({
+            output: 'common.js',
+            extensions: ['.jsx'],
+            destination: './public/js'
+        },
+        function (b) {
+            b.require('react');
+            b.require('react-dom');
+            b.require('reflux');
+            b.require('jquery');
+            b.require('mockjs');
+            b.require('lodash');
+        });
+});
+
+gulp.task('js:bundle', ['js:common', 'js:components'], function () {});
 
 gulp.task('watch', function () {
     livereload.listen();
@@ -209,46 +198,3 @@ gulp.task('dev', ['build', 'watch'], function () {
 
     });
 });
-
-// var browserSync = require('browser-sync');
-// var selenium = require('selenium-standalone');
-// var mocha = require('gulp-mocha');
-
-// gulp.task('serve:test', function (done) {
-//     browserSync({
-//         logLevel: 'silent',
-//         notify: false,
-//         open: false,
-//         port: 9000,
-//         server: {
-//             baseDir: ['test']
-//         },
-//         ui: false
-//     }, done);
-// });
-
-// gulp.task('selenium', function (done) {
-//     selenium.install({
-//         logger: function (message) {}
-//     }, function (err) {
-//         if (err) return done(err);
-
-//         selenium.start(function (err, child) {
-//             if (err) return done(err);
-//             selenium.child = child;
-//             done();
-//         });
-//     });
-// });
-
-// gulp.task('integration', ['serve:test', 'selenium'], function () {
-//     return gulp.src('test/*.js', {
-//             read: false
-//         })
-//         .pipe(mocha());
-// });
-
-// gulp.task('test', ['integration'], function () {
-//     selenium.child.kill();
-//     browserSync.exit();
-// });

@@ -22683,18 +22683,7 @@ module.exports = function(listenables){
     };
 };
 
-},{"reflux-core/lib/ListenerMethods":179}],196:[function(require,module,exports){
-// import React from "react"
-// import ReactDOM from "react-dom"
-// import Reflux from "reflux"
-// import $ from "jquery"
-// import Mock from "mockjs"
-// import _ from "lodash"
-
-//export { React, ReactDOM, Reflux, $, Mock, _} 
-"use strict";
-
-},{}],"jquery":[function(require,module,exports){
+},{"reflux-core/lib/ListenerMethods":179}],"jquery":[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.1.1
  * https://jquery.com/
@@ -58574,6 +58563,6 @@ require('./addES6');
 
 module.exports = Reflux;
 
-},{"./ListenerMixin":189,"./addES6":190,"./connect":191,"./connectFilter":192,"./listenTo":194,"./listenToMany":195,"reflux-core":185}]},{},[196])
+},{"./ListenerMixin":189,"./addES6":190,"./connect":191,"./connectFilter":192,"./listenTo":194,"./listenToMany":195,"reflux-core":185}]},{},[])
 
 //# sourceMappingURL=../js/maps/common.bundle.js.map
