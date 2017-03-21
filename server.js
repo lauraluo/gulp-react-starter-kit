@@ -24,7 +24,19 @@ var users = [
 ];
 
 app.get('/', function (req, res) {
-  res.render('users', {
+  res.render('index', {
+    data: null
+  });
+});
+
+app.get('/login', function (req, res) {
+  res.render('login', {
+    data: null
+  });
+});
+
+app.get('/todo', function (req, res) {
+  res.render('todo', {
     data: null
   });
 });
@@ -39,3 +51,4 @@ if (!module.parent) {
     console.log('port:3002');
   });
 }
+
