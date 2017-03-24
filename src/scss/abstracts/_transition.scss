@@ -1,0 +1,77 @@
+﻿$transition-default: linear;
+$transition-swing: cubic-bezier(.02, .01, .47, 1);
+
+
+@mixin transition-delay($delay: .2s) {
+    -moz-transition-delay: $delay;
+    -o-transition-delay: $delay;
+    -webkit-transition-delay: $delay;
+    transition-delay: $delay;
+}
+
+@mixin transition-duration($duration: .2s) {
+    -moz-transition-duration: $duration;
+    -o-transition-duration: $duration;
+    -webkit-transition-duration: $duration;
+    transition-duration: $duration;
+}
+
+@mixin transition-function($function: $transition-swing) {
+    -moz-transition-timing-function: $function;
+    -o-transition-timing-function: $function;
+    -webkit-transition-timing-function: $function;
+    transition-timing-function: $function;
+}
+
+@mixin transition-property($property: all) {
+    -moz-transition-property: $property;
+    -o-transition-property: $property;
+    -webkit-transition-property: $property;
+    transition-property: $property;
+}
+
+@mixin transition($property: all, $delay: .2s, $function: $transition-swing, $delay-start: 0s) {
+    -moz-transition: $property $function $delay $delay-start;
+    -o-transition: $property $function $delay $delay-start;
+    -webkit-transition: $property $function $delay $delay-start;
+    transition: $property $function $delay $delay-start;
+}
+
+@mixin transition-list($value...) {
+    -moz-transition: $value;
+    -o-transition: $value;
+    -webkit-transition: $value;
+    transition: $value;
+}
+
+@mixin transform-translateX($value) {
+    -webkit-transform: translateX($value);
+    -moz-transform: translateX($value);
+    -ms-transform: translateX($value);
+    -o-transform: translateX($value);
+    transform: translateX($value);
+}
+
+@mixin transform-translateY($value) {
+    -webkit-transform: translateY($value);
+    -moz-transform: translateY($value);
+    -ms-transform: translateY($value);
+    -o-transform: translateY($value);
+    transform: translateY($value);
+}
+
+@mixin transform($value) {
+    -moz-transform: $value;
+    -ms-transform: $value;
+    -o-transform: $value;
+    -webkit-transform: $value;
+    transform: $value;
+}
+
+@mixin transform-origin($value: 0% 0%) {
+    -moz-transform-origin: $value;
+    -ms-transform-origin: $value;
+    -o-transform-origin: $value;
+    -webkit-transform-origin: $value;
+    transform-origin: $value;
+}

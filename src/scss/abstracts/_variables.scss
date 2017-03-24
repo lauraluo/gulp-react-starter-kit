@@ -1,0 +1,232 @@
+﻿$full-width: 100%;
+$full-height: 100%;
+$basic-space: 8px;
+$slider-menu-width: 80%;
+$default-font: Verdana,
+"微軟正黑體",
+"新細明體-ExtB";
+// 網站基礎顏色
+$main-color: #DA1725;
+$main-bg-color: #F6F6F6;
+$main-text-color: #000000;
+$sub-text-color: #999999;
+$main-mask-color: rgba(0, 0, 0, 0.60);
+$section-bg-color: #FFFFFF;
+$main-link-color: #009CFF;
+$fb-title-bg-color: #39579A;
+$notice-text-color: #3D3D3D;
+$main-border-color: #EDEDED;
+$button-basic-size: 44px;
+$nav-header-bg-color: #000000;
+$nav-header-height: 46px;
+$nav-icon-size: $button-basic-size;
+$nav-icon-basket-size: 46px;
+$nav-icon-basket-amount-width: 16px;
+$nav-icon-basket-amount-height: 15px;
+$nav-icon-basket-amount-font-size: 9px;
+$nav-icon-basket-amount-font-color: white;
+$tab-bar-bg-color: #FFFFFF;
+$tab-bar-height: 44px;
+$tab-bar-active-height:5px;
+$tab-bar-size: 3;
+$search-bar-height: 48px;
+$search-bar-padding: 8px;
+$search-content-height: $search-bar-height - ($search-bar-padding * 2);
+$search-content-bg-color: #FFFFFF;
+$channel-tab-bar-height: 54px;
+$back-line-height: 2px;
+$back-line-width: 25%;
+// 首頁標題顏色
+$main-title-bg-color: #3D3D3D;
+$main-title-text-color: #FFFFFF;
+$main-title-font-size: 18px;
+// 側滑選單標題顏色、清單標題顏色
+$sub-title-bg-color: #999999;
+$sub-title-text-color: #FFFFFF;
+$sub-title-font-size: 12px;
+$sub-title-height: 24px;
+// App 下載提示
+$smartbanner-heihgt: 30px;
+$smartbanner-font-size: 12px;
+$smartbanner-padding: $basic-space * 1.5;
+// 篩選功能
+$filter-section-height: 38px;
+$filter-footer-height: 52px;
+$fitler-item-height: 54px;
+$filter-section-bg-color: #FFFFFF;
+$filter-tab-border-color: #EDEDED;
+$filter-input-bg-color: #ECECEC;
+$filter-input-text-color: #999999;
+$filter-layout-switcher-width: 44px;
+// 產品列表顏色
+$product-header-bg-color: #D2D2D2;
+// 側滑選單項目顏色
+$list-item-bg-color: #FFFFFF;
+$list-item-text-color: #3D3D3D;
+$list-item-splitline-color: #ECECEC;
+// 側滑選單
+$slider-menu-store-count: 17;
+$slider-menu-bg-color: #FFFFFF;
+$slider-menu-height: 46px;
+$slider-menu-icon-width: 42px;
+$slider-menu-item-width: 150px;
+$slider-menu-icon-margin: 10px;
+$slider-menu-item-height: 46px;
+$slider-menu-loader-width: 20px;
+$slider-menu-list-header: $main-color;
+$slider-menu-header-font-size: 11px;
+// 標籤顏色
+$tag-tv: #1757b7;
+$tag-speed: #00b3d3;
+$tag-rediscount: #00ac45;
+$tag-discount: #da1725;
+$tag-coupon: #f18e00;
+$tag-event: #7822b4;
+// 產品活動標籤顏色
+$tags-color: ( 'tv': $tag-tv, 'speed': $tag-speed, 'rediscount': $tag-rediscount, 'coupon': $tag-coupon, 'event': $tag-event);
+// 按鈕設定
+$btn-height: 35px;
+$btn-width: 100px;
+$btn-padding: 25px;
+$btn-corner-radius: 4px;
+$btn-padding-rwd-320: $btn-padding - 3px;
+$btn-basic-color: #FFFFFF;
+$btn-primary-color: $main-color;
+$btn-secondary-color: #3D3D3D;
+$btn-disabled-color: #CCCCCC;
+$btn-border-color: #D2D2D2;
+$btn-font-color: $main-text-color;
+$btn-fb-color: $fb-title-bg-color;
+$btn-channel-phone-call-color: #000;
+$btn-channel-phone-call-text-color: #fff;
+$btn-tv-color: #999999;
+// 購物車流程指示
+$stepflow-default-size: 42px;
+$stepflow-unselect-color: #D2D2D2;
+// 電視購物顏色
+$timeline-default-color: #999999;
+$timeline-default-bg-color: $main-bg-color;
+$timeline-primary-color: $main-color;
+$timeline-product-border-color: #EDEDED;
+$tvlist-tab-border-radius: 4px;
+// 直播頁
+$live-product-thumbnail-size: 120px;
+$Live-height: 32px;
+//z-index
+$layout-container-zindex: 0;
+$layout-container-header-zindex: 100;
+$layout-container-body-zindex: 50;
+$layout-filter-mask-zindex: 90;
+$layout-container-mask-zindex: 110;
+$layout-slider-menu-zindex: 150;
+$layout-page-loading-zindex: 80;
+$layout-topbutton-zindex: 300;
+$layout-product-detail-footer-zindex: 310;
+$layout-site-loading-zindex: 1000;
+$search-section-zindex: 1500;
+$search-header-zindex: 1100;
+$smartbanner-zindex: 2000;
+$layout-dialog-zindex: 2100;
+// 廣告Slider分頁顯示寬度
+$dots-width: 12px;
+$product-title-height-default: 54px;
+$product-title-height-other: 30px;
+// 常用間距 使用get-map($space, key)取值
+$space: ( default: $basic-space, xxsmall: $basic-space/16, xsmall: $basic-space/4, small: $basic-space/2, medium-small: $basic-space/1.6, medium: $basic-space*1.5, medium-large: $basic-space*1.875, large: $basic-space*2, xlarge: $basic-space*2.5, xxlarge: $basic-space*3);
+//Top Button
+$top-btn-right: 20px;
+$top-btn-bottom: 20px;
+//Form Validation Error
+$form-validation-error-color: #DA1725;
+$form-validation-error-bk-color: #FEDEDF;
+//Dialog
+$dialog-space: ( default: 8px, large: 24px, small: 10px, extra-small: 2px, medium-large: 16px);
+$dialog-headr-height: 40px;
+$dialog-footer-height: 40px;
+$dialog-bk-color: #F6F6F6;
+$dialog-line-color: #ECECEC;
+$dialog-button-color: #3D3D3D;
+$dialog-transition-delay-start: .2s;
+// 轉場動畫
+$transition-cubic-bezier: cubic-bezier(0.02, 0.01, 0.47, 1) 0.2s;
+// Product List
+$product-list-title-bg-color: #999999;
+$section-list-title-bg-color: #D2D2D2;
+$section-list-title-text-color: #000000;
+$filter-item-color:#999999;
+// Product
+$thumbnail-fix-size: 100px;
+$thumbnail-margin: 8px;
+$product-spacing-veritcal: 16px;
+$product-title-height: 50px;
+$product-detila-style-maxheight: 300px;
+//追蹤數量
+$favorite-plus-text-color: #FFFFFF;
+$favorite-plus-font-size: 9px;
+$favorite-bg-color: #F6F6F6;
+$favorite-border-color: #ECECEC;
+$favorite-padding-vertical: 16px;
+$favorite-padding-horizontal: 8px;
+// 單一商品頁
+$product-detail-basic-space: 8px;
+$product-detail-footer-height: 50px;
+$product-detail-icon-height: 40px;
+$product-detail-style-element-height: 24px;
+$product-detail-style-element-width: 54px;
+$product-detail-style-element-padding: 12px;
+$product-detail-style-element-border-width: 1px;
+$product-detail-style-quantity-height: 10px;
+$product-detail-style-header-height: 40px;
+$product-detail-border-color: #EDEDED;
+$ponta-helper-width: 110px;
+$ponta-helper-border-width: 1px;
+$product-detail-font-size: ( default: 14px, large: 16px, small: 12px, medium-large: 18px, extra-small: 10px, extra-large: 20px);
+$product-detail-color: ( default: #999999, strong: #000000, price: #DA1725, ponta: #f0580f, text-link: #009CFF, text-strong: #FF6666, event: #7822B4);
+// Checkout
+$checkout-basic-space: 8px;
+$checkout-main-bg-color: #F6F6F6;
+$checkout-border-color: #F6F6F6;
+$checkout-section-bg-color: #FFFFFF;
+$checkout-font-size: $product-detail-font-size;
+$checkout-p-title-line-height: map-get($checkout-font-size, default) * 1.5;
+$checkout-p-title-height: map-get($checkout-font-size, default) * 1.5 * 2;
+$checkout-select-primary-color: #999999;
+$checkout-select-secondary-color: #F6F6F6;
+$checkout-select-secondary-font-color: #999999;
+$checkout-select-height: 32px;
+$checkout-select-strong-color: #3D3D3D;
+$checkout-select-readonly-color: #FFFFFF;
+$checkout-select-strong-height: 40px;
+$checkout-select-border-radius: 4px;
+$checkout-select-border-color: #CCCCCC;
+$checkout-select-option-disabled-color: #CCCCCC;
+$checkout-radio-size: 14px;
+$checkout-checkbox-size: 16px;
+$checkout-convenience-store-bg-color: #24A62C;
+$checkout-convenience-store-font-color: #FFFFFF;
+$checkout-convenience-store-height: $checkout-select-height;
+$checkout-section-title-width: 35px;
+$checkout-textarea-height: $checkout-select-strong-height+$checkout-basic-space * 2;
+$checkout-textarea-line-height: map-get($checkout-font-size, default) * 1.5;
+// Order History List 
+$order-history-bg-color: #FFFFFF;
+$order-history-item-heihgt: 55px;
+$order-date-font-size: 15px;
+$order-history-item-link: 6px;
+$order-date-text-color: #FFFFFF;
+$order-status: ( complete: #009CFF, cancel: #999999, waiting: #DA1725);
+// EVoucher List
+$use-status: ( used: #008000, no-use: #DA1725, cancel: #999999);
+// sprite
+$sprite-img-position-x: 50%;
+$sprite-img-margin-top: 8px;
+$sprite-spacing: -40px;
+$product-sprite-img-position-x: -23px;
+// RWD
+$rwd-full-width: 100%;
+$rwd-container-width: 75%;
+$rwd-search-bar-width: $rwd-container-width;
+$rwd-slider-menu-width: $rwd-full-width - $rwd-container-width;
+$rwd-container-ipad-width: 40%;
+$rwd-product-title-height-default: 60px;
+// Live直播

@@ -17,7 +17,7 @@ var MyComponent = React.createClass({
 			});
 		}
 		
-		return <ul>{listItems} lalaluo1</ul>
+		return <ul>{listItems} lalalkkkkkkkuo1</ul>
 	}
 });
 

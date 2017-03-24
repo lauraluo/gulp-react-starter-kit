@@ -1,0 +1,210 @@
+﻿@import "./abstracts/_variables.scss";
+@import "./abstracts/_transition.scss";
+@import "_collection.scss";
+.dialog {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $layout-dialog-zindex;
+    outline: 0;
+    @include transition();
+    @include transition-property(top bottom);
+    .dialog-backdrop {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        @include transition($property: background-color, $delay-start: $dialog-transition-delay-start);
+    }
+    .dialog-box {
+        background-color: $dialog-bk-color;
+        position: absolute;
+        top: 35%;
+        left: 7%;
+        right: 7%;
+        border-radius: 4px;
+        .dialog-container>header {
+            margin: 0 map-get($dialog-space, large);
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            height: $dialog-headr-height;
+            line-height: 38px;
+        }
+    }
+    .dialog-box-body {
+        padding: 10px map-get($dialog-space, large);
+        max-height: 150px;
+        overflow: auto;
+        @include transition($property: opacity);
+    }
+    .dialog-box-body-padding {
+        padding: 24px 24px;
+    }
+    .dialog-box-footer {
+        border-top: 1px solid $dialog-line-color;
+        background-color: $section-bg-color;
+        height: $dialog-footer-height;
+        border-radius: 0 0 4px 4px;
+    }
+    .dialog-strong {
+        color: $main-color;
+        font-weight: bold;
+    }
+    .dialog-list {
+        top: 15%;
+        bottom: 15%;
+        .dialog-container {
+            position: relative;
+            width: $full-width;
+            height: $full-height;
+            >* {
+                position: absolute;
+                left: 0;
+                right: 0;
+            }
+            >header {
+                top: 0;
+            }
+            >.dialog-box-body {
+                top: $dialog-headr-height;
+                bottom: $dialog-footer-height;
+                max-height: initial;
+            }
+            >.dialog-box-footer {
+                bottom: 0;
+            }
+        }
+    }
+    .dialog-scene {
+        top: $nav-header-height;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-radius: 0;
+        .dialog-container {
+            position: relative;
+            width: $full-width;
+            height: $full-height;
+            background: $section-bg-color;
+            >* {
+                position: absolute;
+                left: 0;
+                right: 0;
+            }
+            >header {
+                background: $sub-title-bg-color;
+                color: $sub-title-text-color;
+                font-size: $sub-title-font-size;
+                height: $sub-title-height;
+                line-height: $sub-title-height;
+                font-weight: normal;
+                margin: 0;
+                top: 0;
+            }
+            .dialog-box-body {
+                top: $dialog-headr-height;
+                bottom: $dialog-footer-height*1.5;
+                max-height: initial;
+            }
+            >.dialog-box-footer {
+                bottom: 0;
+            }
+        }
+        .dialog-box-footer {
+            min-height: $dialog-footer-height;
+            padding: ($basic-space * 2) $basic-space;
+            .btn {
+                margin: 0;
+            }
+        }
+    }
+    .table-box {
+        header {
+            color: $main-color;
+            font-size: 12px;
+            line-height: 0;
+            padding-top: 15px;
+            margin-bottom: 15px;
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: table;
+            border-top: 1px solid $dialog-line-color;
+            border-left: 1px solid $dialog-line-color;
+            li {
+                margin: 0;
+                padding: 0;
+                -moz-box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                text-align: center;
+                float: left;
+                width: $full-width / 3;
+                display: block;
+                border-bottom: 1px solid $dialog-line-color;
+                border-right: 1px solid $dialog-line-color;
+            }
+        }
+    }
+    @mixin dialog-button {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        float: left;
+        line-height: 39px;
+    }
+    .dialog-button-inline {
+        @include dialog-button;
+        width: $full-width / 2;
+        color: $dialog-button-color;
+    }
+    .dialog-button-inline-primary {
+        @include dialog-button;
+        width: $full-width / 2;
+        color: $main-color;
+    }
+    .dialog-button-block-primary {
+        @include dialog-button;
+        width: $full-width;
+        color: $main-color;
+    }
+    .dialog-toast-container {
+        line-height: 20px;
+        text-align: center;
+        span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .loader-dot {
+            margin-left: 8px;
+        }
+        .toast-prefix-photo {
+            width: 42px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .toast-suffix-text {
+            text-align: left;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+}
+
+#GlobalContainer.dialog-animating~#Dialog .dialog {
+    top: 100%;
+    bottom: -100%;
+    @include transition();
+    @include transition-property(top bottom);
+    .dialog-backdrop {
+        background-color: rgba(0, 0, 0, 0);
+        @include transition($property: background-color, $delay-start: $dialog-transition-delay-start);
+    }
+}

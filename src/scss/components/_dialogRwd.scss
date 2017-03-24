@@ -1,0 +1,15 @@
+﻿@media screen and (min-width: 375px) {
+    .dialog {
+        .dialog-box {
+            margin: 0 auto;
+            width: 300px;
+
+            &.dialog-scene {
+                width: 100%;
+            }
+        }
+    }
+}
+
+
+

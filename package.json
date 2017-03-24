@@ -66,6 +66,7 @@
     "mockjs": "^1.0.1-beta3",
     "react-addons-test-utils": "^15.4.2",
     "react-addons-update": "^15.4.2",
+    "react-dom": "^15.4.2",
     "reactify": "^1.1.1",
     "run-sequence": "^1.2.2",
     "selenium-standalone": "^6.0.1",
@@ -89,6 +90,7 @@
     "react": "^15.4.2",
     "react-addons-linked-state-mixin": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-redux": "^5.0.3",
     "reflux": "^6.4.1"
   }
 }
