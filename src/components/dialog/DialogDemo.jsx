@@ -1,11 +1,6 @@
 import React from 'react'
 import { DialogActions } from "./Dialog"
 
-// function DialogDemoContent(props) {
-//   return <h1>Hello, {props.name}</h1>
-// }
-
-
 class DialogDemo extends React.Component {
     _openDialog() {
         DialogActions.showDialog("newName", "ddddd", "button", "confirmFn")

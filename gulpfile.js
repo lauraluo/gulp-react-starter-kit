@@ -69,9 +69,8 @@ const $ = gulpLoadPlugins();
 var createBundle = (options, attachedWithBundle) => {
     let env = process.env.NODE_ENV;
     let isWatchify = process.env.IS_WATCHIFY;
-
-    console.log('NODE_ENV : ' + config.env);
-
+    // console.log('NODE_ENV : ' + config.env);
+    
     const opts = assign({}, watchify.args, {
         entries: options.entries,
         extensions: options.extensions,

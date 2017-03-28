@@ -1,3 +1,7 @@
 {
-    "vsicons.presets.angular": false
+    "vsicons.presets.angular": false,
+    "eslint.options": {
+        "configFile": ".eslintrc"
+    },
+    "eslint.enable": true
 }
