@@ -7,7 +7,6 @@ var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     rename = require('gulp-rename'),
     open = require('gulp-open');
-
 var browserify = require('browserify');
 var gutil = require('gulp-util');
 var tap = require('gulp-tap');
@@ -20,6 +19,7 @@ var parseArgs = require('minimist');
 var extend = require('extend');
 var header = require('gulp-header');
 var dateFormat = require('dateformat');
+var notifier = require('node-notifier');
 
 var sourcePath = "src/";
 var distPath = "public/";
@@ -28,19 +28,16 @@ var nodemon = require('gulp-nodemon');
 var notify = require('gulp-notify');
 var livereload = require('gulp-livereload');
 
+var eslint = require('gulp-eslint');
+var jshint = require('gulp-jshint');
+
 var config = extend({
     env: process.env.NODE_ENV
 }, parseArgs(process.argv.slice(2)));
 
-
-var onError = function(err) {
-    notify({
-        title: 'Gulp Task Error',
-        message: 'Check the console.'
-    }).write(err);
-
+var onError = function (err) {
+    notify({title: 'Gulp Task Error', message: 'Check the console.'}).write(err);
     console.log(err.toString());
-
     this.emit('end');
 }
 
@@ -49,13 +46,13 @@ var browserifyConfig = {
     cache: {},
     packageCache: {},
     transform: ['reactify'],
-    extensions: ['.jsx', 'js'],
+    extensions: ['.jsx'],
     plugin: [watchify]
 };
 
-//js bundle的參考文章：
-//https://gist.github.com/ramasilveyra/b4309edf809e55121385
-//https://medium.com/@elisechant/how-to-train-your-gulpfile-to-know-about-environment-configurations-1367a2f8b0da#.bxrhjeav6
+// https://gist.github.com/ramasilveyra/b4309edf809e55121385
+// https://medium.com/@elisechant/how-to-train-your-gulpfile-to-know-about-envir
+// o nment-configurations-1367a2f8b0da#.bxrhjeav6
 
 var gulpLoadPlugins = require('gulp-load-plugins');
 var babelify = require('babelify');
@@ -69,17 +66,18 @@ var reactify = require('reactify');
 
 const $ = gulpLoadPlugins();
 
-
 var createBundle = (options, attachedWithBundle) => {
     let env = process.env.NODE_ENV;
     let isWatchify = process.env.IS_WATCHIFY;
 
-    console.log('NODE_ENV : ' + process.env.NODE_ENV);
+    console.log('NODE_ENV : ' + config.env);
 
     const opts = assign({}, watchify.args, {
         entries: options.entries,
         extensions: options.extensions,
-        debug: true
+        debug: config.env === 'development'
+            ? true
+            : false
     });
 
     var b = browserify(opts);
@@ -88,145 +86,169 @@ var createBundle = (options, attachedWithBundle) => {
         attachedWithBundle(b);
     }
 
-    const rebundle = () =>
-        b
+    const rebundle = () => b
         .transform("babelify", {
-            presets: ["es2015", "react"]
-        })
+        presets: ["es2015", "react"]
+    })
         .bundle()
         .on('error', $.util.log.bind($.util, 'Browserify Error'))
         .pipe(source(options.output))
         .pipe(buffer())
-        .pipe(rename(function(path) {
+        .pipe(rename(function (path) {
             path.extname = ".bundle.js"
         }))
-        .pipe($.sourcemaps.init({ loadMaps: true }))
-        .pipe($.sourcemaps.write('../js/maps'))
-        // .pipe(header('/* publish time ${Date} */', { Date: dateFormat(new Date(), "dddd, mmmm dS, yyyy, h:MM:ss TT") }))
-        // .pipe(gulpif(config.env === 'production', $.uglify()))
+        .pipe($.sourcemaps.init({
+            loadMaps: config.env === 'development'
+                ? true
+                : false
+        }))
+        .pipe(gulpif(config.env === 'development', $.sourcemaps.write('../js/maps')))
+        .pipe(gulpif(config.env === 'production', $.uglify()))
+        .pipe(header('/* publish time ${Date} */', {
+            Date: dateFormat(new Date(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
+        }))
         .pipe(gulp.dest(options.destination))
         .pipe(livereload());
 
-
-    b = watchify(b);
-    b.on('update', rebundle);
-    b.on('log', $.util.log);
+    if (config.env === 'development') {
+        b = watchify(b);
+        b.on('update', rebundle);
+        b.on('log', $.util.log);
+    }
 
     return rebundle();
 };
 
+gulp.task('js:components', function () {
+    glob('./src/*.js', function (err, files) {
 
-gulp.task('js:components', function() {
-    glob('./src/*.js', function(err, files) {
+        if (err) 
+            done(err);
 
-        if (err) done(err);
-        console.log(files);
-
-        files.forEach(function(entry) {
+        files.forEach(function (entry) {
             var pathSplit = entry.split('/');
             var outputName = path.basename(entry)
 
             createBundle({
-                    entries: [entry],
-                    output: outputName,
-                    extensions: ['.jsx'],
-                    destination: './public/js'
-                },
-                function(b) {
-                    b.external('react');
-                    b.external('react-dom');
-                    b.external('reflux');
-                    b.external('jquery');
-                    b.external('mockjs');
-                    b.external('lodash');
-                });
+                entries: [entry],
+                output: outputName,
+                extensions: ['.jsx'],
+                destination: './public/js'
+            }, function (b) {
+                b.external('react');
+                b.external('react-dom');
+                b.external('reflux');
+                b.external('jquery');
+                b.external('mockjs');
+                b.external('lodash');
+            });
         });
     });
 });
 
-gulp.task('js:common', function() {
+gulp.task('js:common', function () {
     createBundle({
-            output: 'common.js',
-            extensions: ['.jsx'],
-            destination: './public/js'
-        },
-        function(b) {
-            b.require('react');
-            b.require('react-dom');
-            b.require('reflux');
-            b.require('jquery');
-            b.require('mockjs');
-            b.require('lodash');
-        });
+        output: 'common.js',
+        extensions: ['.jsx'],
+        destination: './public/js'
+    }, function (b) {
+        b.require('react');
+        b.require('react-dom');
+        b.require('reflux');
+        b.require('jquery');
+        b.require('mockjs');
+        b.require('lodash');
+    });
 });
 
-gulp.task('js:bundle', ['js:common', 'js:components'], function() {});
+gulp.task('js:lint', () => {
+    //config 檔在 .eslintrc
+    return gulp
+        .src(['src/**/*.js','src/**/*.jsx'])
+        .pipe(eslint())
+        // .pipe(eslint.result(function (result) {
+        //     if (result.warningCount || result.errorCount) {
+        //         notifier.notify({
+        //             'title': 'javascript lint alert',
+        //             'message': 'js lint  error: ' + result.errorCount + ' warring:' + result.warningCount,
+        //             'sound': true,
+        //             'wait': true
+        //         });
+        //     }
+        // }))
+        .pipe(eslint.format('codeframe'));
+});
 
-gulp.task('css:sass', function() {
-    gulp.src(['src/scss/**/*.scss', '!src/scss/**/_*.scss'])
-        .pipe(plumber({
-            errorHandle: onError
-        }))
-        .pipe(sass({
-            errLogToConsole: true,
-            outputStyle: 'compressed',
-            includePaths: ['src/scss/**/**']
-        }))
+gulp.task('js:bundle', [
+    'js:common', 'js:components'
+], function () {});
+
+gulp.task('css:sass', function () {
+    gulp
+        .src(['src/scss/**/*.scss', '!src/scss/**/_*.scss'])
+        .pipe(plumber({errorHandle: onError}))
+        .pipe(sass({errLogToConsole: true, includePaths: ['src/scss/**/**']}))
         .pipe(autoprefixer({
-            browsers: ["last 4 versions", "Firefox >= 27", "IE 8", "IE 9"],
+            browsers: [
+                "last 4 versions", "Firefox >= 27", "Blackberry >= 7", "IE 8", "IE 9"
+            ],
             cascade: false
         }))
         .pipe(gulp.dest(distPath + 'css/'))
         .pipe(livereload());
 });
 
-gulp.task('watch', function() {
+gulp.task('watch', function () {
     livereload.listen();
+    gulp.watch([
+        'src/scss/**/*.scss', '!src/scss/**/_*.scss'
+    ], ['css:sass']);
 
-    gulp.watch(['src/scss/**/*.scss', '!src/scss/**/_*.scss'], ['css:sass']);
+    gulp.watch(['src/**/*.js','src/**/*.jsx'], ['js:lint']);
 
-    gulp.watch(['views/**/*.jade'], function() {
-        gulp.src('views/**/*.jade')
+    gulp.watch(['views/**/*.jade'], function () {
+        gulp
+            .src('views/**/*.jade')
             .pipe(livereload())
             .pipe(notify('Reloading views'));
     });
 });
 
-gulp.task('set-dev-node-env', function() {
+gulp.task('set-dev-node-env', function () {
     return process.env.NODE_ENV = config.env = 'development';
 });
 
-gulp.task('set-prod-node-env', function() {
+gulp.task('set-prod-node-env', function () {
     return process.env.NODE_ENV = config.env = 'production';
 });
 
-gulp.task('build', ['js:bundle', 'css:sass', 'watch'], function() {
+gulp.task('build', [
+    'js:lint', 'js:bundle', 'css:sass', 'watch'
+], function () {
     nodemon({
         "script": 'server.js',
         "nodeArgs": ['--debug'],
-        "ignore": [
-            "public/**/*.*",
-            "test/**/*.*",
-            "src/**/*.*",
-            ".git",
-            "gulpfile.js",
-            "node_modules/**/node_modules"
-        ]
-    }).on('restart', function() {
-        gulp.src('server.js')
-            .pipe(livereload())
-            .pipe(notify('Reloading server, please wait...'));
-    });
+            "ignore": [
+                "public/**/*.*",
+                "test/**/*.*",
+                "src/**/*.*",
+                ".git",
+                "gulpfile.js",
+                "node_modules/**/node_modules"
+            ]
+    })
+        .on('restart', function () {
+            gulp
+                .src('server.js')
+                .pipe(livereload())
+                .pipe(notify('Reloading server, please wait...'));
+        });
 });
 
-gulp.task('develop', ['set-dev-node-env'], function() {
-    return runSequence(
-        'build'
-    );
+gulp.task('develop', ['set-dev-node-env'], function () {
+    return runSequence('build');
 });
 
-gulp.task('deploy', ['set-prod-node-env'], function() {
-    return runSequence(
-        'build'
-    );
+gulp.task('deploy', ['set-prod-node-env'], function () {
+    return runSequence('build');
 });

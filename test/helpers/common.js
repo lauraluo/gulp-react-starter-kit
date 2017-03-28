@@ -10,11 +10,10 @@ chai.use(sinonChai)
 
 //configure
 var virtualConsole = jsdom.createVirtualConsole()
-var commonjs = fs.readFileSync("./src/common.js", "utf-8").toString();
 var exposedProperties = ['window', 'navigator', 'document']
 
 jsdom.env({
-    html: '<!doctype html><head><script>' + commonjs + '</script></head><html><body><span class="test">this is test body</span></body></html>',
+    html: '<!doctype html><head><script></script></head><html><body><span class="test">this is test body</span></body></html>',
     virtualConsole: virtualConsole,
     features: {
         FetchExternalResources: ["link", "script"]

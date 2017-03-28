@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/* publish time Tuesday, March 28th, 2017, 6:18:02 PM */(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -306,71 +306,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _mockjs = require('mockjs');
-
-var _mockjs2 = _interopRequireDefault(_mockjs);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var MockComponent = _react2.default.createClass({
-	displayName: 'MockComponent',
-
-	getInitialState: function getInitialState() {
-		return {
-			initData: {}
-		};
-	},
-	componentWillMount: function componentWillMount() {
-		var _this = this;
-		_mockjs2.default.setup({
-			timeout: '200-600'
-		});
-
-		_mockjs2.default.mock(/\.json/, {
-			'list|1-10': [{
-				'id|+1': 1,
-				'email': '@EMAIL'
-			}]
-		});
-
-		$.ajax({
-			url: 'hello.json',
-			dataType: 'json'
-		}).done(function (data, status, jqXHR) {
-			_this.setState({ initData: data });
-		});
-	},
-	render: function render() {
-		//more than one child
-		var _this = this;
-		var childrenWithProps = _react2.default.Children.map(this.props.children, function (child) {
-			return _react2.default.cloneElement(child, {
-				initData: _this.state.initData
-
-			});
-		});
-
-		return _react2.default.createElement(
-			'div',
-			null,
-			childrenWithProps
-		);
-	}
-});
-
-exports.default = MockComponent;
-
-},{"mockjs":"mockjs","react":"react"}],7:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
 var _reactAddonsUpdate = require('react-addons-update');
 
 var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
@@ -441,14 +376,14 @@ var MyComponent = _react2.default.createClass({
 		var phaserJsonString = "{<%= sub %>}";
 		var phaserObject = {};
 		var _this = this;
-
+		var subPhaserString;
 		nodes.forEach(function (item, index) {
 			var compiled = _lodash2.default.template(phaserJsonString);
 			if (index == nodes.length - 1) {
-				var subPhaserString = '"' + item + '"' + ':' + '"' + e.target.value + '"';
+				subPhaserString = '"' + item + '"' + ':' + '"' + e.target.value + '"';
 				phaserJsonString = compiled({ 'sub': subPhaserString });
 			} else {
-				var subPhaserString = '"' + item + '"' + ':{<%= sub %>}';
+				subPhaserString = '"' + item + '"' + ':{<%= sub %>}';
 				phaserJsonString = compiled({ 'sub': subPhaserString });
 			}
 		});
@@ -525,29 +460,21 @@ var MyComponent = _react2.default.createClass({
 
 exports.default = MyComponent;
 
-},{"lodash":"lodash","react":"react","react-addons-update":3}],8:[function(require,module,exports){
+},{"lodash":"lodash","react":"react","react-addons-update":3}],7:[function(require,module,exports){
 'use strict';
 
 var _RootComponent = require('./components/login/RootComponent');
 
 var _RootComponent2 = _interopRequireDefault(_RootComponent);
 
-var _MockComponent = require('./components/login/MockComponent');
-
-var _MockComponent2 = _interopRequireDefault(_MockComponent);
-
 var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom2.default.render(_react2.default.createElement(_RootComponent2.default, null), document.getElementById('login'));
+_reactDom2.default.render(React.createElement(_RootComponent2.default, null), document.getElementById('login'));
 
-},{"./components/login/MockComponent":6,"./components/login/RootComponent":7,"react":"react","react-dom":"react-dom"}]},{},[8])
+},{"./components/login/RootComponent":6,"react-dom":"react-dom"}]},{},[7])
 
 //# sourceMappingURL=../js/maps/login.bundle.js.map

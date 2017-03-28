@@ -1,16 +1,13 @@
-import Reflux from "reflux"
-import React, { Component } from 'react'
-import $ from "jquery"
+import React from 'react'
 import { DialogActions } from "./Dialog"
 
-function DialogDemoContent(props) {
-  return <h1>Hello, {props.name}</h1>;
-}
+// function DialogDemoContent(props) {
+//   return <h1>Hello, {props.name}</h1>
+// }
 
 
 class DialogDemo extends React.Component {
     _openDialog() {
-        // var dialogContent = <DialogDemoContent name="SBBBB"/>
         DialogActions.showDialog("newName", "ddddd", "button", "confirmFn")
     }
 

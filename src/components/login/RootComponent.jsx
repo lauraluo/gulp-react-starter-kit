@@ -60,14 +60,14 @@ var MyComponent = React.createClass({
 		var phaserJsonString = "{<%= sub %>}";
 		var phaserObject = {};
 		var _this = this;
-
+		var subPhaserString;
 		nodes.forEach(function(item,index){
 			var compiled = _.template(phaserJsonString);
 			if(index == nodes.length -1 ){
-				var subPhaserString = '"'+item+'"'+':'+ '"'+e.target.value+'"';
+				subPhaserString = '"'+item+'"'+':'+ '"'+e.target.value+'"';
 				phaserJsonString = compiled({ 'sub': subPhaserString });
 			} else {
-				var subPhaserString = '"'+item+'"'+':{<%= sub %>}';
+				subPhaserString = '"'+item+'"'+':{<%= sub %>}';
 				phaserJsonString = compiled({ 'sub': subPhaserString });
 			}
 		});

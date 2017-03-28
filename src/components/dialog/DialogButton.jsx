@@ -1,3 +1,7 @@
+import React, {Component} from 'react'
+import { DialogActions } from "./Dialog"
+
+
 class DialogButton extends Component {
     
     _onClick () {

@@ -2,7 +2,6 @@ import { expect } from 'chai'
 import { shallow } from 'enzyme'
 import { spy } from 'sinon'
 import React from 'react'
-
 import TodoItem from './TodoItem'
 
 function assertItem(wrapper, text, done) {

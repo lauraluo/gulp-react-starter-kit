@@ -1,8 +1,8 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/* publish time Tuesday, March 28th, 2017, 6:18:02 PM */(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 
 var _react = require('react');
@@ -12,41 +12,41 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MyComponent = _react2.default.createClass({
-	displayName: 'MyComponent',
+    displayName: 'MyComponent',
 
-	propTypes: {
-		initData: _react2.default.PropTypes.array
-	},
-	render: function render() {
-		var _this = this;
-		var listItems = [];
+    propTypes: {
+        initData: _react2.default.PropTypes.array
+    },
+    render: function render() {
+        var _this = this;
+        var listItems = [];
 
-		if (_this.props.initData && _this.props.initData.list) {
-			listItems = _this.props.initData.list.map(function (item, i) {
-				return _react2.default.createElement(
-					'li',
-					{ key: i },
-					_react2.default.createElement(
-						'span',
-						null,
-						item.id
-					),
-					_react2.default.createElement(
-						'span',
-						null,
-						item.email
-					)
-				);
-			});
-		}
+        if (_this.props.initData && _this.props.initData.list) {
+            listItems = _this.props.initData.list.map(function (item, i) {
+                return _react2.default.createElement(
+                    'li',
+                    { key: i },
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        item.id
+                    ),
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        item.email
+                    )
+                );
+            });
+        }
 
-		return _react2.default.createElement(
-			'ul',
-			null,
-			listItems,
-			' lalalkkkkkkkuo1'
-		);
-	}
+        return _react2.default.createElement(
+            'ul',
+            null,
+            listItems,
+            ' lalalkkkkkkkuo1'
+        );
+    }
 });
 
 exports.default = MyComponent;

@@ -1,5 +1,5 @@
 import Reflux from "reflux"
-import React, {Component} from 'react'
+import React from 'react'
 import $ from "jquery"
 
 var DialogActions = Reflux.createActions([
