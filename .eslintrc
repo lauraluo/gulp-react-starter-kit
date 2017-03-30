@@ -6,6 +6,7 @@
         "mocha": true,
         "jest":true
     },
+    "parser": "babel-eslint",
     "parserOptions": {
         "sourceType": "module",
         "ecmaFeatures": {
@@ -13,14 +14,19 @@
         }
     },
     "globals": {
-        "React": true
+        "React": true,
+        "console":true
     },
     "plugins": [
-        "react"
+        "react",
+         "class-property"
     ],
     "rules": {
+        "no-console": "off",
         "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
-        "no-unused-vars": "warn",
+        "no-unused-vars": ["warn", { "args": "none" }],
+        "transform-class-properties": "off",
+        // "no-use-before-define": ["error", { "functions": true, "classes": true }],
         "react/jsx-uses-react": 1,
         "react/jsx-uses-vars": 1
         // "react/display-name": 1,

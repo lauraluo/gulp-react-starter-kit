@@ -18,11 +18,10 @@ var MockComponent = React.createClass({
             ]
         });
 
-        $
-            .ajax({url: 'hello.json', dataType: 'json'})
-            .done(function (data, status, jqXHR) {
-                _this.setState({initData: data});
-            });
+        $.ajax({url: 'hello.json', dataType: 'json'})
+        .done(function (data, status, jqXHR) {
+            _this.setState({initData: data});
+        });
     },
     render: function () {
         //more than one child

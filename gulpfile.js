@@ -10,7 +10,7 @@ var gulp = require('gulp'),
 var browserify = require('browserify');
 var gutil = require('gulp-util');
 var tap = require('gulp-tap');
-var buffer = require('gulp-buffer');
+// var buffer = require('gulp-buffer');
 var sourcemaps = require('gulp-sourcemaps');
 var watchify = require('watchify');
 var runSequence = require('run-sequence');
@@ -20,7 +20,7 @@ var extend = require('extend');
 var header = require('gulp-header');
 var dateFormat = require('dateformat');
 var notifier = require('node-notifier');
-
+var cache = require('gulp-cached');
 var sourcePath = "src/";
 var distPath = "public/";
 
@@ -70,7 +70,7 @@ var createBundle = (options, attachedWithBundle) => {
     let env = process.env.NODE_ENV;
     let isWatchify = process.env.IS_WATCHIFY;
     // console.log('NODE_ENV : ' + config.env);
-    
+
     const opts = assign({}, watchify.args, {
         entries: options.entries,
         extensions: options.extensions,
@@ -81,14 +81,18 @@ var createBundle = (options, attachedWithBundle) => {
 
     var b = browserify(opts);
 
+    b.transform("babelify", {
+        presets: [
+            "es2015", "react"
+        ],
+        "plugins": [ "transform-class-properties"]
+    });
+
     if (typeof attachedWithBundle == 'function') {
         attachedWithBundle(b);
     }
 
     const rebundle = () => b
-        .transform("babelify", {
-        presets: ["es2015", "react"]
-    })
         .bundle()
         .on('error', $.util.log.bind($.util, 'Browserify Error'))
         .pipe(source(options.output))
@@ -101,11 +105,13 @@ var createBundle = (options, attachedWithBundle) => {
                 ? true
                 : false
         }))
-        .pipe(gulpif(config.env === 'development', $.sourcemaps.write('../js/maps')))
-        .pipe(gulpif(config.env === 'production', $.uglify()))
-        .pipe(header('/* publish time ${Date} */', {
-            Date: dateFormat(new Date(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
-        }))
+        // .pipe($.sourcemaps.init({ loadMaps: true })) .pipe(gulpif(config.env ===
+        // 'development', $.sourcemaps.write('../js/maps')))
+        .pipe($.sourcemaps.write('../js/maps'))
+        // .pipe(gulpif(config.env === 'production', $.uglify()))
+        // .pipe(gulpif(config.env === 'production', $.header('/* publish time ${Date}
+        // */', {     Date: dateFormat(new Date(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
+        // })))
         .pipe(gulp.dest(options.destination))
         .pipe(livereload());
 
@@ -116,6 +122,7 @@ var createBundle = (options, attachedWithBundle) => {
     }
 
     return rebundle();
+
 };
 
 gulp.task('js:components', function () {
@@ -123,25 +130,25 @@ gulp.task('js:components', function () {
 
         if (err) 
             done(err);
+        
+        files
+            .forEach(function (entry) {
+                var outputName = path.basename(entry)
 
-        files.forEach(function (entry) {
-            var pathSplit = entry.split('/');
-            var outputName = path.basename(entry)
-
-            createBundle({
-                entries: [entry],
-                output: outputName,
-                extensions: ['.jsx'],
-                destination: './public/js'
-            }, function (b) {
-                b.external('react');
-                b.external('react-dom');
-                b.external('reflux');
-                b.external('jquery');
-                b.external('mockjs');
-                b.external('lodash');
+                createBundle({
+                    entries: [entry],
+                    output: outputName,
+                    extensions: ['.jsx'],
+                    destination: './public/js'
+                }, function (b) {
+                    b.external('react');
+                    b.external('react-dom');
+                    b.external('reflux');
+                    b.external('jquery');
+                    b.external('mockjs');
+                    b.external('lodash');
+                });
             });
-        });
     });
 });
 
@@ -158,24 +165,6 @@ gulp.task('js:common', function () {
         b.require('mockjs');
         b.require('lodash');
     });
-});
-
-gulp.task('js:lint', () => {
-    //config 檔在 .eslintrc
-    return gulp
-        .src(['src/**/*.js','src/**/*.jsx'])
-        .pipe(eslint())
-        // .pipe(eslint.result(function (result) {
-        //     if (result.warningCount || result.errorCount) {
-        //         notifier.notify({
-        //             'title': 'javascript lint alert',
-        //             'message': 'js lint  error: ' + result.errorCount + ' warring:' + result.warningCount,
-        //             'sound': true,
-        //             'wait': true
-        //         });
-        //     }
-        // }))
-        .pipe(eslint.format('codeframe'));
 });
 
 gulp.task('js:bundle', [
@@ -203,13 +192,51 @@ gulp.task('watch', function () {
         'src/scss/**/*.scss', '!src/scss/**/_*.scss'
     ], ['css:sass']);
 
-    gulp.watch(['src/**/*.js','src/**/*.jsx'], ['js:lint']);
+    // gulp.watch(['src/**/*.js','src/**/*.jsx'], ['js:lint']);
 
     gulp.watch(['views/**/*.jade'], function () {
         gulp
             .src('views/**/*.jade')
             .pipe(livereload())
             .pipe(notify('Reloading views'));
+    });
+});
+
+gulp.task('js:lint', () => {
+    //config 檔在 .eslintrc
+    return gulp
+        .src(['src/**/*.js', 'src/**/*.jsx'])
+        .pipe(eslint())
+        .pipe(eslint.format('codeframe'));
+});
+
+// gulp.task('cached-lint', () => {     // Read all js files within
+// test/fixtures     return gulp         .src([             'src/**/*.js',
+// 'src/**/*.jsx'         ])         .pipe(plumber({errorHandle: onError}))
+//    .pipe(cache('eslint'))         .pipe(eslint())
+// .pipe(eslint.format())         .pipe(eslint.result(result => {             if
+// (result.warningCount > 0 || result.errorCount > 0) {                 // If a
+// file has errors/warnings remove uncache it                 delete
+// cache.caches.eslint[path.resolve(result.filePath)];             }
+// })); }); gulp.task('cached-lint-watch', ['js:lint'], () => {     return
+// gulp.watch([         'src/**/*.js', 'src/**/*.jsx'     ], ['js:lint'], event
+// => {         if (event.type === 'deleted' && cache.caches.eslint) {
+//   delete cache.caches.eslint[event.path];         }     }); });
+
+gulp.task('lint-watch', () => {
+    // Lint only files that change after this watch starts
+    const lintAndPrint = eslint();
+    // format results with each file, since this stream won't end.
+    lintAndPrint.pipe(eslint.formatEach());
+
+    return gulp.watch([
+        'src/**/*.js', 'src/**/*.jsx'
+    ], event => {
+        if (event.type !== 'deleted') {
+            gulp
+                .src(event.path)
+                .pipe(lintAndPrint, {end: false});
+        }
     });
 });
 
@@ -222,7 +249,7 @@ gulp.task('set-prod-node-env', function () {
 });
 
 gulp.task('build', [
-    'js:lint', 'js:bundle', 'css:sass', 'watch'
+    'js:lint', 'js:bundle', 'css:sass', 'watch', 'lint-watch'
 ], function () {
     nodemon({
         "script": 'server.js',

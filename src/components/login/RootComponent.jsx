@@ -84,7 +84,7 @@ var MyComponent = React.createClass({
 
 	},
 	render: function () {
-		var _this = this;
+		// var _this = this;
 
 		return (
 			<form>
