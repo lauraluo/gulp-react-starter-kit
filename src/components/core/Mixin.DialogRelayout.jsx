@@ -13,12 +13,10 @@ function DialogRelayout(WrappedComponent, configs) {
     class MixiedComponentWithRelayout extends React.Component {
         constructor(props) {
             super(props);
-            this.state = {
-                data: null
-            };
         }
 
         _relayout() {
+            console.log("_relayout");
             var root = $(configs.root),
                 container = $(configs.container),
                 containerBody = $(configs.containerBody),
@@ -32,7 +30,7 @@ function DialogRelayout(WrappedComponent, configs) {
                 root.toggleClass(configs.modifierRootClass);
                 //prevent page scroll for mobile
                 container.css({position: 'absolute'});
-                //positioning main content container
+                //positioning container of main content in dialog background
                 containerBody.css({
                     position: 'fixed',
                     top: -(posY)
@@ -55,18 +53,6 @@ function DialogRelayout(WrappedComponent, configs) {
             console.log('relayout componentDidMount');
         }
 
-        componentWillReceiveProps() {
-            console.log('relayout componentWillReceiveProps');
-        }
-
-        shouldCompoentUpdate() {
-            console.log('relayout shouldCompoentUpdate');
-        }
-
-        componentWillUpdate() {
-            console.log('relayout componentWillUpdate');
-        }
-
         componentWillUnmount() {
             console.log('relayout componentWillUnmount');
         }
@@ -75,24 +61,12 @@ function DialogRelayout(WrappedComponent, configs) {
             console.log('relayout componentWillMount');
         }
 
-        componentDidUpdate() {
-            console.log('relayout componentDidUpdate');
-            // var root = $(configs.root),     container = $(configs.container),
-            // containerBody = $(configs.containerBody),     posY = $(document).scrollTop();
-            // if ((this.state.isOpened && root.hasClass(configs.toggleClass)) ||
-            // (!this.state.isOpened && !root.hasClass(configs.toggleClass)))     return; if
-            // (this.state.isOpened) {     //modifier root
-            // root.toggleClass(configs.modifierRootClass);     //prevent page scroll for
-            // mobile     container.css({position: 'absolute'});     //positioning main
-            // content container     containerBody.css({         position: 'fixed', top:
-            // -(posY)     }); } else { //reset all
-            // root.removeClass(configs.modifierRootClass); container.removeAttr('style');
-            //   containerBody.removeAttr('style'); $(document).scrollTop(posY); }
-        }
 
         render() {
             var props = Object.assign({}, this.props, {
-                ref: this.proc.bind(this),
+                ref: () => {
+                    this.proc.bind(this)
+                },
                 _relayout: this._relayout
             })
 

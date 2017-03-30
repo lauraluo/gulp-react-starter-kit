@@ -56,23 +56,29 @@ class Dialog extends Reflux.PureComponent {
         super(props);
         this.state = {}; // our store will add its own state to the component's
         this.store = DialogStore; // <- just assign the store class itself
-        this.Content = () => (<div>default view</div>);
+        this._BodyComponent = this
+            ._BodyComponent
+            .bind(this);
+        this._relayout = this
+            .props
+            ._relayout
+            .bind(this);
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        this.Content = nextState.content;
-    }
+    componentWillUpdate(nextProps, nextState) {}
 
     componentDidUpdate() {
-        this.props._relayout.bind(this);
+        this._relayout();
     }
 
-    _renderBody(extraPadding) {
-
-        var className = extraPadding ? 'dialog-box-body dialog-box-body-padding' : 'dialog-box-body';
+    _BodyComponent = (props) => {
+        var className = (props.extraPadding)
+            ? 'dialog-box-body dialog-box-body-padding'
+            : 'dialog-box-body';
+        var renderResult;
 
         if (typeof(this.state.content) === 'string') {
-            var content = this
+            let content = this
                 .state
                 .content
                 .split('\n')
@@ -81,54 +87,64 @@ class Dialog extends Reflux.PureComponent {
                         <span key={'dialog-item' + i}>{item}<br/></span>
                     );
                 });
-            return (
-                <div className={className} ref="content">
+
+            renderResult = (
+                <div className={className}>
                     {content}
                 </div>
             );
+
         } else {
-            return (
-                <div className={className} ref="content">
-                    {this.state.content}
+            var Content = this.state.content;
+            renderResult = (
+                <div className={className}>
+                    <Content/>
                 </div>
             );
         }
+
+        return renderResult;
     }
 
-    _renderFooter() {
+    _HeaderComponent = () => {
 
-        var classNames = ['dialog-button-block-primary'];
+    }
+    
+    _FooterComponent = () => {
 
-        if (this.state.buttons.length == 2) {
-            classNames = ['dialog-button-inline', 'dialog-button-inline-primary']
-        }
-
-        var buttons = this
-            .state
-            .buttons
-            .map(function (name, i) {
-
-                return (<DialogButton
-                    key={i}
-                    name={name}
-                    className={classNames[i]}
-                    callback={this.state.callbackFn[i]}/>);
-            }.bind(this));
-
-        return (
-            <div className="dialog-box-footer">{buttons}</div>
-        );
     }
 
     render() {
+
+        var dialogBoxClass = 'dialog-box';
         var dataAttr = {
             'data-dialog-name': this.state.dialogName
         };
+        var hasExtraPaddingWithBody = false;
 
+        switch (this.state.type) {
+            default:
+            case 0:
+                return false;
+            case 1:
+            case 2:
+                break;
+            case 3:
+                hasExtraPaddingWithBody = true;
+                break;
+            case 4:
+                dialogBoxClass += ' dialog-list'
+                break;
+            case 5:
+                dialogBoxClass += ' dialog-scene'
+                break;
+        }
 
         return (
             <div className="dialog" {...dataAttr}>
-                <this.Content/>
+                <this._BodyComponent
+                    ref={body => this.dialogBody = body}
+                    extraPadding={hasExtraPaddingWithBody}/>
             </div>
         )
     }
@@ -136,5 +152,4 @@ class Dialog extends Reflux.PureComponent {
 }
 
 var MixiedDialog = DialogRelayoutMixin(Dialog);
-
 export {MixiedDialog as default, DialogStore, DialogActions};

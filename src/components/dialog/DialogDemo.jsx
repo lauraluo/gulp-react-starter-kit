@@ -5,6 +5,9 @@ import $ from "jquery";
 class DialogDemo extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            data: "appData"
+        }
         // this.subView = this.subView.bind(this);
         this._openDialogA = this._openDialogA.bind(this);
         this._openDialogB = this._openDialogB.bind(this);
@@ -12,14 +15,12 @@ class DialogDemo extends React.Component {
         this.viewA = {};
         this.viewB = {};
     }
-
     submitCallback() {
         alert("lalalalal");
         console.log(this.viewA);
         // console.log(this.viewB);
         $(this.viewA).fadeOut();
     }
-
     _subViewA = () => {
         return (
             <div ref={(subView)=> { this.viewA = subView}}>
@@ -29,7 +30,6 @@ class DialogDemo extends React.Component {
             </div>
         )
     }
-
     _subViewB = () => {
         return (
             <div ref={(subView)=> {this.viewB = subView}}>
@@ -39,7 +39,6 @@ class DialogDemo extends React.Component {
             </div>
         )
     }
-
     _openDialogA() {
         DialogActions.showDialog("Dialog標題", this._subViewA, "button", "confirmFn");
     }

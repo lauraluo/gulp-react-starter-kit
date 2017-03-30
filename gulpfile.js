@@ -85,7 +85,7 @@ var createBundle = (options, attachedWithBundle) => {
         presets: [
             "es2015", "react"
         ],
-        "plugins": [ "transform-class-properties"]
+        "plugins": ["transform-class-properties"]
     });
 
     if (typeof attachedWithBundle == 'function') {
@@ -105,13 +105,13 @@ var createBundle = (options, attachedWithBundle) => {
                 ? true
                 : false
         }))
-        // .pipe($.sourcemaps.init({ loadMaps: true })) .pipe(gulpif(config.env ===
-        // 'development', $.sourcemaps.write('../js/maps')))
-        .pipe($.sourcemaps.write('../js/maps'))
-        // .pipe(gulpif(config.env === 'production', $.uglify()))
-        // .pipe(gulpif(config.env === 'production', $.header('/* publish time ${Date}
-        // */', {     Date: dateFormat(new Date(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
-        // })))
+        .pipe(gulpif(config.env === 'development', $.sourcemaps.write('../js/maps')))
+        // .pipe($.sourcemaps.init({ loadMaps: true }))
+        // .pipe($.sourcemaps.write('../js/maps'))
+        .pipe(gulpif(config.env === 'production', $.uglify()))
+        .pipe(gulpif(config.env === 'production', $.header('/* publish time ${Date}*/', {
+            Date: dateFormat(new Date(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
+        })))
         .pipe(gulp.dest(options.destination))
         .pipe(livereload());
 
@@ -210,19 +210,6 @@ gulp.task('js:lint', () => {
         .pipe(eslint.format('codeframe'));
 });
 
-// gulp.task('cached-lint', () => {     // Read all js files within
-// test/fixtures     return gulp         .src([             'src/**/*.js',
-// 'src/**/*.jsx'         ])         .pipe(plumber({errorHandle: onError}))
-//    .pipe(cache('eslint'))         .pipe(eslint())
-// .pipe(eslint.format())         .pipe(eslint.result(result => {             if
-// (result.warningCount > 0 || result.errorCount > 0) {                 // If a
-// file has errors/warnings remove uncache it                 delete
-// cache.caches.eslint[path.resolve(result.filePath)];             }
-// })); }); gulp.task('cached-lint-watch', ['js:lint'], () => {     return
-// gulp.watch([         'src/**/*.js', 'src/**/*.jsx'     ], ['js:lint'], event
-// => {         if (event.type === 'deleted' && cache.caches.eslint) {
-//   delete cache.caches.eslint[event.path];         }     }); });
-
 gulp.task('lint-watch', () => {
     // Lint only files that change after this watch starts
     const lintAndPrint = eslint();
@@ -263,12 +250,12 @@ gulp.task('build', [
                 "node_modules/**/node_modules"
             ]
     })
-        .on('restart', function () {
-            gulp
-                .src('server.js')
-                .pipe(livereload())
-                .pipe(notify('Reloading server, please wait...'));
-        });
+    .on('restart', function () {
+        gulp
+            .src('server.js')
+            .pipe(livereload())
+            .pipe(notify('Reloading server, please wait...'));
+    });
 });
 
 gulp.task('develop', ['set-dev-node-env'], function () {

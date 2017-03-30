@@ -38,17 +38,13 @@ function DialogRelayout(WrappedComponent, configs) {
         function MixiedComponentWithRelayout(props) {
             _classCallCheck(this, MixiedComponentWithRelayout);
 
-            var _this = _possibleConstructorReturn(this, (MixiedComponentWithRelayout.__proto__ || Object.getPrototypeOf(MixiedComponentWithRelayout)).call(this, props));
-
-            _this.state = {
-                data: null
-            };
-            return _this;
+            return _possibleConstructorReturn(this, (MixiedComponentWithRelayout.__proto__ || Object.getPrototypeOf(MixiedComponentWithRelayout)).call(this, props));
         }
 
         _createClass(MixiedComponentWithRelayout, [{
             key: '_relayout',
             value: function _relayout() {
+                console.log("_relayout");
                 var root = (0, _jquery2.default)(configs.root),
                     container = (0, _jquery2.default)(configs.container),
                     containerBody = (0, _jquery2.default)(configs.containerBody),
@@ -61,7 +57,7 @@ function DialogRelayout(WrappedComponent, configs) {
                     root.toggleClass(configs.modifierRootClass);
                     //prevent page scroll for mobile
                     container.css({ position: 'absolute' });
-                    //positioning main content container
+                    //positioning container of main content in dialog background
                     containerBody.css({
                         position: 'fixed',
                         top: -posY
@@ -85,21 +81,6 @@ function DialogRelayout(WrappedComponent, configs) {
                 console.log('relayout componentDidMount');
             }
         }, {
-            key: 'componentWillReceiveProps',
-            value: function componentWillReceiveProps() {
-                console.log('relayout componentWillReceiveProps');
-            }
-        }, {
-            key: 'shouldCompoentUpdate',
-            value: function shouldCompoentUpdate() {
-                console.log('relayout shouldCompoentUpdate');
-            }
-        }, {
-            key: 'componentWillUpdate',
-            value: function componentWillUpdate() {
-                console.log('relayout componentWillUpdate');
-            }
-        }, {
             key: 'componentWillUnmount',
             value: function componentWillUnmount() {
                 console.log('relayout componentWillUnmount');
@@ -110,26 +91,14 @@ function DialogRelayout(WrappedComponent, configs) {
                 console.log('relayout componentWillMount');
             }
         }, {
-            key: 'componentDidUpdate',
-            value: function componentDidUpdate() {
-                console.log('relayout componentDidUpdate');
-                // var root = $(configs.root),     container = $(configs.container),
-                // containerBody = $(configs.containerBody),     posY = $(document).scrollTop();
-                // if ((this.state.isOpened && root.hasClass(configs.toggleClass)) ||
-                // (!this.state.isOpened && !root.hasClass(configs.toggleClass)))     return; if
-                // (this.state.isOpened) {     //modifier root
-                // root.toggleClass(configs.modifierRootClass);     //prevent page scroll for
-                // mobile     container.css({position: 'absolute'});     //positioning main
-                // content container     containerBody.css({         position: 'fixed', top:
-                // -(posY)     }); } else { //reset all
-                // root.removeClass(configs.modifierRootClass); container.removeAttr('style');
-                //   containerBody.removeAttr('style'); $(document).scrollTop(posY); }
-            }
-        }, {
             key: 'render',
             value: function render() {
+                var _this2 = this;
+
                 var props = Object.assign({}, this.props, {
-                    ref: this.proc.bind(this),
+                    ref: function ref() {
+                        _this2.proc.bind(_this2);
+                    },
                     _relayout: this._relayout
                 });
 
@@ -240,92 +209,60 @@ var Dialog = function (_Reflux$PureComponent) {
 
         var _this2 = _possibleConstructorReturn(this, (Dialog.__proto__ || Object.getPrototypeOf(Dialog)).call(this, props));
 
+        _initialiseProps.call(_this2);
+
         _this2.state = {}; // our store will add its own state to the component's
         _this2.store = DialogStore; // <- just assign the store class itself
-        _this2.Content = function () {
-            return _react2.default.createElement(
-                "div",
-                null,
-                "default view"
-            );
-        };
+        _this2._BodyComponent = _this2._BodyComponent.bind(_this2);
+        _this2._relayout = _this2.props._relayout.bind(_this2);
         return _this2;
     }
 
     _createClass(Dialog, [{
         key: "componentWillUpdate",
-        value: function componentWillUpdate(nextProps, nextState) {
-            this.Content = nextState.content;
-        }
+        value: function componentWillUpdate(nextProps, nextState) {}
     }, {
         key: "componentDidUpdate",
         value: function componentDidUpdate() {
-            this.props._relayout.bind(this);
-        }
-    }, {
-        key: "_renderBody",
-        value: function _renderBody(extraPadding) {
-
-            var className = extraPadding ? 'dialog-box-body dialog-box-body-padding' : 'dialog-box-body';
-
-            if (typeof this.state.content === 'string') {
-                var content = this.state.content.split('\n').map(function (item, i) {
-                    return _react2.default.createElement(
-                        "span",
-                        { key: 'dialog-item' + i },
-                        item,
-                        _react2.default.createElement("br", null)
-                    );
-                });
-                return _react2.default.createElement(
-                    "div",
-                    { className: className, ref: "content" },
-                    content
-                );
-            } else {
-                return _react2.default.createElement(
-                    "div",
-                    { className: className, ref: "content" },
-                    this.state.content
-                );
-            }
-        }
-    }, {
-        key: "_renderFooter",
-        value: function _renderFooter() {
-
-            var classNames = ['dialog-button-block-primary'];
-
-            if (this.state.buttons.length == 2) {
-                classNames = ['dialog-button-inline', 'dialog-button-inline-primary'];
-            }
-
-            var buttons = this.state.buttons.map(function (name, i) {
-
-                return _react2.default.createElement(_DialogButton2.default, {
-                    key: i,
-                    name: name,
-                    className: classNames[i],
-                    callback: this.state.callbackFn[i] });
-            }.bind(this));
-
-            return _react2.default.createElement(
-                "div",
-                { className: "dialog-box-footer" },
-                buttons
-            );
+            this._relayout();
         }
     }, {
         key: "render",
         value: function render() {
+            var _this3 = this;
+
+            var dialogBoxClass = 'dialog-box';
             var dataAttr = {
                 'data-dialog-name': this.state.dialogName
             };
+            var hasExtraPaddingWithBody = false;
+
+            switch (this.state.type) {
+                default:
+                case 0:
+                    return false;
+                case 1:
+                case 2:
+                    break;
+                case 3:
+                    hasExtraPaddingWithBody = true;
+                    break;
+                case 4:
+                    dialogBoxClass += ' dialog-list';
+                    break;
+                case 5:
+                    dialogBoxClass += ' dialog-scene';
+                    break;
+            }
 
             return _react2.default.createElement(
                 "div",
                 _extends({ className: "dialog" }, dataAttr),
-                _react2.default.createElement(this.Content, null)
+                _react2.default.createElement(this._BodyComponent, {
+                    ref: function ref(body) {
+                        return _this3.dialogBody = body;
+                    },
+                    extraPadding: hasExtraPaddingWithBody })
             );
         }
     }]);
@@ -333,8 +270,46 @@ var Dialog = function (_Reflux$PureComponent) {
     return Dialog;
 }(_reflux2.default.PureComponent);
 
-var MixiedDialog = (0, _Mixin2.default)(Dialog);
+var _initialiseProps = function _initialiseProps() {
+    var _this4 = this;
 
+    this._BodyComponent = function (props) {
+        var className = props.extraPadding ? 'dialog-box-body dialog-box-body-padding' : 'dialog-box-body';
+        var renderResult;
+
+        if (typeof _this4.state.content === 'string') {
+            var content = _this4.state.content.split('\n').map(function (item, i) {
+                return _react2.default.createElement(
+                    "span",
+                    { key: 'dialog-item' + i },
+                    item,
+                    _react2.default.createElement("br", null)
+                );
+            });
+
+            renderResult = _react2.default.createElement(
+                "div",
+                { className: className },
+                content
+            );
+        } else {
+            var Content = _this4.state.content;
+            renderResult = _react2.default.createElement(
+                "div",
+                { className: className },
+                _react2.default.createElement(Content, null)
+            );
+        }
+
+        return renderResult;
+    };
+
+    this._HeaderComponent = function () {};
+
+    this._FooterComponent = function () {};
+};
+
+var MixiedDialog = (0, _Mixin2.default)(Dialog);
 exports.default = MixiedDialog;
 exports.DialogStore = DialogStore;
 exports.DialogActions = DialogActions;
@@ -434,7 +409,6 @@ var DialogDemo = function (_React$Component) {
     function DialogDemo(props) {
         _classCallCheck(this, DialogDemo);
 
-        // this.subView = this.subView.bind(this);
         var _this = _possibleConstructorReturn(this, (DialogDemo.__proto__ || Object.getPrototypeOf(DialogDemo)).call(this, props));
 
         _this._subViewA = function () {
@@ -477,6 +451,10 @@ var DialogDemo = function (_React$Component) {
             );
         };
 
+        _this.state = {
+            data: "appData"
+        };
+        // this.subView = this.subView.bind(this);
         _this._openDialogA = _this._openDialogA.bind(_this);
         _this._openDialogB = _this._openDialogB.bind(_this);
         _this.submitCallback = _this.submitCallback.bind(_this);
