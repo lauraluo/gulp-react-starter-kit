@@ -63,6 +63,7 @@ function DialogRelayout(WrappedComponent, configs) {
 
 
         render() {
+
             var props = Object.assign({}, this.props, {
                 ref: () => {
                     this.proc.bind(this)

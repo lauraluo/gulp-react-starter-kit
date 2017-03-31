@@ -26,7 +26,10 @@ class DialogStore extends Reflux.Store {
             title: '',
             content: '',
             buttons: [],
-            callbackFn: []
+            didOpened: null,
+            willOpen: null,
+            didClosed: null
+
         };
         this.listenables = DialogActions;
     }
@@ -40,15 +43,77 @@ class DialogStore extends Reflux.Store {
         this.trigger(this.state);
     }
 
-    onShowDialog(title, content, button, confirmFn) {
+    _checkConfigsInterface = (configs) => {
+        var result = true;
+
+        Object
+            .keys(configs)
+            .map((key, index) => {
+                var value = configs[key];
+
+                switch (key) {
+                    case "title":
+                        if (typeof value !== "string") {
+                            console.error("title should be a string");
+                            result = false;
+                        }
+                        break;
+                    case "content":
+                        if (typeof value !== "function" && typeof value !== "string") {
+                            console.error("content should be a functional component or a string");
+                            result = false;
+                        }
+                        break;
+                    case "buttons":
+                        if (Object.prototype.toString.call(value) !== '[object Array]') {
+                            console.error("buttons should be an Array");
+                            result = false;
+                        }
+                        break;
+                    case "didOpened":
+                    case "willOpen":
+                    case "didClosed":
+                        if (typeof value !== "function") {
+                            console.error("callback should be an function");
+                            result = false;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            });
+
+        return result;
+
+    }
+
+    onShowDialog = (configs = {
+        title: "",
+        content: {},
+        buttons: [],
+        didOpened: null
+    }) => {
+
+        if (!this._checkConfigsInterface(configs)) {
+            return;
+        }
+
         this.state.type = 1;
-        this.state.title = title;
-        this.state.content = content;
-        this.state.buttons = [button];
-        this.state.callbackFn = [confirmFn];
+        this.state.title = configs.title;
+        this.state.content = configs.content;
+        this.state.buttons = configs.buttons;
+        this.state.didOpened = configs.didOpened;
         this._updateState();
     }
 
+    onHideDialog = () => {
+        this.state.type = 0;
+        this.state.title = '';
+        this.state.content = '';
+        this.state.buttons = [];
+
+        this._updateState();
+    }
 }
 
 class Dialog extends Reflux.PureComponent {
@@ -67,7 +132,11 @@ class Dialog extends Reflux.PureComponent {
 
     componentWillUpdate(nextProps, nextState) {}
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState) {
+        console.log(prevState);
+        if (this.state.isOpened && !prevState.isOpened && typeof this.state.didOpened == "function") {
+            this.state.didOpened();
+        }
         this._relayout();
     }
 
@@ -107,11 +176,39 @@ class Dialog extends Reflux.PureComponent {
     }
 
     _HeaderComponent = () => {
+        var rendeResult = {};
+        if (this.state.title && this.state.title.length > 0) {
+            rendeResult = (
+                <header>{this.state.title}</header>
+            );
 
+        }
+        return rendeResult;
     }
-    
-    _FooterComponent = () => {
 
+    _FooterComponent = (props) => {
+        var classNames = ['dialog-button-block-primary'];
+
+        if (this.state.buttons.length == 2) {
+            classNames = ['dialog-button-inline', 'dialog-button-inline-primary']
+        }
+
+        var buttons = Object
+            .keys(this.state.buttons)
+            .map((key, i) => {
+                var item = this.state.buttons[i];
+                return (<DialogButton
+                    key={i}
+                    name={item.text}
+                    className={classNames[i]
+                    ? classNames[i]
+                    : ""}
+                    callback={item.callback}/>)
+            })
+
+        return (
+            <div className="dialog-box-footer">{buttons}</div>
+        )
     }
 
     render() {
@@ -142,13 +239,19 @@ class Dialog extends Reflux.PureComponent {
 
         return (
             <div className="dialog" {...dataAttr}>
-                <this._BodyComponent
-                    ref={body => this.dialogBody = body}
-                    extraPadding={hasExtraPaddingWithBody}/>
+                <div className="dialog-backdrop"></div>
+                <div className={dialogBoxClass}>
+                    <div className="dialog-container">
+                        <this._HeaderComponent ref={header => this.dialogHeader = header}/>
+                        <this._BodyComponent
+                            ref={body => this.dialogBody = body}
+                            extraPadding={hasExtraPaddingWithBody}/>
+                        <this._FooterComponent ref={footer => this.dialogFooter = footer}/>
+                    </div>
+                </div>
             </div>
         )
     }
-
 }
 
 var MixiedDialog = DialogRelayoutMixin(Dialog);

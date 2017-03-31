@@ -163,6 +163,77 @@ var DialogStore = function (_Reflux$Store) {
 
         var _this = _possibleConstructorReturn(this, (DialogStore.__proto__ || Object.getPrototypeOf(DialogStore)).call(this, props));
 
+        _this._checkConfigsInterface = function (configs) {
+            var result = true;
+
+            Object.keys(configs).map(function (key, index) {
+                var value = configs[key];
+
+                switch (key) {
+                    case "title":
+                        if (typeof value !== "string") {
+                            console.error("title should be a string");
+                            result = false;
+                        }
+                        break;
+                    case "content":
+                        if (typeof value !== "function" && typeof value !== "string") {
+                            console.error("content should be a functional component or a string");
+                            result = false;
+                        }
+                        break;
+                    case "buttons":
+                        if (Object.prototype.toString.call(value) !== '[object Array]') {
+                            console.error("buttons should be an Array");
+                            result = false;
+                        }
+                        break;
+                    case "didOpened":
+                    case "willOpen":
+                    case "didClosed":
+                        if (typeof value !== "function") {
+                            console.error("callback should be an function");
+                            result = false;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            });
+
+            return result;
+        };
+
+        _this.onShowDialog = function () {
+            var configs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+                title: "",
+                content: {},
+                buttons: [],
+                didOpened: null
+            };
+
+
+            if (!_this._checkConfigsInterface(configs)) {
+                return;
+            }
+
+            _this.state.type = 1;
+            _this.state.title = configs.title;
+            _this.state.content = configs.content;
+            _this.state.buttons = configs.buttons;
+            _this.state.didOpened = configs.didOpened;
+            _this._updateState();
+        };
+
+        _this.onHideDialog = function () {
+            _this.state.type = 0;
+            _this.state.title = '';
+            _this.state.content = '';
+            _this.state.buttons = [];
+
+            _this._updateState();
+        };
+
         _this.state = {
             isOpened: false,
             posY: 0,
@@ -170,7 +241,10 @@ var DialogStore = function (_Reflux$Store) {
             title: '',
             content: '',
             buttons: [],
-            callbackFn: []
+            didOpened: null,
+            willOpen: null,
+            didClosed: null
+
         };
         _this.listenables = DialogActions;
         return _this;
@@ -185,16 +259,6 @@ var DialogStore = function (_Reflux$Store) {
 
             this.state.isOpened = this.state.type != 0;
             this.trigger(this.state);
-        }
-    }, {
-        key: "onShowDialog",
-        value: function onShowDialog(title, content, button, confirmFn) {
-            this.state.type = 1;
-            this.state.title = title;
-            this.state.content = content;
-            this.state.buttons = [button];
-            this.state.callbackFn = [confirmFn];
-            this._updateState();
         }
     }]);
 
@@ -223,7 +287,11 @@ var Dialog = function (_Reflux$PureComponent) {
         value: function componentWillUpdate(nextProps, nextState) {}
     }, {
         key: "componentDidUpdate",
-        value: function componentDidUpdate() {
+        value: function componentDidUpdate(prevProps, prevState) {
+            console.log(prevState);
+            if (this.state.isOpened && !prevState.isOpened && typeof this.state.didOpened == "function") {
+                this.state.didOpened();
+            }
             this._relayout();
         }
     }, {
@@ -258,11 +326,26 @@ var Dialog = function (_Reflux$PureComponent) {
             return _react2.default.createElement(
                 "div",
                 _extends({ className: "dialog" }, dataAttr),
-                _react2.default.createElement(this._BodyComponent, {
-                    ref: function ref(body) {
-                        return _this3.dialogBody = body;
-                    },
-                    extraPadding: hasExtraPaddingWithBody })
+                _react2.default.createElement("div", { className: "dialog-backdrop" }),
+                _react2.default.createElement(
+                    "div",
+                    { className: dialogBoxClass },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "dialog-container" },
+                        _react2.default.createElement(this._HeaderComponent, { ref: function ref(header) {
+                                return _this3.dialogHeader = header;
+                            } }),
+                        _react2.default.createElement(this._BodyComponent, {
+                            ref: function ref(body) {
+                                return _this3.dialogBody = body;
+                            },
+                            extraPadding: hasExtraPaddingWithBody }),
+                        _react2.default.createElement(this._FooterComponent, { ref: function ref(footer) {
+                                return _this3.dialogFooter = footer;
+                            } })
+                    )
+                )
             );
         }
     }]);
@@ -304,9 +387,40 @@ var _initialiseProps = function _initialiseProps() {
         return renderResult;
     };
 
-    this._HeaderComponent = function () {};
+    this._HeaderComponent = function () {
+        var rendeResult = {};
+        if (_this4.state.title && _this4.state.title.length > 0) {
+            rendeResult = _react2.default.createElement(
+                "header",
+                null,
+                _this4.state.title
+            );
+        }
+        return rendeResult;
+    };
 
-    this._FooterComponent = function () {};
+    this._FooterComponent = function (props) {
+        var classNames = ['dialog-button-block-primary'];
+
+        if (_this4.state.buttons.length == 2) {
+            classNames = ['dialog-button-inline', 'dialog-button-inline-primary'];
+        }
+
+        var buttons = Object.keys(_this4.state.buttons).map(function (key, i) {
+            var item = _this4.state.buttons[i];
+            return _react2.default.createElement(_DialogButton2.default, {
+                key: i,
+                name: item.text,
+                className: classNames[i] ? classNames[i] : "",
+                callback: item.callback });
+        });
+
+        return _react2.default.createElement(
+            "div",
+            { className: "dialog-box-footer" },
+            buttons
+        );
+    };
 };
 
 var MixiedDialog = (0, _Mixin2.default)(Dialog);
@@ -340,27 +454,28 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DialogButton = function (_Component) {
     _inherits(DialogButton, _Component);
 
-    function DialogButton() {
+    function DialogButton(props) {
         _classCallCheck(this, DialogButton);
 
-        return _possibleConstructorReturn(this, (DialogButton.__proto__ || Object.getPrototypeOf(DialogButton)).apply(this, arguments));
-    }
+        var _this = _possibleConstructorReturn(this, (DialogButton.__proto__ || Object.getPrototypeOf(DialogButton)).call(this, props));
 
-    _createClass(DialogButton, [{
-        key: "_onClick",
-        value: function _onClick() {
+        _this._onClick = function () {
 
             var isOverride = false;
 
-            if (this.props.callback) {
-                isOverride = this.props.callback();
+            if (_this.props.callback && typeof _this.props.callback == "function") {
+                isOverride = _this.props.callback();
             }
 
             if (!isOverride && _Dialog.DialogActions) {
                 _Dialog.DialogActions.hideDialog();
             }
-        }
-    }, {
+        };
+
+        return _this;
+    }
+
+    _createClass(DialogButton, [{
         key: "render",
         value: function render() {
             return _react2.default.createElement(
@@ -411,77 +526,60 @@ var DialogDemo = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (DialogDemo.__proto__ || Object.getPrototypeOf(DialogDemo)).call(this, props));
 
-        _this._subViewA = function () {
+        _this._openCallback = function () {
+            console.log("_openCallback");
+            (0, _jquery2.default)(_this.subView).find('input').focus();
+        };
+
+        _this._submitCallback = function () {
+            console.log("submit");
+            alert((0, _jquery2.default)(_this.subView).find('input').val());
+            return true;
+        };
+
+        _this._subView = function () {
             return _react2.default.createElement(
                 "div",
                 { ref: function ref(subView) {
-                        _this.viewA = subView;
+                        _this.subView = subView;
                     } },
                 _react2.default.createElement(
                     "p",
                     { className: "title" },
-                    "sub view A"
+                    "Sub view of DialogDemo APP"
                 ),
                 _react2.default.createElement("input", { type: "text" }),
                 _react2.default.createElement(
                     "button",
-                    { className: "btn", onClick: _this.submitCallback },
+                    { className: "btn", onClick: _this._submitCallback },
                     "\u9001\u51FA\u9215"
                 )
             );
         };
 
-        _this._subViewB = function () {
-            return _react2.default.createElement(
-                "div",
-                { ref: function ref(subView) {
-                        _this.viewB = subView;
-                    } },
-                _react2.default.createElement(
-                    "p",
-                    { className: "title" },
-                    "sub view B"
-                ),
-                _react2.default.createElement("input", { type: "text" }),
-                _react2.default.createElement(
-                    "button",
-                    { className: "btn", onClick: _this.submitCallback },
-                    "\u9001\u51FA\u9215"
-                )
-            );
+        _this._openDialog = function () {
+            _Dialog.DialogActions.showDialog({
+                title: "Dialog標題",
+                content: _this._subView,
+                didOpened: _this._openCallback,
+                buttons: [{
+                    text: "取消",
+                    callback: _Dialog.DialogActions.hideDialog
+                }, {
+                    text: "送出鈕",
+                    callback: _this._submitCallback
+                }]
+            });
         };
 
         _this.state = {
             data: "appData"
         };
-        // this.subView = this.subView.bind(this);
-        _this._openDialogA = _this._openDialogA.bind(_this);
-        _this._openDialogB = _this._openDialogB.bind(_this);
-        _this.submitCallback = _this.submitCallback.bind(_this);
-        _this.viewA = {};
-        _this.viewB = {};
+        _this.subView = {};
         return _this;
     }
 
     _createClass(DialogDemo, [{
-        key: "submitCallback",
-        value: function submitCallback() {
-            alert("lalalalal");
-            console.log(this.viewA);
-            // console.log(this.viewB);
-            (0, _jquery2.default)(this.viewA).fadeOut();
-        }
-    }, {
-        key: "_openDialogA",
-        value: function _openDialogA() {
-            _Dialog.DialogActions.showDialog("Dialog標題", this._subViewA, "button", "confirmFn");
-        }
-    }, {
-        key: "_openDialogB",
-        value: function _openDialogB() {
-            _Dialog.DialogActions.showDialog("Dialog標題", this._subViewB, "button", "confirmFn");
-        }
-    }, {
         key: "render",
         value: function render() {
             return _react2.default.createElement(
@@ -489,13 +587,8 @@ var DialogDemo = function (_React$Component) {
                 { className: "dialogDemo" },
                 _react2.default.createElement(
                     "button",
-                    { className: "btn", onClick: this._openDialogA },
-                    "\u6253\u958BdialogA"
-                ),
-                _react2.default.createElement(
-                    "button",
-                    { className: "btn", onClick: this._openDialogB },
-                    "\u6253\u958BdialogB"
+                    { className: "btn", onClick: this._openDialog },
+                    "\u6253\u958Bdialog"
                 )
             );
         }

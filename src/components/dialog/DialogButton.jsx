@@ -1,17 +1,18 @@
 import React, {Component} from 'react'
-import { DialogActions } from "./Dialog"
-
+import {DialogActions} from "./Dialog"
 
 class DialogButton extends Component {
-    
-    _onClick () {
+    constructor(props) {
+        super(props);
+    }
+    _onClick = () => {
 
         var isOverride = false;
 
-        if (this.props.callback) {
+        if (this.props.callback && typeof this.props.callback  == "function") {
             isOverride = this.props.callback();
         }
-        
+
         if (!isOverride && DialogActions) {
             DialogActions.hideDialog();
         }
@@ -19,7 +20,7 @@ class DialogButton extends Component {
 
     render() {
         return (
-            <div className={this.props.className} onClick={this._onClick }>{this.props.name}</div>
+            <div className={this.props.className} onClick={this._onClick}>{this.props.name}</div>
         );
     }
 }

@@ -8,50 +8,52 @@ class DialogDemo extends React.Component {
         this.state = {
             data: "appData"
         }
-        // this.subView = this.subView.bind(this);
-        this._openDialogA = this._openDialogA.bind(this);
-        this._openDialogB = this._openDialogB.bind(this);
-        this.submitCallback = this.submitCallback.bind(this);
-        this.viewA = {};
-        this.viewB = {};
-    }
-    submitCallback() {
-        alert("lalalalal");
-        console.log(this.viewA);
-        // console.log(this.viewB);
-        $(this.viewA).fadeOut();
-    }
-    _subViewA = () => {
-        return (
-            <div ref={(subView)=> { this.viewA = subView}}>
-                <p className='title'>sub view A</p>
-                <input type="text"/>
-                <button className='btn' onClick={this.submitCallback}>送出鈕</button>
-            </div>
-        )
-    }
-    _subViewB = () => {
-        return (
-            <div ref={(subView)=> {this.viewB = subView}}>
-                <p className='title'>sub view B</p>
-                <input type="text"/>
-                <button className='btn' onClick={this.submitCallback}>送出鈕</button>
-            </div>
-        )
-    }
-    _openDialogA() {
-        DialogActions.showDialog("Dialog標題", this._subViewA, "button", "confirmFn");
+        this.subView = {};
     }
 
-    _openDialogB() {
-        DialogActions.showDialog("Dialog標題", this._subViewB, "button", "confirmFn");
+    _openCallback = () => {
+        console.log("_openCallback");
+        $(this.subView).find('input').focus();
+    }
+    
+    _submitCallback = () => {
+        console.log("submit");
+        alert($(this.subView).find('input').val());
+        return true;
+    }
+
+    _subView = () => {
+        return (
+            <div ref={(subView)=> { this.subView = subView}}>
+                <p className='title'>Sub view of DialogDemo APP</p>
+                <input type="text"/>
+                <button className='btn' onClick={this._submitCallback}>送出鈕</button>
+            </div>
+        )
+    }
+
+    _openDialog = () => {
+        DialogActions.showDialog({
+            title: "Dialog標題",
+            content: this._subView,
+            didOpened: this._openCallback,
+            buttons:  [
+                {
+                    text: "取消",
+                    callback: DialogActions.hideDialog
+                },
+                {
+                    text: "送出鈕",
+                    callback: this._submitCallback
+                }
+            ]
+        });
     }
 
     render() {
         return (
             <div className='dialogDemo'>
-                <button className='btn' onClick={this._openDialogA}>打開dialogA</button>
-                <button className='btn' onClick={this._openDialogB}>打開dialogB</button>
+                <button className='btn' onClick={this._openDialog}>打開dialog</button>
             </div >
         )
     }
