@@ -30,7 +30,7 @@ class DialogDemo extends React.Component {
     _subView = () => {
         return (
             <div ref={(subView)=> { this.subView = subView}}>
-                <p className='title'>Sub view of DialogDemo APP</p>
+                <p className='title'>Sub view of DialogDemo APP abcd</p>
                 <p>{this.state.data}</p>
                 <input type="text"/>
                 <button className='btn' onClick={this._submitCallback}>送出鈕</button>
@@ -59,7 +59,7 @@ class DialogDemo extends React.Component {
     render() {
         return (
             <div className='dialogDemo'>
-                <button className='btn' onClick={this._openDialog}>打開dialog</button>
+                <button className='btn' onClick={this._openDialog}>打開dialogavcd</button>
             </div >
         )
     }
