@@ -119,7 +119,7 @@ exports.default = DialogRelayout;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.DialogActions = exports.DialogStore = exports.default = undefined;
+exports.DialogActions = exports.DialogStore = exports.DialogCore = exports.default = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -425,6 +425,7 @@ var _initialiseProps = function _initialiseProps() {
 
 var MixiedDialog = (0, _Mixin2.default)(Dialog);
 exports.default = MixiedDialog;
+exports.DialogCore = Dialog;
 exports.DialogStore = DialogStore;
 exports.DialogActions = DialogActions;
 
@@ -537,6 +538,12 @@ var DialogDemo = function (_React$Component) {
             return true;
         };
 
+        _this._submitCallback2 = function () {
+            console.log("submit");
+            _this.setState({ data: "aadffd" });
+            return true;
+        };
+
         _this._subView = function () {
             return _react2.default.createElement(
                 "div",
@@ -547,6 +554,11 @@ var DialogDemo = function (_React$Component) {
                     "p",
                     { className: "title" },
                     "Sub view of DialogDemo APP"
+                ),
+                _react2.default.createElement(
+                    "p",
+                    null,
+                    _this.state.data
                 ),
                 _react2.default.createElement("input", { type: "text" }),
                 _react2.default.createElement(
@@ -564,7 +576,7 @@ var DialogDemo = function (_React$Component) {
                 didOpened: _this._openCallback,
                 buttons: [{
                     text: "取消",
-                    callback: _Dialog.DialogActions.hideDialog
+                    callback: _this._submitCallback2
                 }, {
                     text: "送出鈕",
                     callback: _this._submitCallback

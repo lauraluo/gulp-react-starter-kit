@@ -21,11 +21,17 @@ class DialogDemo extends React.Component {
         alert($(this.subView).find('input').val());
         return true;
     }
-
+    
+    _submitCallback2 = () => {
+        console.log("submit");
+        this.setState({data: "aadffd"});
+        return true;
+    }
     _subView = () => {
         return (
             <div ref={(subView)=> { this.subView = subView}}>
                 <p className='title'>Sub view of DialogDemo APP</p>
+                <p>{this.state.data}</p>
                 <input type="text"/>
                 <button className='btn' onClick={this._submitCallback}>送出鈕</button>
             </div>
@@ -40,7 +46,7 @@ class DialogDemo extends React.Component {
             buttons:  [
                 {
                     text: "取消",
-                    callback: DialogActions.hideDialog
+                    callback: this._submitCallback2
                 },
                 {
                     text: "送出鈕",

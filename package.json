@@ -6,7 +6,14 @@
   "scripts": {
     "develop": "gulp develop",
     "deploy": "gulp deploy",
-    "test": "mocha --compilers js:babel-register ./test/helpers/common.js './src/**/*.spec.*'"
+    "test": "jest --coverage"
+  },
+  "jest": {
+    "verbose": true,
+    "unmockedModulePathPatterns": [
+      "node_modules/react/",
+      "node_modules/enzyme/"
+    ]
   },
   "author": "laura.luo",
   "license": "ISC",
@@ -77,6 +84,7 @@
     "react-addons-test-utils": "^15.4.2",
     "react-addons-update": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-test-renderer": "^15.4.2",
     "reactify": "^1.1.1",
     "run-sequence": "^1.2.2",
     "selenium-standalone": "^6.0.1",

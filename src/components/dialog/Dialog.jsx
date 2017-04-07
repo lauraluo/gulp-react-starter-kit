@@ -255,4 +255,4 @@ class Dialog extends Reflux.PureComponent {
 }
 
 var MixiedDialog = DialogRelayoutMixin(Dialog);
-export {MixiedDialog as default, DialogStore, DialogActions};
+export {MixiedDialog as default, Dialog as DialogCore,DialogStore, DialogActions};

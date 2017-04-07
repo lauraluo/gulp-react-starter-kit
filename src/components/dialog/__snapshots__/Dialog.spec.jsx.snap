@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dialog:  畫面打開的時後 查看畫面是否正常 1`] = `
+<div
+  className="dialog"
+  data-dialog-name={undefined}
+>
+  <div
+    className="dialog-backdrop"
+  />
+  <div
+    className="dialog-box"
+  >
+    <div
+      className="dialog-container"
+    >
+      <header>
+        DialogTitle
+      </header>
+      <div
+        className="dialog-box-body"
+      >
+        <p>
+          lalalalala
+        </p>
+      </div>
+      <div
+        className="dialog-box-footer"
+      >
+        <div
+          className="dialog-button-inline"
+          onClick={[Function]}
+        >
+          取消
+        </div>
+        <div
+          className="dialog-button-inline-primary"
+          onClick={[Function]}
+        >
+          送出鈕
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
