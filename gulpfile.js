@@ -126,7 +126,7 @@ var createBundle = (options, attachedWithBundle) => {
 };
 
 gulp.task('js:components', function () {
-    glob('./src/*.js', function (err, files) {
+    glob('./src/*.jsx', function (err, files) {
 
         if (err) 
             done(err);
@@ -235,12 +235,18 @@ gulp.task('set-prod-node-env', function () {
     return process.env.NODE_ENV = config.env = 'production';
 });
 
+
+gulp.task('clean', function () {
+    return gulp.src(['public/css','public/js'], {read: false})
+        .pipe($.clean());
+});
+
 gulp.task('build', [
     'js:lint', 'js:bundle', 'css:sass', 'watch', 'lint-watch'
 ], function () {
     nodemon({
         "script": 'server.js',
-        "nodeArgs": ['--debug'],
+        "nodeArgs": ['--inspect'],
             "ignore": [
                 "public/**/*.*",
                 "test/**/*.*",
@@ -250,6 +256,9 @@ gulp.task('build', [
                 "node_modules/**/node_modules"
             ]
     })
+    .on('start',function(){
+        console.info('\x1b[33m%s\x1b[0m: ','The server start at port 3002, http://locahlhost:3002');    
+    })
     .on('restart', function () {
         gulp
             .src('server.js')
@@ -258,10 +267,10 @@ gulp.task('build', [
     });
 });
 
-gulp.task('develop', ['set-dev-node-env'], function () {
+gulp.task('develop', ['set-dev-node-env','clean'], function () {
     return runSequence('build');
 });
 
-gulp.task('deploy', ['set-prod-node-env'], function () {
+gulp.task('deploy', ['set-prod-node-env','clean'], function () {
     return runSequence('build');
 });

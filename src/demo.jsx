@@ -1,0 +1,1 @@
+console.log('demo.bundle.js loaded');

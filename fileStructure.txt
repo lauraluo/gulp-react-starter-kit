@@ -1,0 +1,46 @@
+//檔案結構說明
+├── README.md
+├── config
+|  ├── development.json
+|  └── producttion.json
+├── coverage
+|  ├── clover.xml
+|  ├── coverage-final.json
+|  ├── lcov-report
+|  └── lcov.info
+├── gulpfile.js
+├── out.txt
+├── package.json
+├── public
+|  ├── css
+|  └── js
+├── server.js
+├── src
+|  ├── components
+|  ├── dialogDemo.js
+|  ├── index.js
+|  ├── index.mock.js
+|  ├── login.js
+|  ├── login.mock.js
+|  └── scss
+├── stories
+|  ├── Button.js
+|  ├── Welcome.js
+|  └── index.js
+├── task
+|  ├── css:scss.js
+|  └── js:bundle.js
+├── test
+|  ├── helpers
+|  └── specs
+├── views
+|  ├── dialogDemo
+|  ├── header.jade
+|  ├── index
+|  ├── layout.jade
+|  ├── login
+|  └── todo
+├── wdio.conf.js
+└── yarn.lock
+
+directory: 1259 file: 24 

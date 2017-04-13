@@ -4,8 +4,6 @@ import React from 'react-dom';
 import MockComponent from './components/index/MockComponent'
 
 ReactDOM.render(
-	<MockComponent>
-		<Index/>
-	</MockComponent>,
+	<MockComponent><Index/></MockComponent>,
 	document.getElementById('login')
 )
