@@ -1,9 +1,10 @@
 {
-  "name": "mock-examples",
+  "name": "react-dev-tool",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "讓前端可以在開發期間獨立後端進行開發，及功能模組維護，使用react、scss、jade",
+  "main": "server.js",
   "scripts": {
+    "gulp": "gulp",
     "develop": "gulp develop",
     "deploy": "gulp deploy",
     "test": "jest --coverage",
