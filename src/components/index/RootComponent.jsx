@@ -2,7 +2,7 @@
 
 var MyComponent = React.createClass({
     propTypes: {
-        initData: React.PropTypes.array
+        initData: React.PropTypes.object
     },
     render: function(){
         var _this = this;
@@ -17,9 +17,8 @@ var MyComponent = React.createClass({
             });
         }
         
-        return <ul>{listItems} lalalkkkkkkkuo1</ul>
+        return <ul>{listItems}</ul>
     }
 });
-
 
 export default MyComponent;

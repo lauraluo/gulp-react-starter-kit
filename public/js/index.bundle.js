@@ -15,7 +15,7 @@ var MyComponent = _react2.default.createClass({
     displayName: 'MyComponent',
 
     propTypes: {
-        initData: _react2.default.PropTypes.array
+        initData: _react2.default.PropTypes.object
     },
     render: function render() {
         var _this = this;
@@ -43,8 +43,7 @@ var MyComponent = _react2.default.createClass({
         return _react2.default.createElement(
             'ul',
             null,
-            listItems,
-            ' lalalkkkkkkkuo1'
+            listItems
         );
     }
 });
@@ -62,10 +61,14 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom2.default.render(_reactDom2.default.createElement(_RootComponent2.default, null), document.getElementById('index'));
+_reactDom2.default.render(_react2.default.createElement(_RootComponent2.default, null), document.getElementById('index'));
 
-},{"./components/index/RootComponent":1,"react-dom":"react-dom"}]},{},[2])
+},{"./components/index/RootComponent":1,"react":"react","react-dom":"react-dom"}]},{},[2])
 
 //# sourceMappingURL=../js/maps/index.bundle.js.map

@@ -73,7 +73,7 @@ var MyComponent = _react2.default.createClass({
     displayName: 'MyComponent',
 
     propTypes: {
-        initData: _react2.default.PropTypes.array
+        initData: _react2.default.PropTypes.object
     },
     render: function render() {
         var _this = this;
@@ -101,8 +101,7 @@ var MyComponent = _react2.default.createClass({
         return _react2.default.createElement(
             'ul',
             null,
-            listItems,
-            ' lalalkkkkkkkuo1'
+            listItems
         );
     }
 });
@@ -116,22 +115,26 @@ var _RootComponent = require('./components/index/RootComponent');
 
 var _RootComponent2 = _interopRequireDefault(_RootComponent);
 
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
 var _MockComponent = require('./components/index/MockComponent');
 
 var _MockComponent2 = _interopRequireDefault(_MockComponent);
 
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom2.default.render(_reactDom2.default.createElement(
+_reactDom2.default.render(_react2.default.createElement(
 	_MockComponent2.default,
 	null,
-	_reactDom2.default.createElement(_RootComponent2.default, null)
-), document.getElementById('login'));
+	_react2.default.createElement(_RootComponent2.default, null)
+), document.getElementById('index'));
 
-},{"./components/index/MockComponent":1,"./components/index/RootComponent":2,"react-dom":"react-dom"}]},{},[3])
+},{"./components/index/MockComponent":1,"./components/index/RootComponent":2,"react":"react","react-dom":"react-dom"}]},{},[3])
 
 //# sourceMappingURL=../js/maps/index.mock.bundle.js.map
