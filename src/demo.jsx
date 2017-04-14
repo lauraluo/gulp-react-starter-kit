@@ -1,4 +1,4 @@
-import Index from './components/index/RootComponent';
+import Index from './components/demo/TestComponent';
 import ReactDOM from 'react-dom';
 import React from 'react';
 
