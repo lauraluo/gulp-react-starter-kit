@@ -65,7 +65,7 @@ gulp develop
 
 正常的裝況下，應該不會有任何錯誤，並且可以在[http://localhost:3002](http://localhost:3002) 看到你的首頁  
 
-![](https://quip.com/blob/ORVAAAN6LpO/TFyC5KgSfqtZueozWOwdRA?a=atvx1teeP8qBjTWzZhgZaLJa7aNhV27jsSnYKPJ8gv8a
+![](https://quip.com/blob/ORVAAAN6LpO/TFyC5KgSfqtZueozWOwdRA?a=atvx1teeP8qBjTWzZhgZaLJa7aNhV27jsSnYKPJ8gv8a)
 
 ## 開發環境介紹
 
@@ -206,7 +206,7 @@ app.get('/demo', function(req, res) {
 
 點擊右上方Icon，當Icon中間的圓點為實心的灰色，代表功能正常啟用。當程式碼編輯完成儲存後，瀏覽器可以立即看到最結果。  
 
-![](https://quip.com/blob/ORVAAAN6LpO/-KT4YPoyFBB0woOLvMusKA?a=8GJJNKVS6af7aLtaMJJ9J3EeYL2r0xZtiyUuSMVHVDAa
+![](https://quip.com/blob/ORVAAAN6LpO/-KT4YPoyFBB0woOLvMusKA?a=8GJJNKVS6af7aLtaMJJ9J3EeYL2r0xZtiyUuSMVHVDAa)
 
 ### 撰寫測試案例
 
@@ -236,7 +236,7 @@ jest src/components/demo/DemoComponent.spec.jsx
 
 我們應該可以看到測試結果  
 
-![](https://quip.com/blob/ORVAAAN6LpO/zNCcAzd-vbkqZBqCSbyoww?a=qj739YiKZ0CPYASHX9vRlOh2XkKagIa3TmCYUt8YAN0a
+![](https://quip.com/blob/ORVAAAN6LpO/zNCcAzd-vbkqZBqCSbyoww?a=qj739YiKZ0CPYASHX9vRlOh2XkKagIa3TmCYUt8YAN0a)
 
 ## 運行開發環境
 
@@ -244,7 +244,7 @@ jest src/components/demo/DemoComponent.spec.jsx
 
 打開偵錯頁籤 > 選擇`開發模式`  > 按下綠色箭頭運行  
 
-<div data-section-style style="max-width:51%">![](https://quip.com/blob/ORVAAAN6LpO/u0UMNPEi4xyFYp1VUHDGUA?a=GafA5Nm7WFBclBxj4w7NsJB1RHoe70pMMSGyeSpsYhAa
+![](https://quip.com/blob/ORVAAAN6LpO/u0UMNPEi4xyFYp1VUHDGUA?a=GafA5Nm7WFBclBxj4w7NsJB1RHoe70pMMSGyeSpsYhAa)
 
 > 障礙排除：使用vscode時，有時無法正常停止運行，請參考[這篇作法](http://stackoverflow.com/questions/28564077/grunt-task-freeing-up-the-port)，移除被佔用的port
 
@@ -264,7 +264,7 @@ gulp develop
 
 打開偵錯頁籤 > 選擇`發佈模式`  > 按下綠色箭頭運行  
 
-![](https://quip.com/blob/ORVAAAN6LpO/1fdcqZreNn_qfOHkW5y5jA?a=aa1fhIGZnMKIihwSnrDdNX7XB6Z5oWvdmBaZx2ia8Msa
+![](https://quip.com/blob/ORVAAAN6LpO/1fdcqZreNn_qfOHkW5y5jA?a=aa1fhIGZnMKIihwSnrDdNX7XB6Z5oWvdmBaZx2ia8Msa)
 
 ### 使用終端機機指令
 
