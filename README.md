@@ -73,7 +73,6 @@ gulp develop
 
 
 *   原始檔在`./src/scss`目錄底下  
-
 *   編譯過的css檔案在`./public/css/`底下  
 
 
@@ -118,15 +117,10 @@ ReactDOM.render(
     <DemoComponent/>,  
     document.getElementById('demo')  
 )  
-
-
 ```
 
-
 *   一個頁面通常只會有一隻初始化用的jsx檔，其他都是被引用的module。  
-
 *   同時它也會是javascript bundle的入口，預設都在`/src`，第一層目錄底下。  
-
 *   bundle工具會無視第二層目錄底下的其他js或是jsx檔。  
 
 
@@ -158,17 +152,11 @@ block scripts
 
 
 *   引入的其他資源(腳本/樣式/圖檔)路徑階相對於`public`目錄底下  
-
 *   可以利用資料夾組織及管理你的頁面  
-
 *   可以在該視圖上載入所需腳本及樣式檔：  
-
 *   block headScripts：必需要在頁面載入前引用的javascript(不含共用)  
-
 *   block styles：必需要在此頁引用的樣式(不含共用)  
-
 *   block content：jade (html)文本  
-
 *   block scripts：頁面載入後(body結尾前)引用的javascript(不含共用)  
 
 
@@ -306,7 +294,7 @@ npm run storybook
 
 請參考專案底下的`fileStructure.txt`  
 
-```
+```js
 /Users/hsinyilo/Documents/myGit/mockExamples  
 ├── README.md  
 ├── config：node config  
@@ -338,9 +326,7 @@ npm run storybook
 
 ### 專案相關網址
 
-
 *   開發環境  [http://localhost:3002](http://localhost:3002/)  
-
 *   storybook [http://localhost:6006](http://localhost:6006/)  
 
 
