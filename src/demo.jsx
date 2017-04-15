@@ -1,10 +1,10 @@
-import Index from './components/demo/TestComponent';
+import DemoComponent from './components/demo/DemoComponent';
 import ReactDOM from 'react-dom';
 import React from 'react';
 
 
 ReactDOM.render(
-	<Index/>,
-	document.getElementById('index')
+	<DemoComponent/>,
+	document.getElementById('demo')
 )
 
