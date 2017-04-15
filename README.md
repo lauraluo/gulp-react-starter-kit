@@ -136,7 +136,7 @@ ReactDOM.render(
 
 首先，新增一個`index.jade`檔, 並放置在`views/demo`目錄底下  
 
-```
+```jade
 //宣告layout  
 extends ../_layout  
 //在此設定必需要在，頁面載入前引用的javascript(不含共用)  
