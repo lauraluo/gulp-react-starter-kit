@@ -124,7 +124,7 @@ ReactDOM.render(
 *   bundle工具會無視第二層目錄底下的其他js或是jsx檔。  
 
 
-> 有關於es5與es6之間，react的語法差異，可以參考這篇文章
+> 有關於es5與es6之間，react的語法差異，可以參考(這篇文章)[http://blog.techbridge.cc/2016/04/04/react-react-native-es5-es6-cheat-sheet/]
 
 ### 使用node(express)新增一個網站頁面
 
