@@ -63,9 +63,8 @@ npm isntall
 gulp develop
 ```
 
-你可以在[http://localhost:3002](http://localhost:3002) 看到你的首頁
+如果環境正確運作的話，你可以在[http://localhost:3002](http://localhost:3002) 看到你的首頁
 
-![](https://quip.com/blob/ORVAAAN6LpO/TFyC5KgSfqtZueozWOwdRA?a=atvx1teeP8qBjTWzZhgZaLJa7aNhV27jsSnYKPJ8gv8a)
 
 ## 開發環境介紹
 
