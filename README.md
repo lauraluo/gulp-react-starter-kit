@@ -106,7 +106,7 @@ export default DemoComponent;
 *   使用es6的[module system](https://wohugb.gitbooks.io/ecmascript-6/content/docs/class.html)  
 
 
-引用一個React組件，並在網頁上安裝這個組件：新增一個demo.jsx檔，放置在./src目錄底下  
+引用一個React組件，並在網頁上安裝這個組件：新增一個`demo.jsx`檔，放置在`./src`目錄底下  
 
 ```js
 import DemoComponent from './components/demo/TestComponent';  
@@ -154,10 +154,10 @@ block scripts
 *   引入的其他資源(腳本/樣式/圖檔)路徑階相對於`public`目錄底下  
 *   可以利用資料夾組織及管理你的頁面  
 *   可以在該視圖上載入所需腳本及樣式檔：  
-*   block headScripts：必需要在頁面載入前引用的javascript(不含共用)  
-*   block styles：必需要在此頁引用的樣式(不含共用)  
-*   block content：jade (html)文本  
-*   block scripts：頁面載入後(body結尾前)引用的javascript(不含共用)  
+*   `block headScripts`：必需要在頁面載入前引用的javascript(不含共用)  
+*   `block styles`：必需要在此頁引用的樣式(不含共用)  
+*   `block content`：jade (html)文本  
+*   `block scripts`：頁面載入後(body結尾前)引用的javascript(不含共用)  
 
 
 在專案根目錄底打開`server.js`，在檔案中增加下列程式碼片段  
@@ -187,13 +187,13 @@ app.get('/demo', function(req, res) {
 
 ### 啟用livereload功能
 
-要使用livereload請安裝對應的瀏覽器外掛，預設狀況為不開啟，需手動啟用。啟用以Chrome為例點擊右上方Icon，當Icon中間的圓點為實心的灰色，代表功能正常啟用。當程式碼編輯完成儲存後，瀏覽器可以立即看到最結果。  
+要使用livereload請安裝對應的瀏覽器外掛，需手動啟用(預設狀況為不開啟)。啟用方式以Chrome為例：點擊右上方Icon，當Icon中間的圓點為實心的灰色，代表功能正常啟用。 
 
 ![](https://quip.com/blob/ORVAAAN6LpO/-KT4YPoyFBB0woOLvMusKA?a=8GJJNKVS6af7aLtaMJJ9J3EeYL2r0xZtiyUuSMVHVDAa)
 
 ### 撰寫測試案例
 
-在src/components/demo目錄底下，新增一個DemoComponent.spec.jsx檔案，並加入以下程式碼。  
+在`src/components/demo`目錄底下，新增一個`DemoComponent.spec.jsx`檔案，並加入以下程式碼。  
 
 ```js
 import React from 'react'  
@@ -211,13 +211,13 @@ describe('DemoComponent: ', () => {
 });
 ```
 
-打開終端機，進入專案目錄，並輸入，運行測試結果  
+打開終端機，進入專案目錄，輸入以下指令，運行測試結果  
 
 ```
 jest src/components/demo/DemoComponent.spec.jsx
 ```
 
-我們應該可以看到測試結果  
+測試結果如下
 
 ![](https://quip.com/blob/ORVAAAN6LpO/zNCcAzd-vbkqZBqCSbyoww?a=qj739YiKZ0CPYASHX9vRlOh2XkKagIa3TmCYUt8YAN0a)
 
