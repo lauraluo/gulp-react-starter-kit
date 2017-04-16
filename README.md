@@ -298,15 +298,15 @@ npm run storybook
 ├── public //編譯完的程式碼，除了圖檔images外，開發者應該不會需要編輯
 |  ├── css   
 |  ├── images //圖檔  
-|  └── js 
-├── server.js  
+|  └── js //javascript bundle的結果，*.bundle.js
+├── server.js  //node express
 ├── src //原始程式碼(src底下的第一層jsx為程式打包的入口)  
 |  ├── components //react組件  
 |  ├── demo.jsx //bundle入口  
 |  ├── index.jsx //bundle入口   
 |  ├── index.mock.jsx //bundle入口，含一些開發用的假資料  
 |  └── scss //樣式檔目錄  
-├── stories //模組展式相關  
+├── stories //模組展式
 ├── views //視圖  
 ├── wdio.conf.js  
 └── yarn.lock
