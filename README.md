@@ -81,22 +81,22 @@ gulp develop
 新增一個React組件：創健一個`DemoComponent.jsx`，並放置在`src/components/demo/`目錄底下  
 
 ```js
-import React, {Component} from 'react'  
-//引用node module裡的react，並使用變數"React"代表  
+import React, {Component} from 'react'
+//引用node module裡的react，並使用變數"React"代表
 
-class DemoComponent extends Component {  
-    constructor(props) {  
-        super(props);  
-        this.state = {};  
-    }  
-    render() {  
-        return (  
-            <div>  
-                <p>this is demo</p>  
-             
-        );  
-    }  
-}  
+class DemoComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+    render() {
+        return (
+            <div>
+                <p>this is demo</p>
+            </div>
+        );
+    }
+}
 export default DemoComponent;
 
 ```
