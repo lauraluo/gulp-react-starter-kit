@@ -63,7 +63,7 @@ npm isntall
 gulp develop
 ```
 
-正常的裝況下，應該不會有任何錯誤，並且可以在[http://localhost:3002](http://localhost:3002) 看到你的首頁  
+你可以在[http://localhost:3002](http://localhost:3002) 看到你的首頁
 
 ![](https://quip.com/blob/ORVAAAN6LpO/TFyC5KgSfqtZueozWOwdRA?a=atvx1teeP8qBjTWzZhgZaLJa7aNhV27jsSnYKPJ8gv8a)
 
