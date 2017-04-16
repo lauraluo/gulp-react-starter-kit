@@ -22,7 +22,7 @@
 安裝node v7.7.3以上  
 
 ```
-到[官網](https://nodejs.org/en/)下載安裝包，並安裝
+到 [官網](https://nodejs.org/en/)下載安裝包，並安裝
 ```
 
 使用npm全域安裝gulp  
@@ -52,7 +52,7 @@ npm isntall
 ![](https://quip.com/blob/ORVAAAN6LpO/Vpbi6vt1sh40SelOXFrXJQ?a=VIBTnICsKW9ungi3TLvC3VmgkdGGrYGnyEKVQH6FfyQa)
 
 ```
-到chrome extension中心([連結](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=zh-TW))下載擴充
+到chrome extension中心 ( [連結](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=zh-TW) )下載擴充
 ```
 
 ### 測試環境是否成功安裝
