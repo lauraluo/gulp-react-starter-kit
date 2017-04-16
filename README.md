@@ -22,7 +22,7 @@
 安裝node v7.7.3以上  
 
 ```
-到官網([連結](https://nodejs.org/en/))下載安裝包，並安裝
+到[官網](https://nodejs.org/en/)下載安裝包，並安裝
 ```
 
 使用npm全域安裝gulp  
@@ -69,7 +69,7 @@ gulp develop
 
 ## 開發環境介紹
 
-## scss
+### scss
 
 
 *   原始檔在`./src/scss`目錄底下  
@@ -169,7 +169,7 @@ app.get('/demo', function(req, res) {
 });
 ```
 
-在沒有指定檔名的狀況，預設會讀取指定目錄底下的index.jade檔，因此我們可以省略如下：  
+在沒有指定檔名的狀況，預設會讀取指定目錄底下的index.jade檔，因此我們可以省略如下：  
 
 ```js
 //與上一段程式碼，會獲得一樣的結果。  
@@ -177,10 +177,7 @@ app.get('/demo', function(req, res) {
     res.render('demo');  
 });
 ```
-
-
 *   req：請求物件  
-
 *   res：回饋物件，可以在這裡指定回傳的視圖，以及資料  
 
 
@@ -190,9 +187,7 @@ app.get('/demo', function(req, res) {
 
 ### 啟用livereload功能
 
-要使用livereload請安裝對應的瀏覽器外掛，預設狀況為不開啟，需手動啟用。啟用以Chrome為例：  
-
-點擊右上方Icon，當Icon中間的圓點為實心的灰色，代表功能正常啟用。當程式碼編輯完成儲存後，瀏覽器可以立即看到最結果。  
+要使用livereload請安裝對應的瀏覽器外掛，預設狀況為不開啟，需手動啟用。啟用以Chrome為例點擊右上方Icon，當Icon中間的圓點為實心的灰色，代表功能正常啟用。當程式碼編輯完成儲存後，瀏覽器可以立即看到最結果。  
 
 ![](https://quip.com/blob/ORVAAAN6LpO/-KT4YPoyFBB0woOLvMusKA?a=8GJJNKVS6af7aLtaMJJ9J3EeYL2r0xZtiyUuSMVHVDAa)
 
@@ -295,31 +290,24 @@ npm run storybook
 請參考專案底下的`fileStructure.txt`  
 
 ```js
-/Users/hsinyilo/Documents/myGit/mockExamples  
 ├── README.md  
-├── config：node config  
-├── coverage //測試報告  
+├── config //node config  
 ├── fileStructure.txt //檔案結構說明  
 ├── gulpfile.js  
-├── package.json  
-├── public //編譯完的程式碼，除了images外，開發者應該不會需要編輯  
-|  ├── css //程式自動產生  
+├── package.json  //node專案檔
+├── public //編譯完的程式碼，除了圖檔images外，開發者應該不會需要編輯
+|  ├── css   
 |  ├── images //圖檔  
-|  └── js //程式自動產生  
+|  └── js 
 ├── server.js  
 ├── src //原始程式碼(src底下的第一層jsx為程式打包的入口)  
 |  ├── components //react組件  
-|  ├── demo.jsx //打包入口  
-|  ├── index.jsx //打包入口  
-|  ├── index.mock.jsx //打包入口，含一些開發用的假資料  
+|  ├── demo.jsx //bundle入口  
+|  ├── index.jsx //bundle入口   
+|  ├── index.mock.jsx //bundle入口，含一些開發用的假資料  
 |  └── scss //樣式檔目錄  
 ├── stories //模組展式相關  
-|  └── index.js  
 ├── views //視圖  
-|  ├── _header.jade  
-|  ├── _layout.jade   
-|  ├── demo  
-|  └── index.jade  
 ├── wdio.conf.js  
 └── yarn.lock
 ```
