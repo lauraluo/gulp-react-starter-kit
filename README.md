@@ -191,7 +191,7 @@ app.get('/demo', function(req, res) {
 
 ![](https://quip.com/blob/ORVAAAN6LpO/-KT4YPoyFBB0woOLvMusKA?a=8GJJNKVS6af7aLtaMJJ9J3EeYL2r0xZtiyUuSMVHVDAa)
 
-### 撰寫測試案例
+### 撰寫單元測試
 
 在`src/components/demo`目錄底下，新增一個`DemoComponent.spec.jsx`檔案，並加入以下程式碼。  
 
