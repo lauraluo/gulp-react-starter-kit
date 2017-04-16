@@ -52,7 +52,7 @@ npm isntall
 ![](https://quip.com/blob/ORVAAAN6LpO/Vpbi6vt1sh40SelOXFrXJQ?a=VIBTnICsKW9ungi3TLvC3VmgkdGGrYGnyEKVQH6FfyQa)
 
 ```
-到chrome extension中心[(連結](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=zh-TW))下載擴充
+到chrome extension中心([連結](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=zh-TW))下載擴充
 ```
 
 ### 測試環境是否成功安裝
@@ -78,7 +78,7 @@ gulp develop
 
 ### javascript(jsx)
 
-新增一個React組件：創健一個DemoComponent.jsx，並放置在src/components/demo/目錄底下  
+新增一個React組件：創健一個`DemoComponent.jsx`，並放置在`src/components/demo/`目錄底下  
 
 ```js
 import React, {Component} from 'react'  
@@ -102,8 +102,8 @@ export default DemoComponent;
 ```
 
 
-*   組件(component)檔名一律大寫  
-*   使用es6的[module system](https://wohugb.gitbooks.io/ecmascript-6/content/docs/class.html)  
+*  組件(component)檔名一律大寫駝峰
+*  使用es6的[module system](https://wohugb.gitbooks.io/ecmascript-6/content/docs/class.html)
 
 
 引用一個React組件，並在網頁上安裝這個組件：新增一個`demo.jsx`檔，放置在`./src`目錄底下  
@@ -124,7 +124,7 @@ ReactDOM.render(
 *   bundle工具會無視第二層目錄底下的其他js或是jsx檔。  
 
 
-> 有關於es5與es6之間，react的語法差異，可以參考(這篇文章)[http://blog.techbridge.cc/2016/04/04/react-react-native-es5-es6-cheat-sheet/]
+> 有關於es5與es6之間，react的語法差異可以參考[這篇文章](http://blog.techbridge.cc/2016/04/04/react-react-native-es5-es6-cheat-sheet)
 
 ### 使用node(express)新增一個網站頁面
 
