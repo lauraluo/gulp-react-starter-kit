@@ -126,7 +126,7 @@ ReactDOM.render(
 
 > 有關於es5與es6之間，react的語法差異，可以參考這篇文章
 
-### 使用nOde(express)新增一個網站頁面
+### 使用node(express)新增一個網站頁面
 
 首先，新增一個`index.jade`檔, 並放置在`views/demo`目錄底下  
 
