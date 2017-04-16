@@ -22,7 +22,7 @@
 安裝node v7.7.3以上  
 
 ```
-到[官網](https://nodejs.org/en/)下載安裝包，並安裝
+到(官網)[https://nodejs.org/en/]下載安裝包，並安裝
 ```
 
 使用npm全域安裝gulp  
