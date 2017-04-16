@@ -119,9 +119,10 @@ ReactDOM.render(
 )  
 ```
 
-*   一個頁面通常只會有一隻初始化用的jsx檔，其他都是被引用的module。  
-*   同時它也會是javascript bundle的入口，預設都在`/src`，第一層目錄底下。  
-*   bundle工具會無視第二層目錄底下的其他js或是jsx檔。  
+* 一個頁面通常只會有一隻初始化用的jsx檔，其他都是被引用的module。  
+* 同時它也會是javascript bundle的入口，預設都在`/src`，第一層目錄底下。  
+* bundle工具會無視第二層目錄底下的其他js或是jsx檔。
+* bundle完的檔案，會在`public/js`目錄底下，繼承檔名並且加上後綴：*.bundle.js
 
 
 > 有關於es5與es6之間，react的語法差異可以參考[這篇文章](http://blog.techbridge.cc/2016/04/04/react-react-native-es5-es6-cheat-sheet)
