@@ -35,7 +35,7 @@ npm install -g gulp
 
     npm install -g getstorybook
 
-安裝react彈元測試工具  
+安裝react單元測試工具  
 
 ```
 npm install -g jest-cli
