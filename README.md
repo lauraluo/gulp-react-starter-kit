@@ -223,6 +223,7 @@ function AttachedToMock(WrappedComponent, configs) {
     class MockComponent extends React.Component {
         constructor(props) {
             super(props);
+            //宣告假資料的長相
             this.mockTemplate = {
                 'list|1-10': [
                     {
@@ -231,10 +232,12 @@ function AttachedToMock(WrappedComponent, configs) {
                     }
                 ]
             };
+            //利用mock產生初始化資料
             this.state = {initData: Mock.mock(this.mockTemplate)};
         }
 
         componentWillMount = () => {
+            //欄截所有對*.json發送的ajax,並回傳設計好的資料結構
             Mock.mock(/\.json/, this.mockTemplate);
             Mock.setup({timeout: '200-600'});
             
