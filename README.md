@@ -190,7 +190,7 @@ app.get('/demo', function(req, res) {
 
 原理/思路：在開發過程中為了保持功能模組的純淨，將假資料的邏輯跟相關程式碼，集中放置在`McokComponent.jsx`，開發者可以依開發需求客制化這個組件，並且利用[HOC](https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e)的方式裝飾你的組件。
 
-再說明實例之前，讓我們先了解一些需要知道的知識：
+再說明實例之前，讓我們先了解一些需要知道的基本知識：
 
 * React的裝飾者模式：React Higher Order Components(hoc)參考[React Higher Order Components in depth](https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e)
 * 工具Mock.js的詳細介紹：參考[官方文件](http://mockjs.com/)
