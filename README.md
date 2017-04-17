@@ -250,7 +250,7 @@ function AttachedToMock(WrappedComponent, configs) {
 
 export default AttachedToMock;
 ```
-* 正式發佈程式時，所有import * from  '*/MockProvider' 相關的路徑，都會被替換為'src/components/core/ReplaceMockProvider'，以防開發者在發佈程式的過程中，不小心打包到含有假資料的程式碼。
+* 正式發佈程式時，所有import * from  `*/MockProvider` 相關的路徑，都會被替換為`src/components/core/ReplaceMockProvider`，以防開發者在發佈程式的過程中，不小心打包到含有假資料的程式碼。
 
 
 ### 啟用livereload功能
