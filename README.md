@@ -373,8 +373,7 @@ npm run storybook
 ├── src //原始程式碼(src底下的第一層jsx為程式打包的入口)  
 |  ├── components //react組件  
 |  ├── demo.jsx //bundle入口  
-|  ├── index.jsx //bundle入口   
-|  ├── index.mock.jsx //bundle入口，含一些開發用的假資料  
+|  ├── index.jsx //bundle入口     
 |  └── scss //樣式檔目錄  
 ├── stories //模組展式
 ├── views //視圖  
