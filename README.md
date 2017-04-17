@@ -185,6 +185,74 @@ app.get('/demo', function(req, res) {
 
 > 這裡在node express稱之為新增一個router，雷同於.net MVC在controller底下新增一個action
 
+
+### 使用Mock.js生成隨機數據，攔載ajax
+
+原理/思路：在開發過程中為了保持功能模組的純淨，將假資料的邏輯跟相關程式碼，集中放置在`McokComponent.jsx`，開發者可以依開發需求客制化這個組件，並且利用[HOC](https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e)的方式裝飾你的組件。
+
+再說明實例之前，讓我們先了解一些需要知道的知識：
+
+* React的裝飾者模式：React Higher Order Components(hoc)參考[React Higher Order Components in depth](https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e)
+* 工具Mock.js的詳細介紹：參考[官方文件](http://mockjs.com/)
+
+
+使用方式如下
+
+```js
+import RootComponent from './components/index/RootComponent';
+import MockProvider from './components/index/MockProvider'
+import ReactDOM from 'react-dom';
+import React from 'react';
+
+//將模組與假資料連結在一起
+var Index = MockProvider(RootComponent);
+
+ReactDOM.render(
+	<Index/>,
+	document.getElementById('index')
+)
+```
+
+明白使用邏輯後，讓我們看看`MockProvider`的程式碼長什麼樣子
+
+```js
+import React from 'react'
+import Mock from 'mockjs'
+
+function AttachedToMock(WrappedComponent, configs) {
+    class MockComponent extends React.Component {
+        constructor(props) {
+            super(props);
+            this.mockTemplate = {
+                'list|1-10': [
+                    {
+                        'id|+1': 1,
+                        'email': '@EMAIL'
+                    }
+                ]
+            };
+            this.state = {initData: Mock.mock(this.mockTemplate)};
+        }
+
+        componentWillMount = () => {
+            Mock.mock(/\.json/, this.mockTemplate);
+            Mock.setup({timeout: '200-600'});
+            
+        }
+
+        render() {
+            return <WrappedComponent  initData={this.state.initData} {...this.props}/>
+        }
+    }
+
+    return MockComponent;
+}
+
+export default AttachedToMock;
+```
+* 正式發佈程式時，所有import * from  '*/MockProvider' 相關的路徑，都會被替換為'src/components/core/ReplaceMockProvider'，以防開發者在發佈程式的過程中，不小心打包到含有假資料的程式碼。
+
+
 ### 啟用livereload功能
 
 要使用livereload請安裝對應的瀏覽器外掛，需手動啟用(預設狀況為不開啟)。啟用方式以Chrome為例：點擊右上方Icon，當Icon中間的圓點為實心的灰色，代表功能正常啟用。 
@@ -209,10 +277,9 @@ describe('DemoComponent: ', () => {
         expect(wrapper.text()).to.contain('this is demo');  
     })  
 });
+
 ```
-
 打開終端機，進入專案目錄，輸入以下指令，運行測試結果  
-
 ```
 jest src/components/demo/DemoComponent.spec.jsx
 ```

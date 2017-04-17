@@ -8,6 +8,7 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     open = require('gulp-open');
 var browserify = require('browserify');
+var aliasify = require('aliasify');
 var gutil = require('gulp-util');
 var tap = require('gulp-tap');
 // var buffer = require('gulp-buffer');
@@ -69,17 +70,17 @@ const $ = gulpLoadPlugins();
 var createBundle = (options, attachedWithBundle) => {
     let env = process.env.NODE_ENV;
     let isWatchify = process.env.IS_WATCHIFY;
+    
     // console.log('NODE_ENV : ' + config.env);
 
     const opts = assign({}, watchify.args, {
         entries: options.entries,
         extensions: options.extensions,
-        debug: config.env === 'development'
-            ? true
-            : false
+        debug: config.env === 'development'? true: false
     });
 
     var b = browserify(opts);
+
 
     b.transform("babelify", {
         presets: [
@@ -87,6 +88,21 @@ var createBundle = (options, attachedWithBundle) => {
         ],
         "plugins": ["transform-class-properties"]
     });
+
+    if(config.env === 'production'){
+        let aliasifyConfig = {
+            replacements: {
+                "(\\w+)/MockProvider": function (alias, regexMatch, regexObject) {
+                        console.log(alias);
+                        console.log(regexMatch);
+                        return './src/components/core/ReplaceMockProvider.jsx'; // default behavior - won't replace
+                }
+            }
+        };
+
+        b.transform(aliasify, aliasifyConfig);
+    }
+    
 
     if (typeof attachedWithBundle == 'function') {
         attachedWithBundle(b);
@@ -101,9 +117,7 @@ var createBundle = (options, attachedWithBundle) => {
             path.extname = ".bundle.js"
         }))
         .pipe($.sourcemaps.init({
-            loadMaps: config.env === 'development'
-                ? true
-                : false
+            loadMaps: config.env === 'development'? true: false
         }))
         .pipe(gulpif(config.env === 'development', $.sourcemaps.write('../js/maps')))
         // .pipe($.sourcemaps.init({ loadMaps: true }))
