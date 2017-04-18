@@ -1,37 +1,19 @@
-/Users/hsinyilo/Documents/myGit/mockExamples
-├── README.md
-├── config //node config
-|  ├── development.json
-|  └── producttion.json
-├── coverage //測試報告
-|  ├── clover.xml
-|  ├── coverage-final.json
-|  ├── lcov-report
-|  └── lcov.info
-├── fileStructure.txt //檔案結構說明
-├── gulpfile.js
-├── package.json
-├── public //編譯完的程式碼，除了images外，開發者應該不會需要編輯
-|  ├── css 程式自動產生
-|  ├── images 圖檔
-|  └── js 程式自動產生
-├── server.js
-├── src //原始程式碼(src底下的第一層jsx為程式打包的入口)
-|  ├── components //react組件
-|  ├── demo.jsx //打包入口
-|  ├── index.jsx //打包入口
-|  ├── index.mock.jsx //打包入口，含一些開發用的假資料
-|  └── scss 樣式檔目錄
-├── stories 模組展式相關
-|  ├── Button.js
-|  ├── Welcome.js
-|  └── index.js
-├── views 視圖
-|  ├── _header.jade
-|  ├── _layout.jade 
-|  ├── demo
-|  └── index.jade
-├── wdio.conf.js
+├── README.md  
+├── config //node config  
+├── fileStructure.txt //檔案結構說明  
+├── gulpfile.js  
+├── package.json  //node專案檔
+├── public //編譯完的程式碼，除了圖檔images外，開發者應該不會需要編輯
+|  ├── css   
+|  ├── images //圖檔  
+|  └── js //javascript bundle的結果，*.bundle.js
+├── server.js  //node express
+├── src //原始程式碼(src底下的第一層jsx為程式打包的入口)  
+|  ├── components //react組件  
+|  ├── demo.jsx //bundle入口  
+|  ├── index.jsx //bundle入口     
+|  └── scss //樣式檔目錄  
+├── stories //模組展式
+├── views //視圖  
+├── wdio.conf.js  
 └── yarn.lock
-
-directory: 1253 file: 21 
