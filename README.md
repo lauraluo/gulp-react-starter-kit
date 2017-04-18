@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/lauraluo/reactMockjs.png?label=ready&title=Ready)](https://waffle.io/lauraluo/reactMockjs)
 # 前端開發環境說明
 
 ## 目的
