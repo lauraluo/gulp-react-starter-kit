@@ -1,1 +1,77 @@
-/* publish time Monday, April 17th, 2017, 2:26:46 PM*/!function e(t,r,n){function o(c,a){if(!r[c]){if(!t[c]){var i="function"==typeof require&&require;if(!a&&i)return i(c,!0);if(u)return u(c,!0);var f=new Error("Cannot find module '"+c+"'");throw f.code="MODULE_NOT_FOUND",f}var l=r[c]={exports:{}};t[c][0].call(l.exports,function(e){var r=t[c][1][e];return o(r||e)},l,l.exports,e,t,r,n)}return r[c].exports}for(var u="function"==typeof require&&require,c=0;c<n.length;c++)o(n[c]);return o}({1:[function(e,t,r){"use strict";function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function o(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function u(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(r,"__esModule",{value:!0});var c=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}(),a=e("react"),i=function(e){return e&&e.__esModule?e:{default:e}}(a),f=function(e){function t(e){n(this,t);var r=o(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));return r.state={},r}return u(t,e),c(t,[{key:"render",value:function(){return i.default.createElement("div",null,i.default.createElement("p",null,"this is demo"))}}]),t}(a.Component);r.default=f},{react:"react"}],2:[function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}var o=e("./components/demo/DemoComponent"),u=n(o),c=e("react-dom"),a=n(c),i=e("react"),f=n(i);a.default.render(f.default.createElement(u.default,null),document.getElementById("demo"))},{"./components/demo/DemoComponent":1,react:"react","react-dom":"react-dom"}]},{},[2]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+//引用node module裡的react，並使用變數"React"代表
+
+var DemoComponent = function (_Component) {
+    _inherits(DemoComponent, _Component);
+
+    function DemoComponent(props) {
+        _classCallCheck(this, DemoComponent);
+
+        var _this = _possibleConstructorReturn(this, (DemoComponent.__proto__ || Object.getPrototypeOf(DemoComponent)).call(this, props));
+
+        _this.state = {};
+        return _this;
+    }
+
+    _createClass(DemoComponent, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    'this is demo'
+                )
+            );
+        }
+    }]);
+
+    return DemoComponent;
+}(_react.Component);
+
+exports.default = DemoComponent;
+
+},{"react":"react"}],2:[function(require,module,exports){
+'use strict';
+
+var _DemoComponent = require('./components/demo/DemoComponent');
+
+var _DemoComponent2 = _interopRequireDefault(_DemoComponent);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_reactDom2.default.render(_react2.default.createElement(_DemoComponent2.default, null), document.getElementById('demo'));
+
+},{"./components/demo/DemoComponent":1,"react":"react","react-dom":"react-dom"}]},{},[2])
+
+//# sourceMappingURL=../js/maps/demo.bundle.js.map
