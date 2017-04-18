@@ -1,30 +1,28 @@
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
-    gulpBrowserify = require('gulp-browserify'),
     sass = require('gulp-sass'),
-    clean = require('gulp-clean'),
-    watch = require('gulp-watch'),
     plumber = require('gulp-plumber'),
-    rename = require('gulp-rename'),
-    open = require('gulp-open');
+    rename = require('gulp-rename');
 var browserify = require('browserify');
 var aliasify = require('aliasify');
-var gutil = require('gulp-util');
-var tap = require('gulp-tap');
-// var buffer = require('gulp-buffer');
-var sourcemaps = require('gulp-sourcemaps');
 var watchify = require('watchify');
 var runSequence = require('run-sequence');
 var gulpif = require('gulp-if');
 var parseArgs = require('minimist');
 var extend = require('extend');
-var header = require('gulp-header');
 var dateFormat = require('dateformat');
-var notifier = require('node-notifier');
-var cache = require('gulp-cached');
 var chalk = require('chalk');
-var sourcePath = "src/";
+var nodemon = require('gulp-nodemon');
+var notify = require('gulp-notify');
+var livereload = require('gulp-livereload');
+var eslint = require('gulp-eslint');
 var distPath = "public/";
+var gulpLoadPlugins = require('gulp-load-plugins');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var assign = require('lodash').assign;
+var glob = require('glob');
+var path = require('path');
 
 var styleConsole = {
     info: chalk.white.bgBlue,
@@ -32,12 +30,6 @@ var styleConsole = {
     warn: chalk.red.bgYellow
 };
 
-var nodemon = require('gulp-nodemon');
-var notify = require('gulp-notify');
-var livereload = require('gulp-livereload');
-
-var eslint = require('gulp-eslint');
-var jshint = require('gulp-jshint');
 
 var config = extend({
     env: process.env.NODE_ENV
@@ -49,28 +41,19 @@ var onError = function(err) {
     this.emit('end');
 }
 
-var browserifyConfig = {
-    debug: true,
-    cache: {},
-    packageCache: {},
-    transform: ['reactify'],
-    extensions: ['.jsx'],
-    plugin: [watchify]
-};
+// var browserifyConfig = {
+//     debug: true,
+//     cache: {},
+//     packageCache: {},
+//     transform: ['reactify'],
+//     extensions: ['.jsx'],
+//     plugin: [watchify]
+// };
 
 // https://gist.github.com/ramasilveyra/b4309edf809e55121385
 // https://medium.com/@elisechant/how-to-train-your-gulpfile-to-know-about-envir
 // o nment-configurations-1367a2f8b0da#.bxrhjeav6
 
-var gulpLoadPlugins = require('gulp-load-plugins');
-var babelify = require('babelify');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-var assign = require('lodash').assign;
-var glob = require('glob');
-var es = require('event-stream');
-var path = require('path');
-var reactify = require('reactify');
 
 const $ = gulpLoadPlugins();
 
