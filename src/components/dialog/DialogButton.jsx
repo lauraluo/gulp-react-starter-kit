@@ -19,6 +19,7 @@ class DialogButton extends Component {
     }
 
     render() {
+        console.log('render');
         return (
             <div className={this.props.className} onClick={this._onClick}>{this.props.name}</div>
         );
