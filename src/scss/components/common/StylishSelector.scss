@@ -37,7 +37,7 @@
             position: absolute;
             width: $form-select-height - 2px;
             background: $form-select-primary-color no-repeat 50%;
-            background-image: url("../../Images/btn_angle-down_white@2.png");
+            background-image: url("/images/btn_angle-down_white@2.png");
             background-size: 10px;
             background-repeat: no-repeat;
             border-radius: 0 $form-border-radius $form-border-radius 0;
@@ -65,7 +65,7 @@
             &::after {
                 border-color: transparent;
                 background-color: $form-select-secondary-color;
-                background-image: url("../../Images/btn_angle-down_gray@2.png");
+                background-image: url("/images/btn_angle-down_gray@2.png");
             }
         }
     }

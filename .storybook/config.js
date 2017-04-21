@@ -2,7 +2,7 @@ import { configure } from '@kadira/storybook';
 
 function loadStories() {
     require('../stories');
-    require('../stories/StylishSelector');
+    require('../stories/common/FormStory');
 }
 
 configure(loadStories, module);
