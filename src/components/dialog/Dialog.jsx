@@ -50,7 +50,7 @@ class DialogStore extends Reflux.Store {
             .keys(configs)
             .map((key, index) => {
                 var value = configs[key];
-
+            
                 switch (key) {
                     case "title":
                         if (typeof value !== "string") {
