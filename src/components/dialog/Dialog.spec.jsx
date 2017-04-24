@@ -19,7 +19,7 @@ function getDialogInit(){
 
 
 describe('Dialog::', () => {
-    describe('打開預設Dialog的時後', function () {
+    describe('打開預設Dialog時', function () {
         let wrapper = mount(getDialogInit());
         let mockOpenedCallback = jest.fn();
         let mockClickBtnCallback = [jest.fn(),jest.fn()];
@@ -76,6 +76,7 @@ describe('Dialog::', () => {
                 expect(wrapper.contains(mockContent)).toEqual(true);
             });
 
+
             it('Dialog::按鈕，為使用者設定的按鈕', () => {
                 expect(wrapper.find(DialogButton).length).toEqual(dialogConfig.buttons.length);
 
@@ -94,35 +95,62 @@ describe('Dialog::', () => {
 
             describe('當設定的按鈕被點擊時', function () {
                 
-                it('buttons[0].callback必需被調用',()=>{
+                it('每一個按鈕的callback必需被調用',()=>{
                     wrapper.find(DialogButton).at(0).simulate('click');
                     expect(mockClickBtnCallback[0]).toHaveBeenCalledTimes(1);
-                    
-                }); 
-
-                it('buttons[1].callback必需被調用',()=>{
                     wrapper.find(DialogButton).last().simulate('click');
                     expect(mockClickBtnCallback[1]).toHaveBeenCalledTimes(1);
+                    
                 });                
 
             });
         });
 
-        describe('使用者可以在開啟Dialog後',function(){
-            describe('更新以下內容', function () {
-                describe('Dialog的名字', function () {
-                    return false;
-                });
 
-                describe('Dialog的內容', function () {
-                    return false;
-                });
+
+        describe('使用者可以對Dialog的內容進行部份更新：允許更新的屬性有，標題，內容，按鈕', () => {
+            let newMockContent = (<p>this is new content</p>);
+            let updateDatas = {
+                title: "new Dialog title",
+                content: ()=> {
+                    return newMockContent
+                },
+                buttons: [{
+                    text: "新取消",
+                    callback: jest.fn()
+                }, {
+                    text: "新送出鈕",
+                    callback: jest.fn()
+                }]
+            };
+
+            it('Dialog::標題，為使用者設定的標題', () => {
+                DialogActions.updateDialog(updateDatas);
+                
+                expect(wrapper.find('header').length).toEqual(1);                
+                expect(wrapper.find('header').text()).toEqual(updateDatas.title);
             });
 
-            describe('關閉Dialog', function () {
-                return false;                
-            });            
+            it('Dialog::內容，為使用者設定的內容', () => {
+                DialogActions.updateDialog(updateDatas);
+                expect(wrapper.contains(newMockContent)).toEqual(true);
+            });
+
+
+            // it('Dialog::按鈕，為使用者設定的按鈕', () => {
+            //     expect(wrapper.find(DialogButton).length).toEqual(updateDatas.buttons.length);
+
+            //     for(var i=0; i< updateDatas.buttons.length; i++){
+            //         expect(wrapper.find(DialogButton).at(i).props().name).toEqual(updateDatas.buttons[i].text);                
+            //         expect(wrapper.find(DialogButton).at(i).props().callback ).toEqual(updateDatas.buttons[i].callback);
+            //     }             
+            // });
         });
+
+
+        describe('關閉Dialog', function () {
+            return false;                
+        }); 
 
         describe('Dialog打開方法的傳入參數，可以使用多型，包含以下內容', function () {
             describe('Dialog的Header：可以為空',function(){

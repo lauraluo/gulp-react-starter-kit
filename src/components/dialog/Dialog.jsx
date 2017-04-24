@@ -12,6 +12,7 @@ var DialogActions = Reflux.createActions([
     "showDialogScene",
     "showDialogToast",
     "hideDialog",
+    "updateDialog",
     "setDialogName",
     "clearDialogName"
 ]);
@@ -109,6 +110,13 @@ class DialogStore extends Reflux.Store {
 
         this._updateState();
     }
+
+    onUpdateDialog = (updateConfigs) => {
+        if(updateConfigs.title || updateConfigs.title == null) this.state.title = updateConfigs.title;
+        if(updateConfigs.content)  this.state.content = updateConfigs.content;
+        if(updateConfigs.buttons) this.state.buttons = updateConfigs.buttons;
+        this._updateState();
+    }
 }
 
 class Dialog extends Reflux.PureComponent {
@@ -128,7 +136,6 @@ class Dialog extends Reflux.PureComponent {
     componentWillUpdate(nextProps, nextState) {}
 
     componentDidUpdate(prevProps, prevState) {
-        console.log(prevState);
         if (this.state.isOpened && !prevState.isOpened && typeof this.state.didOpened == "function") {
             this.state.didOpened();
         }

@@ -1,5 +1,75 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Dialog:: 打開預設Dialog時 可以設定以下資訊：標題，內容，開啟Dialog後的回調，按鈕(包含顯示名稱及點擊後的處理回調) Dialog::state的isOpened 1`] = `
+<Dialog
+  _relayout={[Function]}
+>
+  <div
+    className="dialog"
+  >
+    <div
+      className="dialog-backdrop"
+    />
+    <div
+      className="dialog-box"
+    >
+      <div
+        className="dialog-container"
+      >
+        <value>
+          <header>
+            DialogTitle1
+          </header>
+        </value>
+        <bound value
+          extraPadding={false}
+        >
+          <div
+            className="dialog-box-body"
+          >
+            <content>
+              <p>
+                this is content
+              </p>
+            </content>
+          </div>
+        </bound value>
+        <value>
+          <div
+            className="dialog-box-footer"
+          >
+            <DialogButton
+              callback={[Function]}
+              className="dialog-button-inline"
+              name="取消"
+            >
+              <div
+                className="dialog-button-inline"
+                onClick={[Function]}
+              >
+                取消
+              </div>
+            </DialogButton>
+            <DialogButton
+              callback={[Function]}
+              className="dialog-button-inline-primary"
+              name="送出鈕"
+            >
+              <div
+                className="dialog-button-inline-primary"
+                onClick={[Function]}
+              >
+                送出鈕
+              </div>
+            </DialogButton>
+          </div>
+        </value>
+      </div>
+    </div>
+  </div>
+</Dialog>
+`;
+
 exports[`Dialog:: 打開預設Dialog的時後 可以設定以下資訊：標題，內容，開啟Dialog後的回調，按鈕(包含顯示名稱及點擊後的處理回調) Dialog::state的isOpened 1`] = `
 <Dialog
   _relayout={[Function]}

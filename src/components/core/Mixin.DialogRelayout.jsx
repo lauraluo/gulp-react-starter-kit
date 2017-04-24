@@ -16,7 +16,6 @@ function DialogRelayout(WrappedComponent, configs) {
         }
 
         _relayout() {
-            console.log("_relayout");
             var root = $(configs.root),
                 container = $(configs.container),
                 containerBody = $(configs.containerBody),
