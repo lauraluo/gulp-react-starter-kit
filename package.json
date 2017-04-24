@@ -12,6 +12,7 @@
     "build-storybook": "build-storybook"
   },
   "jest": {
+    "setupFiles":["./test/setup.js"],
     "verbose": true,
     "unmockedModulePathPatterns": [
       "node_modules/react/",

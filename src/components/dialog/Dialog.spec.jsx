@@ -1,7 +1,7 @@
 //測試工具
 import React from 'react'
 import renderer from 'react-test-renderer'
-import {mount, render, shallowx} from 'enzyme'
+import {mount, render, shallow} from 'enzyme'
 import toJson from 'enzyme-to-json'
 
 //被測試的相關模組
@@ -124,17 +124,13 @@ describe('Dialog::', () => {
             });            
         });
 
-        describe('使用者可以用多型的方式設定以下參數', function () {
+        describe('Dialog打開方法的傳入參數，可以使用多型，包含以下內容', function () {
             describe('Dialog的Header：可以為空',function(){
-
 
             });
             
             describe('Dialog內容：除了是functional component也可以是包含斷行符號的字串，畫面會用br取代斷行符號呈現字串',function(){
 
-
-            });
-            describe('Dialog內容的按鈕：當只需要一個按鈕的時後，可以直接指定按鈕物件(名稱及callback)，而非陣列',function(){
 
             });
         });

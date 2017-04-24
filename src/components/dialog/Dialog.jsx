@@ -87,12 +87,7 @@ class DialogStore extends Reflux.Store {
 
     }
 
-    onShowDialog = (configs = {
-        title: "",
-        content: {},
-        buttons: [],
-        didOpened: null
-    }) => {
+    onShowDialog = (configs = { title: null, content: {}, didOpened: null, buttons: [] }) => {
 
         if (!this._checkConfigsInterface(configs)) {
             return;
