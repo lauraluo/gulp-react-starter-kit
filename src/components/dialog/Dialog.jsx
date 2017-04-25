@@ -20,7 +20,7 @@ var DialogActions = Reflux.createActions([
 class DialogStore extends Reflux.Store {
     constructor(props) {
         super(props);
-        this.state = {
+        this.initState = {
             isOpened: false,
             posY: 0,
             type: 0,
@@ -32,6 +32,7 @@ class DialogStore extends Reflux.Store {
             didClosed: null
 
         };
+        this.state = Object.assign({},this.initState);
         this.listenables = DialogActions;
     }
 
@@ -103,16 +104,12 @@ class DialogStore extends Reflux.Store {
     }
 
     onHideDialog = () => {
-        this.state.type = 0;
-        this.state.title = '';
-        this.state.content = '';
-        this.state.buttons = [];
-
+        this.state = Object.assign({},this.initState)
         this._updateState();
     }
 
     onUpdateDialog = (updateConfigs) => {
-        if(updateConfigs.title || updateConfigs.title == null) this.state.title = updateConfigs.title;
+        if(updateConfigs.title || updateConfigs.title === '') this.state.title = updateConfigs.title;
         if(updateConfigs.content)  this.state.content = updateConfigs.content;
         if(updateConfigs.buttons) this.state.buttons = updateConfigs.buttons;
         this._updateState();
@@ -178,7 +175,7 @@ class Dialog extends Reflux.PureComponent {
     }
 
     _HeaderComponent = () => {
-        var rendeResult = {};
+        var rendeResult = null;
         if (this.state.title && this.state.title.length > 0) {
             rendeResult = (
                 <header>{this.state.title}</header>
@@ -244,7 +241,7 @@ class Dialog extends Reflux.PureComponent {
                 <div className="dialog-backdrop"></div>
                 <div className={dialogBoxClass}>
                     <div className="dialog-container">
-                        <this._HeaderComponent ref={header => this.dialogHeader = header}/>
+                        <this._HeaderComponent ref={header => this.dialogHeader = header} dialogTitle={this.state.title}/>
                         <this._BodyComponent
                             ref={body => this.dialogBody = body}
                             extraPadding={hasExtraPaddingWithBody}/>
