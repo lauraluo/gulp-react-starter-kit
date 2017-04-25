@@ -22,7 +22,7 @@ function getDialogInit(){
 
 
 describe('Dialog::', () => {
-    describe('當使用者呼叫showDialog打開Dialog時，可以設定以下參數：標題，內容，開啟Dialog後的回調，按鈕(包含顯示名稱及點擊後的處理回調)', function () {
+    describe('當使用者呼叫showDialog打開Dialog時', function () {
         let wrapper = {};
         let initState = {};
         let mockOpenedCallback = jest.fn();
@@ -183,7 +183,7 @@ describe('Dialog::', () => {
             });  
     });
 
-    describe('當使用者呼叫showDialog打開Dialog時，所有參數只有內容是必填欄位，其他都可以省略', function () {
+    describe('當使用者呼叫showDialog打開Dialog時', function () {
         let wrapper = {};
         var stringContent = ["apple","ball","car"];
         let dialogConfig = {
@@ -210,7 +210,7 @@ describe('Dialog::', () => {
             });
         });
 
-        it("期望參數就算沒有全填，代表遮罩及視窗的結構還是能正確呈現在畫面上", () => {
+        it("期望就算只填了內容，代表遮罩及視窗的結構還是能正確呈現在畫面上", () => {
             expect(wrapper.find('.dialog-backdrop').length).toBe(1);
             expect(wrapper.find('.dialog-container').length).toBe(1);
         })
