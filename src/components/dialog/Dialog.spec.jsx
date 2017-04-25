@@ -13,8 +13,11 @@ import {DialogCore} from "./Dialog"
 import DialogButton from "./DialogButton"
 
 
+var mockRelayout = {};
+
 function getDialogInit(){
-    return (<DialogCore ref={() => (null)} _relayout={() => (null)}/>);
+    mockRelayout = jest.fn();
+    return (<DialogCore ref={() => (null)} _relayout={mockRelayout}/>);
 }
 
 
@@ -55,10 +58,15 @@ describe('Dialog::', () => {
                 expect(wrapper.state('isOpened')).toBe(true);
             })
 
-            it("期望結構應該要出現在畫面上", () => {
+            it("期望代表遮罩及視窗的結構應該要出現在畫面上", () => {
                 expect(wrapper.find('.dialog-backdrop').length).toBe(1);
                 expect(wrapper.find('.dialog-container').length).toBe(1);
             })
+
+            // it("期望props.relayout要至少被呼叫一次:允許使用者利用HOC component包裝組件，以附予Dialog組件改變全局佈局的能力", () => {
+            //  覺得功能可以簡化為調用will opened 來relayout
+            //     expect(mockRelayout).toHaveBeenCalledTimes(1);
+            // })
 
             it("期望要呼叫開啟dialog的回調", () => {
                 expect(mockOpenedCallback).toHaveBeenCalledTimes(1);
@@ -194,13 +202,18 @@ describe('Dialog::', () => {
             }); 
         });
         
-        describe('當Dialog的內容設定為斷行符號的字串(ex "a\nb\n")',function(){
+        describe('當Dialog的內容設定為斷行符號的字串(ex "a斜線nA")',function(){
             it('期望畫面會用<span/>取代斷行符號呈現項目', () => {
                 var items = wrapper.find('span').map(node => node.text());                
                 expect(wrapper.find('.dialog-box-body').find('span').length).toEqual(stringContent.length);
                 expect(items).toEqual(stringContent);                
             });
         });
+
+        it("期望參數就算沒有全填，代表遮罩及視窗的結構還是能正確呈現在畫面上", () => {
+            expect(wrapper.find('.dialog-backdrop').length).toBe(1);
+            expect(wrapper.find('.dialog-container').length).toBe(1);
+        })
     });
 
     describe('使用可以呼叫Confirm型的Dialog(目的在於簡化config的設定方式)',function(){
