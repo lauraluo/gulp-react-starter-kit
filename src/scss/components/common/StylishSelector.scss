@@ -1,0 +1,91 @@
+@import "variables";
+.select-style {
+    margin-top: 6px;
+    position: relative;
+    select {
+        position: absolute;
+        top: 0;
+        border: 0;
+        outline: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+    option:disabled {
+        color: $form-select-option-disabled-color
+    }
+    .select-style-primary {
+        margin-top: 6px;
+    }
+    .select-style-mask {
+        width: 100%;
+        height: $form-select-height;
+        border: 1px solid $form-select-primary-color;
+        background-color: #fff;
+        padding: 0 ($form-select-height) 0 $basic-space;
+        line-height: $form-select-height;
+        border-radius: $form-border-radius;
+        color: $form-select-secondary-font-color;
+        overflow: hidden;
+        box-sizing: border-box;
+        &.has-value {
+            color: $main-text-color;
+        }
+        &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: $form-select-height - 2px;
+            background: $form-select-primary-color no-repeat 50%;
+            background-image: url("/images/btn_angle-down_white@2.png");
+            background-size: 10px;
+            background-repeat: no-repeat;
+            border-radius: 0 $form-border-radius $form-border-radius 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+        }
+    }
+    &.select-style-strong {
+        height: $form-select-strong-height;
+        .select-style-mask {
+            border-color: $form-select-strong-color;
+            height: $form-select-strong-height;
+            line-height: $form-select-strong-height;
+            &::after {
+                width: $form-select-strong-height - 2px;
+                background-color: $form-select-strong-color;
+            }
+        }
+    }
+    &.select-style-secondary {
+        .select-style-mask {
+            border-color: transparent;
+            background-color: $form-select-secondary-color;
+            &::after {
+                border-color: transparent;
+                background-color: $form-select-secondary-color;
+                background-image: url("/images/btn_angle-down_gray@2.png");
+            }
+        }
+    }
+    &.select-style-button {
+        position: relative;
+        .select-style-mask {
+            text-align: center;
+            padding: 0 $basic-space;
+            color: $main-color;
+            background-color: #FFF;
+            border-color: $form-select-border-color;
+            &::after {
+                display: none;
+            }
+        }
+    }
+    &.select-style-opacity {
+        border-color: transparent;
+        .select-style-mask {
+            opacity: 0;
+        }
+    }
+}
