@@ -4,6 +4,26 @@ import cx from 'classnames/bind';
 import _isEmpty from 'lodash/isEmpty';
 import _isUndefined from 'lodash/isUndefined';
 
+import '../../scss/components/common/StylishSelector.scss'
+
+const propTypes = {
+  optionList: PropTypes.array,
+  selectedOption: PropTypes.object,
+  modelName: PropTypes.string,
+  placeholder: PropTypes.string,
+  className: PropTypes.string,
+  handleChange: PropTypes.func
+}
+ 
+const defaultProps = {
+  optionList: [],
+  selectedOption: {},
+  modelName: '',
+  placeholder: '',
+  className: '',
+  handleChange: () => {}
+};
+
 class StylishSelector extends Component {
 
   constructor(props) {
@@ -13,7 +33,7 @@ class StylishSelector extends Component {
     }
   }
 
-  _handleChange = (event) => {
+  handleChange = (event) => {
     var index = event.nativeEvent.target.selectedIndex;
 
     var selectedOption = _isEmpty(event.target.value)
@@ -31,27 +51,26 @@ class StylishSelector extends Component {
       this.props.handleChange(selectedOption);
   };
 
-  _handleFocus = (event) => {
+  handleFocus = (event) => {
     if (!_isUndefined(this.props.handleSelect))
       this.props.handleSelect(event);
   };
 
-  _renderOptions = (optionsSource) => {
+  renderOptions = (optionsSource) => {
     return optionsSource.map((option, index) => {
       return (
         <option
           value={option.value}
           key={this.props.modelName + '_option_' + index}
-          disabled={option.disabled || false}>
+          disabled={option.isDisable || false}>
           {option.text}
         </option>
       );
     });
   };
 
-  _renderFirstOption = (placeholder, selectedOption, sourceOptions) => {
-    if (_isEmpty(placeholder) 
-    || !_isEmpty(selectedOption) 
+  renderFirstOption = (placeholder, selectedOption, sourceOptions) => {
+    if (!_isEmpty(selectedOption) 
     || _isEmpty(sourceOptions)) {
       return null;
     }
@@ -62,7 +81,7 @@ class StylishSelector extends Component {
   };
 
   render() {
-    const {optionList, placeholder, className} = this.props,
+    const {optionList, placeholder, className, modelName} = this.props,
           selectedOption = this.state.selectedOption;
 
     return (
@@ -76,11 +95,12 @@ class StylishSelector extends Component {
 
         <select
           value={selectedOption.value || ''}
-          onChange={this._handleChange}
-          onFocus={this._handleFocus}
+          onChange={this.handleChange}
+          onFocus={this.handleFocus}
+          name={modelName}
           ref={'Select'}>
-          {this._renderFirstOption(placeholder, selectedOption, optionList)}
-          {this._renderOptions(optionList)}
+          {this.renderFirstOption(placeholder, selectedOption, optionList)}
+          {this.renderOptions(optionList)}
 
         </select>
       </div>
@@ -88,22 +108,8 @@ class StylishSelector extends Component {
   }
 }
 
-StylishSelector.defaultProps = {
-  optionList: [],
-  selectedOption: {},
-  modelName: '',
-  placeholder: 'Options',
-  className: '',
-  handleChange: () => {}
-};
+StylishSelector.defaultProps = defaultProps;
 
-StylishSelector.propTypes = {
-  optionList: PropTypes.array,
-  selectedOption: PropTypes.object,
-  modelName: PropTypes.string,
-  placeholder: PropTypes.string,
-  className: PropTypes.string,
-  handleChange: PropTypes.func
-};
+StylishSelector.propTypes = propTypes;
 
 export default StylishSelector;
