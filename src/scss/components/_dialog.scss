@@ -198,7 +198,7 @@
     }
 }
 
-#GlobalContainer.dialog-animating~#Dialog .dialog {
+#GlobalContainer.dialog-animating ~ #Dialog .dialog {
     top: 100%;
     bottom: -100%;
     @include transition();

@@ -12,13 +12,18 @@
     "build-storybook": "build-storybook"
   },
   "jest": {
-    "setupFiles":["./test/setup.js"],
+    "setupFiles": [
+      "./test/setup.js"
+    ],
     "verbose": true,
     "unmockedModulePathPatterns": [
       "node_modules/react/",
       "node_modules/enzyme/",
       "jest-enzyme"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(css|scss)$": "<rootDir>/node_modules/jest-css-modules"
+    }
   },
   "author": "laura.luo",
   "license": "ISC",
@@ -82,6 +87,7 @@
     "gulp-util": "^3.0.8",
     "gulp-watch": "^4.3.11",
     "jest": "^19.0.2",
+    "jest-css-modules": "^1.1.0",
     "jsdom": "^9.12.0",
     "jshint": "^2.9.4",
     "jsx-chai": "^4.0.0",
