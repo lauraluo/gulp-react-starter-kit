@@ -19,7 +19,7 @@ function getDialogInit(){
 
 
 describe('Dialog::', () => {
-    describe('打開預設Dialog時，可以設定以下參數：標題，內容，開啟Dialog後的回調，按鈕(包含顯示名稱及點擊後的處理回調)', function () {
+    describe('當使用者呼叫showDialog打開Dialog時，可以設定以下參數：標題，內容，開啟Dialog後的回調，按鈕(包含顯示名稱及點擊後的處理回調)', function () {
         let wrapper = {};
         let initState = {};
         let mockOpenedCallback = jest.fn();
@@ -45,36 +45,37 @@ describe('Dialog::', () => {
         beforeAll(()=>{
             wrapper = mount(getDialogInit());
             initState = wrapper.state();
-            DialogActions.mount(dialogConfig);
+            
+            DialogActions.showDialog(dialogConfig);
         });
         
-        describe('呼叫showDialog成功後', function () {
+        describe('當呼叫showDialog成功後', function () {
             
-            it("Dialog::state的isOpened", () => {
+            it("期望state的isOpened為true", () => {
                 expect(wrapper.state('isOpened')).toBe(true);
             })
 
-            it("Dialog::的結構應該要出現在畫面上", () => {
+            it("期望結構應該要出現在畫面上", () => {
                 expect(wrapper.find('.dialog-backdrop').length).toBe(1);
                 expect(wrapper.find('.dialog-container').length).toBe(1);
             })
 
-            it("Dialog::應該要呼叫開啟dialog的回調", () => {
+            it("期望要呼叫開啟dialog的回調", () => {
                 expect(mockOpenedCallback).toHaveBeenCalledTimes(1);
             })
 
 
-            it('Dialog::標題，為使用者設定的標題', () => {
+            it('期望標題為使用者設定的標題', () => {
                 expect(wrapper.find('header').exists()).toBe(true);                   
                 expect(wrapper.find('header').text()).toEqual(dialogConfig.title);
             });
 
-            it('Dialog::內容，為使用者設定的內容', () => {
+            it('期望內容，為使用者設定的內容', () => {
                 expect(wrapper.contains(mockContent)).toEqual(true);
             });
 
 
-            it('Dialog::按鈕，為使用者設定的按鈕', () => {
+            it('期望按鈕，為使用者設定的按鈕', () => {
                 expect(wrapper.find(DialogButton).length).toEqual(dialogConfig.buttons.length);
 
                 for(var i=0; i< dialogConfig.buttons.length; i++){
@@ -85,14 +86,14 @@ describe('Dialog::', () => {
                 
             });
 
-            it('Dialog::只有最後一個按鈕為主要按鈕', () => {
+            it('期望只有最後一個按鈕為主要按鈕', () => {
                 expect(wrapper.find(DialogButton).last().props().className).toEqual('dialog-button-inline-primary');                
                 expect(wrapper.find(DialogButton).first().props().className).not.toEqual('dialog-button-inline-primary');                
             });
 
             describe('當設定的按鈕被點擊時', function () {
                 
-                it('每一個按鈕的callback必需被調用',()=>{
+                it('期望每一個按鈕的callback必需被調用',()=>{
                     wrapper.find(DialogButton).at(0).simulate('click');
                     expect(mockClickBtnCallback[0]).toHaveBeenCalledTimes(1);
                     wrapper.find(DialogButton).last().simulate('click');
@@ -102,7 +103,7 @@ describe('Dialog::', () => {
 
             });
 
-            describe('使用者可以對Dialog的內容進行部份更新：允許更新的屬性有，標題，內容，按鈕', () => {
+            describe('當使用者對Dialog的內容進行部份更新：允許更新的屬性有，標題，內容，按鈕', () => {
                         let newMockContent = (<p>this is new content</p>);
                         let updateDatas = {
                             title: "new Dialog title",
@@ -123,17 +124,17 @@ describe('Dialog::', () => {
                             DialogActions.updateDialog(updateDatas);
                         });
 
-                        it('Dialog::標題，為使用者設定的標題', () => {
+                        it('期望標題，為使用者更新的標題', () => {
                             expect(wrapper.find('header').length).toEqual(1);                
                             expect(wrapper.find('header').text()).toEqual(updateDatas.title);
                         });
 
-                        it('Dialog::內容，為使用者設定的內容', () => {
+                        it('期望內容，為使用者更新的內容', () => {
                             expect(wrapper.contains(newMockContent)).toEqual(true);
                         });
 
 
-                        it('Dialog::按鈕，為使用者設定的按鈕', () => {
+                        it('期望按鈕，為使用者更新的按鈕', () => {
                             expect(wrapper.find(DialogButton).length).toEqual(updateDatas.buttons.length);
 
                             for(var i=0; i< updateDatas.buttons.length; i++){
@@ -142,12 +143,12 @@ describe('Dialog::', () => {
                             }             
                         });
 
-                        describe("如果title更新為空值",()=> {
+                        describe("當使用者更新Dialog，如果title更新為空值",()=> {
                             beforeAll(()=>{
                                 DialogActions.updateDialog({title: ''});
                             });
 
-                            it('則header的結構必需消失', () => {
+                            it('期望<header/>的結構必需消失', () => {
                                 expect(wrapper.find('header').exists()).toBe(false);                 
                             });  
                         });
@@ -157,7 +158,7 @@ describe('Dialog::', () => {
 
 
             });
-            describe('關閉Dialog', function () {
+            describe('當使用者呼叫hideDialog來關閉Dialog', function () {
 
                 beforeAll(()=>{
                     DialogActions.hideDialog();
@@ -174,39 +175,29 @@ describe('Dialog::', () => {
             });  
     });
 
-    describe('其他：showDialog方法中只有內容是必填欄位，其他都可以省略', function () {
+    describe('當使用者呼叫showDialog打開Dialog時，所有參數只有內容是必填欄位，其他都可以省略', function () {
         let wrapper = {};
-        let stringContent = ["apple","ball","car"];
+        var stringContent = ["apple","ball","car"];
         let dialogConfig = {
             content: stringContent.join('\n')
         };
 
         beforeAll(()=>{
-            wrapper = shallow(getDialogInit());
+            wrapper = mount(getDialogInit());
             DialogActions.hideDialog();
             DialogActions.showDialog(dialogConfig);
         });
 
-        describe('Dialog的title省略不設定',function(){
-            it('header的結構不會出現', () => {
+        describe('當Dialog的title省略不設定',function(){
+            it('期望header的結構不會出現', () => {
                 expect(wrapper.find('header').exists()).toBe(false);                   
             }); 
         });
-
-        describe('Dialog的buttons省略不設定',function(){
-            it('header的結構不會出現', () => {
-                expect(wrapper.find('heafder').exists()).toBe(false);                   
-            }); 
-        });
         
-        describe('Dialog內容：除了是functional component 還可以是包含斷行符號的字串(ex "a\nb\n")',function(){
-            it('畫面會用span取代斷行符號呈現項目', () => {
+        describe('當Dialog的內容設定為斷行符號的字串(ex "a\nb\n")',function(){
+            it('期望畫面會用span取代斷行符號呈現項目', () => {
                 var items = wrapper.find('span').map(node => node.text());                
-                console.log(wrapper.find('.dialog-box-body').find('div').first().html());
-                console.log(wrapper.find('.dialog-box-body').find('span').length);
-                console.log(items);
-                console.log(stringContent);
-                expect(wrapper.find('.dialog-box-body').find('span').length()).toEqual(stringContent.length);
+                expect(wrapper.find('.dialog-box-body').find('span').length).toEqual(stringContent.length);
                 expect(items).toEqual(stringContent);                
             });
         });
