@@ -189,13 +189,13 @@ describe('Dialog::', () => {
         });
 
         describe('當Dialog的title省略不設定',function(){
-            it('期望header的結構不會出現', () => {
+            it('期望<header/>的結構不會出現', () => {
                 expect(wrapper.find('header').exists()).toBe(false);                   
             }); 
         });
         
         describe('當Dialog的內容設定為斷行符號的字串(ex "a\nb\n")',function(){
-            it('期望畫面會用span取代斷行符號呈現項目', () => {
+            it('期望畫面會用<span/>取代斷行符號呈現項目', () => {
                 var items = wrapper.find('span').map(node => node.text());                
                 expect(wrapper.find('.dialog-box-body').find('span').length).toEqual(stringContent.length);
                 expect(items).toEqual(stringContent);                
