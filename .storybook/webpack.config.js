@@ -2,6 +2,9 @@ const path = require('path');
 
 module.exports = {
   module: {
+    output: {
+      publicPath: "/public/"
+    },
     loaders: [
       {
         test: /.scss$/,
