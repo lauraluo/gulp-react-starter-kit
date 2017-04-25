@@ -150,7 +150,6 @@ gulp.task('js:components', function() {
                     b.external('reflux');
                     b.external('jquery');
                     b.external('mockjs');
-                    b.external('lodash');
                 });
             });
     });

@@ -20,19 +20,20 @@ var DialogActions = Reflux.createActions([
 class DialogStore extends Reflux.Store {
     constructor(props) {
         super(props);
-        this.initState = {
-            isOpened: false,
-            posY: 0,
-            type: 0,
-            title: '',
-            content: '',
-            buttons: [],
-            didOpened: null,
-            willOpen: null,
-            didClosed: null
-
+        this.getInitState = function() { 
+            return {
+                isOpened: false,
+                posY: 0,
+                type: 0,
+                title: '',
+                content: {},
+                buttons: [],
+                didOpened: {},
+                willOpen: {},
+                didClosed: {}
+            }
         };
-        this.state = Object.assign({},this.initState);
+        this.state = this.getInitState();
         this.listenables = DialogActions;
     }
 
@@ -75,7 +76,7 @@ class DialogStore extends Reflux.Store {
                     case "didOpened":
                     case "willOpen":
                     case "didClosed":
-                        if (typeof value !== "function") {
+                        if (value === {} && typeof value !== "function") {
                             console.error("callback should be an function");
                             result = false;
                         }
@@ -89,7 +90,9 @@ class DialogStore extends Reflux.Store {
 
     }
 
-    onShowDialog = (configs = { title: null, content: {}, didOpened: null, buttons: [] }) => {
+    onShowDialog = (inputConfigs) => {
+
+        var configs = Object.assign(this.getInitState(),inputConfigs);
 
         if (!this._checkConfigsInterface(configs)) {
             return;
@@ -104,7 +107,7 @@ class DialogStore extends Reflux.Store {
     }
 
     onHideDialog = () => {
-        this.state = Object.assign({},this.initState)
+        this.state = Object.assign({},this.getInitState());
         this._updateState();
     }
 
@@ -188,8 +191,12 @@ class Dialog extends Reflux.PureComponent {
     _FooterComponent = (props) => {
         var classNames = ['dialog-button-block-primary'];
 
-        if (this.state.buttons.length == 2) {
-            classNames = ['dialog-button-inline', 'dialog-button-inline-primary']
+        if (this.state.buttons.length > 1) {
+            classNames = [];
+            for(var i=0; i < this.state.buttons.length -1; i++) {
+                classNames.push('dialog-button-inline');
+            }
+            classNames.push('dialog-button-inline-primary')
         }
 
         var buttons = Object

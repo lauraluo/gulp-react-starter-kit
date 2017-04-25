@@ -8,11 +8,13 @@
     "develop": "gulp develop",
     "deploy": "gulp deploy",
     "test": "jest --coverage",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006 -s ./public",
     "build-storybook": "build-storybook"
   },
   "jest": {
-    "setupFiles":["./test/setup.js"],
+    "setupFiles": [
+      "./test/setup.js"
+    ],
     "verbose": true,
     "unmockedModulePathPatterns": [
       "node_modules/react/",
@@ -23,7 +25,7 @@
   "author": "laura.luo",
   "license": "ISC",
   "devDependencies": {
-    "@kadira/storybook": "^2.21.0",
+    "@kadira/storybook": "^2.35.3",
     "aliasify": "^2.1.0",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",
