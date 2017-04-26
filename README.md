@@ -44,7 +44,7 @@ npm install -g jest-cli
 安裝所有專案需要的nodel module包：請先移動到專案目錄底下，並且在終端機輸入以下指令
 
 ```
-npm isntall
+npm install
 ```
 
 安裝chrome extenstion livereload外掛  
