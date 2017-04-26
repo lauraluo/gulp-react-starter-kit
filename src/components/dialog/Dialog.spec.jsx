@@ -216,19 +216,32 @@ describe('Dialog::', () => {
         })
     });
 
-    describe('使用可以呼叫Confirm型的Dialog(目的在於簡化config的設定方式)',function(){
-        describe('使用者只需要設定：Dialog標題、Dialog的內容、同意及取消的callback(陣列)', function () {
-            return false;
+
+    describe('當使用者呼叫showDialog打開Dialog時,如果按鈕的callback回傳true', function () {
+        let wrapper = {};
+        let dialogConfig = {
+            content: function(){
+                return <p>this is content</p>
+            },
+            buttons: [
+                {
+                    text: "取消",
+                    callback: function(){
+                        return true;
+                    }
+                }
+            ]
+        };
+
+        beforeAll(()=>{
+            wrapper = mount(getDialogInit());
+            DialogActions.hideDialog();
+            DialogActions.showDialog(dialogConfig);
         });
-        describe('允許使用者自己客制同意及取消按鈕的文案', function () {
-            return false;
-        });          
+
+        it("期望會呼叫hideDialog，關閉視窗", () => {
+            wrapper.find(DialogButton).simulate('click');
+            expect(wrapper.find('.dialog-container').length).toBe(0);
+        })
     });
-});
-
-
-// describe('如果正確安裝在doucment上', function () {
-//     it('relayout應該要呼叫一次',()=>{
-
-//     });
-// });  
+});  

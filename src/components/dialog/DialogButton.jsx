@@ -10,7 +10,7 @@ class DialogButton extends Component {
         var isOverride = false;
 
         if (this.props.callback && typeof this.props.callback  == "function") {
-            isOverride = !!(this.props.callback());
+            isOverride = this.props.callback();
         }
 
         if (isOverride && DialogActions) {
