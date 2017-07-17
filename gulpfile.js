@@ -1,3 +1,5 @@
+const $ = gulpLoadPlugins();
+
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     sass = require('gulp-sass'),
@@ -16,7 +18,7 @@ var nodemon = require('gulp-nodemon');
 var notify = require('gulp-notify');
 var livereload = require('gulp-livereload');
 var eslint = require('gulp-eslint');
-var distPath = "public/";
+var distPath = 'public/';
 var gulpLoadPlugins = require('gulp-load-plugins');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
@@ -30,37 +32,22 @@ var styleConsole = {
     warn: chalk.red.bgYellow
 };
 
-
-var config = extend({
-    env: process.env.NODE_ENV
-}, parseArgs(process.argv.slice(2)));
+var config = extend(
+    {
+        env: process.env.NODE_ENV
+    },
+    parseArgs(process.argv.slice(2))
+);
 
 var onError = function(err) {
     notify({ title: 'Gulp Task Error', message: 'Check the console.' }).write(err);
     console.log(styleConsole.error(err.toString()));
     this.emit('end');
-}
-
-// var browserifyConfig = {
-//     debug: true,
-//     cache: {},
-//     packageCache: {},
-//     transform: ['reactify'],
-//     extensions: ['.jsx'],
-//     plugin: [watchify]
-// };
-
-// https://gist.github.com/ramasilveyra/b4309edf809e55121385
-// https://medium.com/@elisechant/how-to-train-your-gulpfile-to-know-about-envir
-// o nment-configurations-1367a2f8b0da#.bxrhjeav6
-
-
-const $ = gulpLoadPlugins();
+};
 
 var createBundle = (options, attachedWithBundle) => {
-    let env = process.env.NODE_ENV;
-    let isWatchify = process.env.IS_WATCHIFY;
-
+    // let env = process.env.NODE_ENV;
+    // let isWatchify = process.env.IS_WATCHIFY;
     // console.log('NODE_ENV : ' + config.env);
 
     const opts = assign({}, watchify.args, {
@@ -71,18 +58,15 @@ var createBundle = (options, attachedWithBundle) => {
 
     var b = browserify(opts);
 
-
-    b.transform("babelify", {
-        presets: [
-            "es2015", "react"
-        ],
-        "plugins": ["transform-class-properties"]
+    b.transform('babelify', {
+        presets: ['es2015', 'react'],
+        plugins: ['transform-class-properties']
     });
 
     if (config.env === 'production') {
         let aliasifyConfig = {
             replacements: {
-                "(\\w+)/MockProvider": function(alias, regexMatch, regexObject) {
+                '(\\w+)/MockProvider': function(alias, regexMatch, regexObject) {
                     console.log(alias);
                     console.log(regexMatch);
                     return './src/components/core/ReplaceMockProvider.jsx'; // default behavior - won't replace
@@ -93,31 +77,40 @@ var createBundle = (options, attachedWithBundle) => {
         b.transform(aliasify, aliasifyConfig);
     }
 
-
     if (typeof attachedWithBundle == 'function') {
         attachedWithBundle(b);
     }
 
-    const rebundle = () => b
-        .bundle()
-        .on('error', $.util.log.bind($.util, 'Browserify Error'))
-        .pipe(source(options.output))
-        .pipe(buffer())
-        .pipe(rename(function(path) {
-            path.extname = ".bundle.js"
-        }))
-        .pipe($.sourcemaps.init({
-            loadMaps: config.env === 'development' ? true : false
-        }))
-        .pipe(gulpif(config.env === 'development', $.sourcemaps.write('../js/maps')))
-        // .pipe($.sourcemaps.init({ loadMaps: true }))
-        // .pipe($.sourcemaps.write('../js/maps'))
-        .pipe(gulpif(config.env === 'production', $.uglify()))
-        .pipe(gulpif(config.env === 'production', $.header('/* publish time ${Date}*/', {
-            Date: dateFormat(new Date(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
-        })))
-        .pipe(gulp.dest(options.destination))
-        .pipe(livereload());
+    const rebundle = () =>
+        b
+            .bundle()
+            .on('error', $.util.log.bind($.util, 'Browserify Error'))
+            .pipe(source(options.output))
+            .pipe(buffer())
+            .pipe(
+                rename(function(path) {
+                    path.extname = '.bundle.js';
+                })
+            )
+            .pipe(
+                $.sourcemaps.init({
+                    loadMaps: config.env === 'development' ? true : false
+                })
+            )
+            .pipe(gulpif(config.env === 'development', $.sourcemaps.write('../js/maps')))
+            // .pipe($.sourcemaps.init({ loadMaps: true }))
+            // .pipe($.sourcemaps.write('../js/maps'))
+            .pipe(gulpif(config.env === 'production', $.uglify()))
+            .pipe(
+                gulpif(
+                    config.env === 'production',
+                    $.header('/* publish time ${Date}*/', {
+                        Date: dateFormat(new Date(), 'dddd, mmmm dS, yyyy, h:MM:ss TT')
+                    })
+                )
+            )
+            .pipe(gulp.dest(options.destination))
+            .pipe(livereload());
 
     if (config.env === 'development') {
         b = watchify(b);
@@ -126,82 +119,77 @@ var createBundle = (options, attachedWithBundle) => {
     }
 
     return rebundle();
-
 };
 
 gulp.task('js:components', function() {
     glob('./src/*.jsx', function(err, files) {
+        if (err) done(err);
 
-        if (err)
-            done(err);
+        files.forEach(function(entry) {
+            var outputName = path.basename(entry);
 
-        files
-            .forEach(function(entry) {
-                var outputName = path.basename(entry)
-
-                createBundle({
+            createBundle(
+                {
                     entries: [entry],
                     output: outputName,
                     extensions: ['.jsx'],
                     destination: './public/js'
-                }, function(b) {
+                },
+                function(b) {
                     b.external('react');
                     b.external('react-dom');
                     b.external('reflux');
                     b.external('jquery');
                     b.external('mockjs');
-                });
-            });
+                }
+            );
+        });
     });
 });
 
 gulp.task('js:common', function() {
-    createBundle({
-        output: 'common.js',
-        extensions: ['.jsx'],
-        destination: './public/js'
-    }, function(b) {
-        b.require('react');
-        b.require('react-dom');
-        b.require('reflux');
-        b.require('jquery');
-        b.require('mockjs');
-        b.require('lodash');
-    });
+    createBundle(
+        {
+            output: 'common.js',
+            extensions: ['.jsx'],
+            destination: './public/js'
+        },
+        function(b) {
+            b.require('react');
+            b.require('react-dom');
+            b.require('reflux');
+            b.require('jquery');
+            b.require('mockjs');
+            b.require('lodash');
+        }
+    );
 });
 
-gulp.task('js:bundle', [
-    'js:common', 'js:components'
-], function() {});
+gulp.task('js:bundle', ['js:common', 'js:components'], function() {});
 
 gulp.task('css:sass', function() {
     gulp
         .src(['src/scss/**/*.scss', '!src/scss/**/_*.scss'])
         .pipe(plumber({ errorHandle: onError }))
         .pipe(sass({ errLogToConsole: true, includePaths: ['src/scss/**/**'] }))
-        .pipe(autoprefixer({
-            browsers: [
-                "last 4 versions", "Firefox >= 27", "Blackberry >= 7", "IE 8", "IE 9"
-            ],
-            cascade: false
-        }))
+        .pipe(
+            autoprefixer({
+                browsers: ['last 4 versions', 'Firefox >= 27', 'Blackberry >= 7', 'IE 8', 'IE 9'],
+                cascade: false
+            })
+        )
         .pipe(gulp.dest(distPath + 'css/'))
         .pipe(livereload());
 });
 
 gulp.task('watch', function() {
     livereload.listen();
-    gulp.watch([
-        'src/scss/**/*.scss', '!src/scss/**/_*.scss'
-    ], ['css:sass']);
+    gulp.watch(['src/scss/**/*.scss', '!src/scss/**/_*.scss'], ['css:sass']);
 
     // gulp.watch(['src/**/*.js','src/**/*.jsx'], ['js:lint']);
 
     gulp.watch(['views/**/*.jade'], function() {
-        gulp
-            .src('views/**/*.jade')
-            .pipe(livereload())
-            .pipe(notify('Reloading views'));
+        gulp.src('views/**/*.jade').pipe(livereload()).pipe(notify('Reloading views'));
     });
 });
 
@@ -219,46 +207,38 @@ gulp.task('lint-watch', () => {
     // format results with each file, since this stream won't end.
     lintAndPrint.pipe(eslint.formatEach());
 
-    return gulp.watch([
-        'src/**/*.js', 'src/**/*.jsx'
-    ], event => {
+    return gulp.watch(['src/**/*.js', 'src/**/*.jsx'], event => {
         if (event.type !== 'deleted') {
-            gulp
-                .src(event.path)
-                .pipe(lintAndPrint, { end: false });
+            gulp.src(event.path).pipe(lintAndPrint, { end: false });
         }
     });
 });
 
 gulp.task('set-dev-node-env', function() {
-    return process.env.NODE_ENV = config.env = 'development';
+    return (process.env.NODE_ENV = config.env = 'development');
 });
 
 gulp.task('set-prod-node-env', function() {
-    return process.env.NODE_ENV = config.env = 'production';
+    return (process.env.NODE_ENV = config.env = 'production');
 });
-
 
 gulp.task('clean', function() {
-    return gulp.src(['public/css', 'public/js'], { read: false })
-        .pipe($.clean());
+    return gulp.src(['public/css', 'public/js'], { read: false }).pipe($.clean());
 });
 
-gulp.task('build', [
-    'js:lint', 'js:bundle', 'css:sass', 'watch', 'lint-watch'
-], function() {
+gulp.task('build', ['js:lint', 'js:bundle', 'css:sass', 'watch', 'lint-watch'], function() {
     nodemon({
-            "script": 'server.js',
-            "nodeArgs": ['--inspect'],
-            "ignore": [
-                "public/**/*.*",
-                "test/**/*.*",
-                "src/**/*.*",
-                ".git",
-                "gulpfile.js",
-                "node_modules/**/node_modules"
-            ]
-        })
+        script: 'server.js',
+        nodeArgs: ['--inspect'],
+        ignore: [
+            'public/**/*.*',
+            'test/**/*.*',
+            'src/**/*.*',
+            '.git',
+            'gulpfile.js',
+            'node_modules/**/node_modules'
+        ]
+    })
         .on('start', function() {
             console.info(styleConsole.info('The server start at port 3002, http://localhost:3002'));
         })
