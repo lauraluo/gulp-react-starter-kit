@@ -1,12 +1,10 @@
-import RootComponent from './components/index/RootComponent';
-import MockProvider from './components/index/MockProvider'
+import DemoComponent from './components/demo/DemoComponent';
 import ReactDOM from 'react-dom';
 import React from 'react';
 
 
-var Index = MockProvider(RootComponent);
-
 ReactDOM.render(
-	<Index/>,
+	<DemoComponent/>,
 	document.getElementById('index')
 )
+

@@ -1,10 +1,8 @@
-const $ = gulpLoadPlugins();
-
-var gulp = require('gulp'),
-    autoprefixer = require('gulp-autoprefixer'),
-    sass = require('gulp-sass'),
-    plumber = require('gulp-plumber'),
-    rename = require('gulp-rename');
+var gulp = require('gulp');
+var autoprefixer = require('gulp-autoprefixer');
+var sass = require('gulp-sass');
+var plumber = require('gulp-plumber');
+var rename = require('gulp-rename');
 var browserify = require('browserify');
 var aliasify = require('aliasify');
 var watchify = require('watchify');
@@ -14,7 +12,6 @@ var parseArgs = require('minimist');
 var extend = require('extend');
 var dateFormat = require('dateformat');
 var chalk = require('chalk');
-var nodemon = require('gulp-nodemon');
 var notify = require('gulp-notify');
 var livereload = require('gulp-livereload');
 var eslint = require('gulp-eslint');
@@ -25,6 +22,9 @@ var buffer = require('vinyl-buffer');
 var assign = require('lodash').assign;
 var glob = require('glob');
 var path = require('path');
+var jade = require('gulp-jade');
+var connect = require('gulp-connect');
+const $ = gulpLoadPlugins();
 
 var styleConsole = {
     info: chalk.white.bgBlue,
@@ -167,6 +167,7 @@ gulp.task('js:common', function() {
 
 gulp.task('js:bundle', ['js:common', 'js:components'], function() {});
 
+//css
 gulp.task('css:sass', function() {
     gulp
         .src(['src/scss/**/*.scss', '!src/scss/**/_*.scss'])
@@ -182,17 +183,7 @@ gulp.task('css:sass', function() {
         .pipe(livereload());
 });
 
-gulp.task('watch', function() {
-    livereload.listen();
-    gulp.watch(['src/scss/**/*.scss', '!src/scss/**/_*.scss'], ['css:sass']);
-
-    // gulp.watch(['src/**/*.js','src/**/*.jsx'], ['js:lint']);
-
-    gulp.watch(['views/**/*.jade'], function() {
-        gulp.src('views/**/*.jade').pipe(livereload()).pipe(notify('Reloading views'));
-    });
-});
-
+//eslint
 gulp.task('js:lint', () => {
     //config 檔在 .eslintrc
     return gulp
@@ -200,7 +191,6 @@ gulp.task('js:lint', () => {
         .pipe(eslint())
         .pipe(eslint.format('codeframe'));
 });
-
 gulp.task('lint-watch', () => {
     // Lint only files that change after this watch starts
     const lintAndPrint = eslint();
@@ -214,6 +204,31 @@ gulp.task('lint-watch', () => {
     });
 });
 
+//view
+gulp.task('jade', function() {
+    gulp
+        .src(['views/*.jade', '!views/_*.jade'])
+        .pipe(plumber())
+        .pipe(
+            jade({
+                pretty: true
+            })
+        )
+        .pipe(gulp.dest('public/'));
+});
+
+gulp.task('html', function() {
+    gulp.src('public/*.html').pipe(connect.reload());
+});
+
+//livereload task
+gulp.task('watch', function() {
+    // livereload.listen();
+    gulp.watch(['src/scss/**/*.scss', '!src/scss/**/_*.scss'], ['css:sass']);
+    gulp.watch(['views/*.jade'], ['jade']);
+    gulp.watch(['public/*.html'], ['html']);
+});
+
 gulp.task('set-dev-node-env', function() {
     return (process.env.NODE_ENV = config.env = 'development');
 });
@@ -222,33 +237,32 @@ gulp.task('set-prod-node-env', function() {
     return (process.env.NODE_ENV = config.env = 'production');
 });
 
-gulp.task('clean', function() {
-    return gulp.src(['public/css', 'public/js'], { read: false }).pipe($.clean());
+//server
+gulp.task('connectDist', function() {
+    connect.server({
+        root: 'public',
+        port: 3001,
+        livereload: true
+    });
+});
+gulp.task('open', function() {
+    gulp.src(__filename).pipe(
+        open({
+            uri: 'http://localhost:3001',
+            app: 'chrome'
+        })
+    );
 });
 
-gulp.task('build', ['js:lint', 'js:bundle', 'css:sass', 'watch', 'lint-watch'], function() {
-    nodemon({
-        script: 'server.js',
-        nodeArgs: ['--inspect'],
-        ignore: [
-            'public/**/*.*',
-            'test/**/*.*',
-            'src/**/*.*',
-            '.git',
-            'gulpfile.js',
-            'node_modules/**/node_modules'
-        ]
-    })
-        .on('start', function() {
-            console.info(styleConsole.info('The server start at port 3002, http://localhost:3002'));
-        })
-        .on('restart', function() {
-            gulp
-                .src('server.js')
-                .pipe(livereload())
-                .pipe(notify('Reloading server, please wait...'));
-        });
+gulp.task('clean', function() {
+    return gulp.src(['public/css', 'public/js','public/*.html'], { read: false }).pipe($.clean());
 });
+
+gulp.task(
+    'build',
+    ['js:lint', 'js:bundle', 'css:sass', 'connectDist', 'watch', 'lint-watch'],
+    function() {}
+);
 
 gulp.task('develop', ['set-dev-node-env', 'clean'], function() {
     return runSequence('build');
